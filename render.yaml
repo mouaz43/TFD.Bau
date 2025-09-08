@@ -1,0 +1,7 @@
+services:
+  - type: static
+    name: tfd-bau
+    env: static
+    buildCommand: ""
+    staticPublishPath: /
+    pullRequestPreviewsEnabled: true
