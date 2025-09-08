@@ -1,7 +1,7 @@
-/* TFD BAU — simple, consistent UI for all pages (HTML + JS only) */
+/* TFD — simple, consistent UI for all pages (HTML + JS only) */
 :root{
   --bg:#0F1115; --surface:#12161E; --card:#0F131A; --text:#F3F6F9; --muted:#A9B4C2;
-  --line:#1B2230; --accent1:#FF6A1A; --accent2:#2B5BD3; --teal:#14F1D9;
+  --line:#1B2230; --accent1:#FF5C00; --accent2:#2B5BD3;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
@@ -12,15 +12,26 @@ a{color:inherit}
 .nav{position:sticky;top:0;z-index:50;background:rgba(10,12,16,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .nav .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 10px}
 .brand{display:flex;align-items:center;gap:10px}
-.brand .logo3d{height:28px;width:28px;display:inline-block}
-.brand strong{font-weight:900}
+.brand .logo-svg{height:28px;width:28px;display:inline-block}
 .menu{display:flex;gap:10px;flex-wrap:wrap}
 .menu a{padding:8px 10px;text-decoration:none;font-weight:700;opacity:.95;border-radius:10px}
 .cta{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:800}
 
+/* GLOBAL watermark (logo behind each page) */
+html,body{height:100%}
+body.logo-bg::before{
+  content:"";
+  position:fixed; z-index:-1; top:10vh; left:50%; transform:translateX(-50%);
+  width:72vmin; height:72vmin; pointer-events:none; opacity:.06;
+  background-repeat:no-repeat; background-size:contain;
+  /* Clean outline version of the new 3D logo (encoded SVG) */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg opacity='.9'%3E%3Cpolygon points='100,18 172,60 172,140 100,182 28,140 28,60' fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='3'/%3E%3Cpath d='M52 92 H148' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M100 66 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M136 80 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M118 102 H152' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M122 120 H148' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 80 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 84 C88 84, 88 130, 64 130' fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+  filter:saturate(120%) contrast(110%);
+}
+
 /* HERO */
 .hero{position:relative;overflow:hidden;padding:56px 0 60px;background:
-  radial-gradient(1200px 550px at 20% -10%, rgba(255,106,26,.28), transparent),
+  radial-gradient(1200px 550px at 20% -10%, rgba(255,92,0,.28), transparent),
   radial-gradient(1000px 360px at 90% 10%, rgba(43,91,211,.18), transparent);
   border-bottom:1px solid var(--line);
 }
