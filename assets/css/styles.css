@@ -1,7 +1,7 @@
 /* TFD — clean, consistent UI (HTML + JS only) */
 :root{
   --bg:#0F1115; --surface:#12161E; --card:#0F131A; --text:#F3F6F9; --muted:#A9B4C2;
-  --line:#1B2230; --accent1:#FF5C00; --accent2:#2B5BD3;
+  --line:#1B2230; --accent1:#FF5C00; --accent2:#2B5BD3; --leaf:#21C55D;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
@@ -17,16 +17,14 @@ a{color:inherit}
 .menu a{padding:8px 10px;text-decoration:none;font-weight:700;opacity:.95;border-radius:10px}
 .cta{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:800}
 
-/* GLOBAL watermark (logo behind each page) */
+/* GLOBAL watermark (CoreSection outline behind every page) */
 html,body{height:100%}
 body.logo-bg::before{
   content:"";
   position:fixed; z-index:-1; top:10vh; left:50%; transform:translateX(-50%);
-  width:72vmin; height:72vmin; pointer-events:none; opacity:.06;
+  width:72vmin; height:72vmin; pointer-events:none; opacity:.07;
   background-repeat:no-repeat; background-size:contain;
-  /* Outline version of the logo as subtle watermark */
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg opacity='.9'%3E%3Cpolygon points='100,18 172,60 172,140 100,182 28,140 28,60' fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='3'/%3E%3Cpath d='M52 92 H148' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M100 66 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M136 80 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M118 102 H152' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M122 120 H148' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 80 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 84 C88 84, 88 130, 64 130' fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
-  filter:saturate(120%) contrast(110%);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.35'%3E%3Ccircle cx='100' cy='100' r='88' stroke-width='3'/%3E%3Cpolygon points='100,35 48,66 48,120 100,88' stroke-width='3'/%3E%3Cpolygon points='48,120 100,88 152,120 100,152' stroke-width='3'/%3E%3Cpolygon points='100,35 152,66 152,120 100,88' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* HERO */
