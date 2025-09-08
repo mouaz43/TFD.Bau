@@ -1,9 +1,25 @@
-<!DOCTYPE html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Galerie — TFD BAU</title>
 <link rel="stylesheet" href="/assets/css/styles.css">
-<body>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cpath d='M48 10L82 70H14Z' fill='none' stroke='%23ffffff55' stroke-width='2'/%3E%3Cpath d='M28 42H68' stroke='%23FF5C00' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M48 30V64' stroke='%232B5BD3' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+</head><body>
 <nav class="nav"><div class="container bar">
-  <div class="brand"><img src="/assets/img/logo.svg" alt="TFD BAU"><strong>TFD&nbsp;BAU</strong></div>
+  <div class="brand">
+    <!-- inline logo -->
+    <svg class="logo-svg" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><linearGradient id="beam" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF5C00"/><stop offset="100%" stop-color="#2B5BD3"/></linearGradient></defs>
+      <path d="M48 10 L82 70 H14 Z" fill="none" stroke="rgba(255,255,255,0.26)" stroke-width="2"/>
+      <path d="M28 42 H68" stroke="url(#beam)" stroke-width="6" stroke-linecap="round"/>
+      <path d="M48 30 V64" stroke="url(#beam)" stroke-width="6" stroke-linecap="round"/>
+      <path d="M64 36 V64" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+      <path d="M54 46 H70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+      <path d="M56 56 H68" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+      <path d="M32 36 V64" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+      <path d="M32 38 C44 38, 44 62, 32 62" stroke="#FFFFFF" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+    <strong>TFD&nbsp;BAU</strong>
+  </div>
   <div class="menu">
     <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
     <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
@@ -34,10 +50,7 @@
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/ba-slider.js"></script>
 <script>
-  async function fetchProjects(){
-    const res = await fetch('/content/projects.json');
-    return await res.json();
-  }
+  async function fetchProjects(){ const res = await fetch('/content/projects.json'); return await res.json(); }
   function baCard(project, idx){
     return `
       <div class="card">
