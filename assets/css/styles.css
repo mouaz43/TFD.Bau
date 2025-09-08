@@ -50,21 +50,52 @@ body.logo-bg::before{
   filter:grayscale(1) brightness(1.25) contrast(1.05) drop-shadow(0 30px 60px rgba(0,0,0,.35));
 }
 
-/* HERO + common */
-.hero{position:relative;overflow:hidden;padding:56px 0 60px;background:
-  radial-gradient(1200px 550px at 20% -10%, rgba(255,92,0,.28), transparent),
-  radial-gradient(1000px 360px at 90% 10%, rgba(43,91,211,.18), transparent);
-  border-bottom:1px solid var(--line)}
-.hero::after{content:"";position:absolute;inset:auto -15% -30% -15%;
-  background:radial-gradient(700px 320px at 10% 100%, rgba(20,241,217,.16), transparent);
-  animation:float 12s ease-in-out infinite alternate;pointer-events:none}
-@keyframes float{from{transform:translateY(0)}to{transform:translateY(-14px)}}
-h1{font-size:44px;line-height:1.1;margin:0 0 8px}
-.lead{opacity:.9;max-width:920px;font-size:18px;line-height:1.7}
-.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.badges .badge{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:12px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04)}
-.badge .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2))}
+/* --- HERO (premium background) --- */
+.hero{
+  position:relative; overflow:hidden; padding:56px 0 60px;
+  border-bottom:1px solid var(--line);
 
+  /* Mesh gradient base (3 color spots + dark base) */
+  background:
+    radial-gradient(1200px 600px at 12% -10%, rgba(255,92,0,.32), transparent 60%),
+    radial-gradient(900px 420px at 88% 8%, rgba(43,91,211,.24), transparent 65%),
+    radial-gradient(800px 520px at 10% 100%, rgba(20,241,217,.18), transparent 60%),
+    linear-gradient(#0F1115, #0F1115);
+}
+
+/* Blueprint micro-grid (fades toward edges) */
+.hero::before{
+  content:""; position:absolute; inset:-10% -20%;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.022) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 24px);
+  transform:skewY(-6deg);
+  mask-image: radial-gradient(120% 120% at 50% 30%, #000 35%, transparent 75%);
+  pointer-events:none;
+}
+
+/* Animated light sweep (very subtle) */
+.hero::after{
+  content:""; position:absolute; inset:-30% -25%;
+  background:
+    radial-gradient(60% 40% at 20% 10%, rgba(255,255,255,.06), transparent 60%),
+    linear-gradient(100deg, transparent 40%, rgba(255,255,255,.08) 50%, transparent 60%);
+  mix-blend-mode: screen;
+  animation: heroSweep 16s ease-in-out infinite;
+  pointer-events:none;
+  will-change: transform, opacity;
+}
+
+@keyframes heroSweep{
+  0%   { transform:translateX(-6%) translateY(0) rotate(0.2deg); opacity:.35; }
+  50%  { transform:translateX(6%) translateY(-2%) rotate(-0.2deg); opacity:.55; }
+  100% { transform:translateX(-6%) translateY(0) rotate(0.2deg); opacity:.35; }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .hero::after{ animation:none; opacity:.4 }
+}
 /* Grids, cards, buttons */
 .grid{display:grid;gap:16px}
 .services{grid-template-columns:repeat(4,1fr)}
