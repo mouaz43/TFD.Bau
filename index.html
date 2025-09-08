@@ -1,118 +1,76 @@
-<!DOCTYPE html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TFD BAU — Präzision im Bau</title>
-<link rel="stylesheet" href="/assets/css/styles.css">
-<!-- simple favicon (uses top beam colors) -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpolygon points='60,12 102,32 60,52 18,32' fill='%2314F1D9'/%3E%3Cpolygon points='18,32 60,52 60,108 18,88' fill='%23FF6A1A'/%3E%3Cpolygon points='102,32 60,52 60,108 102,88' fill='%232B5BD3'/%3E%3C/svg%3E">
-</head><body>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TFD — Präzision im Bau</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cpath d='M48 10L82 70H14Z' fill='none' stroke='%23ffffff55' stroke-width='2'/%3E%3Cpath d='M28 42H68' stroke='%23FF5C00' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M48 30V64' stroke='%232B5BD3' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    html, body { height:100%; }
+    body.logo-bg::before{
+      content:""; position:fixed; z-index:-1; top:10vh; left:50%; transform:translateX(-50%);
+      width:72vmin; height:72vmin; pointer-events:none; opacity:.06; background-repeat:no-repeat; background-size:contain;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FF5C00'/%3E%3Cstop offset='100%25' stop-color='%232B5BD3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%3E%3Cpolygon points='100,18 172,60 172,140 100,182 28,140 28,60' fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='3'/%3E%3Cpath d='M52 92 H148' stroke='url(%23g)' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M100 66 V134' stroke='url(%23g)' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M136 80 V134' stroke='%23ffffff' stroke-opacity='0.8' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M118 102 H152' stroke='%23ffffff' stroke-opacity='0.8' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M122 120 H148' stroke='%23ffffff' stroke-opacity='0.8' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 80 V134' stroke='%23ffffff' stroke-opacity='0.8' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 84 C88 84, 88 130, 64 130' fill='none' stroke='%23ffffff' stroke-opacity='0.8' stroke-width='6' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+      filter:saturate(120%) contrast(110%);
+    }
+    .hero, main { position:relative; }
+  </style>
+</head>
+<body class="logo-bg">
+  <nav class="nav"><div class="container bar">
+    <div class="brand">
+      <!-- Inline logo icon -->
+      <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF5C00"/><stop offset="100%" stop-color="#2B5BD3"/></linearGradient>
+        </defs>
+        <polygon points="100,18 172,60 172,140 100,182 28,140 28,60" fill="none" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
+        <path d="M52 92 H148" stroke="url(#beam)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M100 62 V138" stroke="url(#beam)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M136 76 V138" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+        <path d="M118 100 H152" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+        <path d="M122 120 H148" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+        <path d="M64 76 V138" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+        <path d="M64 80 C92 80, 92 134, 64 134" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" opacity=".95"/>
+      </svg>
+      <strong>TFD</strong>
+    </div>
+    <div class="menu">
+      <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a><a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
+      <a class="cta" href="/kontakt.html">Kontakt</a>
+    </div>
+  </div></nav>
 
-<nav class="nav"><div class="container bar">
-  <!-- 3D logo -->
-  <div class="brand">
-    <svg class="logo3d" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="gLeft" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF7A33"/><stop offset="100%" stop-color="#B24310"/></linearGradient>
-        <linearGradient id="gRight" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4B75F0"/><stop offset="100%" stop-color="#1E2E77"/></linearGradient>
-        <linearGradient id="gTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#37FFE8"/><stop offset="100%" stop-color="#16A4A0"/></linearGradient>
-        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity=".45"/></filter>
-        <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF" stop-opacity=".22"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
-      </defs>
-      <polygon points="60,12 102,32 60,52 18,32" fill="url(#gTop)" filter="url(#shadow)"/>
-      <polygon points="18,32 60,52 60,108 18,88" fill="url(#gLeft)" />
-      <polygon points="102,32 60,52 60,108 102,88" fill="url(#gRight)" />
-      <path d="M32 34 H88" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".95"/>
-      <path d="M60 24 V56" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".95"/>
-      <path d="M82 40 V86" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-      <path d="M70 50 H94" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-      <path d="M72 66 H92" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-      <path d="M38 40 V86" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-      <path d="M38 44 C54 44, 54 82, 38 82" stroke="#FFFFFF" stroke-width="4" fill="none" stroke-linecap="round" opacity=".9"/>
-      <polygon points="60,12 102,32 60,52 18,32" fill="url(#gloss)"/>
-    </svg>
-    <strong>TFD&nbsp;BAU</strong>
-  </div>
-  <div class="menu">
-    <a href="/index.html">Start</a>
-    <a href="/leistungen.html">Leistungen</a>
-    <a href="/galerie.html">Galerie</a>
-    <a href="/faq.html">FAQ</a>
-    <a class="cta" href="/kontakt.html">Kontakt</a>
-  </div>
-</div></nav>
-
-<header class="hero">
-  <div class="container">
+  <header class="hero"><div class="container">
     <h1>Präzision im Bau. Bundesweit.</h1>
-    <p class="lead">
-      Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — termintreu, sauber, transparent.
-      Antwort innerhalb von <strong>24 Stunden</strong>.
-    </p>
+    <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — termintreu, sauber, transparent. Antwort innerhalb von <strong>24 Stunden</strong>.</p>
     <div class="badges">
       <span class="badge"><span class="dot"></span>TÜV-nahe Standards</span>
       <span class="badge"><span class="dot"></span>Versichert</span>
       <span class="badge"><span class="dot"></span>Termintreu</span>
       <span class="badge"><span class="dot"></span>Ganz Deutschland</span>
     </div>
+  </div></header>
+
+  <main class="container">
+    <section class="section">
+      <div class="row"><h2>Leistungen</h2><span class="muted hidden-mobile">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span></div>
+      <div class="grid services">
+        <div class="card"><span class="chip">🏠 Innenausbau</span><p class="muted">Turn-key Interiors mit sauberen Kanten und zuverlässiger Abnahme.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Innenausbau&body=Hallo%20TFD%2C%0Aich%20ben%C3%B6tige%20Innenausbau%20in%20%5BOrt%5D%20%5BPLZ%5D.%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
+        <div class="card"><span class="chip">🧱 Trockenbau</span><p class="muted">Leichtbauwände, Decken, Akustik & Brandschutz – millimetergenau.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Trockenbau&body=Hallo%20TFD%2C%0Aich%20ben%C3%B6tige%20Trockenbau%20in%20%5BOrt%5D.%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
+        <div class="card"><span class="chip">🪵 Bodenleger</span><p class="muted">Parkett, Vinyl, Laminat – fachgerecht vorbereitet und sauber verlegt.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Bodenleger&body=Hallo%20TFD%2C%0Aich%20ben%C3%B6tige%20Bodenarbeiten%20in%20%5BOrt%5D.%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
+        <div class="card"><span class="chip">🌿 Gartenarbeit</span><p class="muted">Terrassen, Pflaster, Rasen, Hecken – robuste Außenflächen & Pflege.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Gartenarbeit&body=Hallo%20TFD%2C%0Aich%20ben%C3%B6tige%20Gartenarbeit%20in%20%5BOrt%5D.%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="mbar">
+    <a href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20" class="primary">E-Mail</a>
+    <a href="tel:+4915770070701">Anrufen</a>
+    <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
   </div>
-</header>
 
-<main class="container">
-  <section class="section">
-    <div class="row"><h2>Leistungen</h2><span class="muted hidden-mobile">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span></div>
-    <div class="grid services">
-      <div class="card">
-        <span class="chip"><span class="icon">🏠</span> Innenausbau</span>
-        <p class="muted">Turn-key Interiors mit sauberen Kanten und zuverlässiger Abnahme.</p>
-        <div class="controls">
-          <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Innenausbau&body=Hallo%2C%0Aich%20ben%C3%B6tige%20Innenausbau%20in%20%5BOrt%5D%20%5BPLZ%5D.%0AFl%C3%A4che%20(m%C2%B2)%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail Anfrage</a>
-          <a class="btn" href="tel:+4915770070701">Anrufen</a>
-        </div>
-      </div>
-      <div class="card">
-        <span class="chip"><span class="icon">🧱</span> Trockenbau</span>
-        <p class="muted">Leichtbauwände, Decken, Akustik & Brandschutz – millimetergenau.</p>
-        <div class="controls">
-          <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Trockenbau&body=Hallo%2C%0Aich%20ben%C3%B6tige%20Trockenbau%20in%20%5BOrt%5D%20%5BPLZ%5D.%0AFl%C3%A4che%20(m%C2%B2)%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail Anfrage</a>
-          <a class="btn" href="tel:+4915770070701">Anrufen</a>
-        </div>
-      </div>
-      <div class="card">
-        <span class="chip"><span class="icon">🪵</span> Bodenleger</span>
-        <p class="muted">Parkett, Vinyl, Laminat – fachgerecht vorbereitet und sauber verlegt.</p>
-        <div class="controls">
-          <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Bodenleger&body=Hallo%2C%0Aich%20ben%C3%B6tige%20Bodenarbeiten%20in%20%5BOrt%5D%20%5BPLZ%5D.%0AFl%C3%A4che%20(m%C2%B2)%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail Anfrage</a>
-          <a class="btn" href="tel:+4915770070701">Anrufen</a>
-        </div>
-      </div>
-      <div class="card">
-        <span class="chip"><span class="icon">🌿</span> Gartenarbeit</span>
-        <p class="muted">Terrassen, Pflaster, Rasen, Hecken – robuste Außenflächen & Pflege.</p>
-        <div class="controls">
-          <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Gartenarbeit&body=Hallo%2C%0Aich%20ben%C3%B6tige%20Gartenarbeit%20in%20%5BOrt%5D%20%5BPLZ%5D.%0AFl%C3%A4che%20(m%C2%B2)%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail Anfrage</a>
-          <a class="btn" href="tel:+4915770070701">Anrufen</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="row"><h2>Warum TFD&nbsp;BAU?</h2><span class="muted">TÜV-nahe Standards · Versichert · Termintreu · Bundesweit</span></div>
-    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
-      <div class="card"><strong>Saubere Ausführung</strong><p class="muted">Saubere Kanten, dokumentierte Abnahme, klare Zuständigkeiten.</p></div>
-      <div class="card"><strong>Transparentes Angebot</strong><p class="muted">Schnelle Einschätzung und faires Angebot – meist innerhalb von 24h.</p></div>
-      <div class="card"><strong>Digitale Doku</strong><p class="muted">Vorher/Nachher-Bilder, kurze Notizen, Übergabeprotokoll.</p></div>
-    </div>
-  </section>
-</main>
-
-<div class="mbar">
-  <a href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD%20BAU&body=Hallo%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20" class="primary">E-Mail</a>
-  <a href="tel:+4915770070701">Anrufen</a>
-  <a href="https://wa.me/4915770070701?text=Hallo%20TFD%20BAU%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
-</div>
-
-<footer class="footer"><div class="container">
-  © <span id="year"></span> TFD&nbsp;BAU · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a>
-</div></footer>
-<script src="/assets/js/main.js"></script>
-</body></html>
+  <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
