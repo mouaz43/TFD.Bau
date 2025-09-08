@@ -89,7 +89,7 @@ body.logo-bg::before{
 }
 @media (prefers-reduced-motion: reduce){ .hero::after{ animation:none; opacity:.45 } }
 
-/* SVG overlay with blueprint/house lines */
+/* SVG overlay (blueprint/house/ruler) */
 .hero .hero-art{
   position:absolute; inset:-16% -8% -26% -8%;
   pointer-events:none; opacity:.55; mix-blend-mode:screen;
@@ -100,9 +100,29 @@ body.logo-bg::before{
 .hero .hero-art .dashes{ animation:dash 18s linear infinite; }
 @keyframes dash{ to{ stroke-dashoffset:-220; } }
 
+/* --- Typographic enhancements for hero text --- */
+.kicker{
+  display:inline-flex; align-items:center; gap:8px;
+  font-weight:900; font-size:13px; letter-spacing:.12em; text-transform:uppercase;
+  opacity:.9; padding:6px 10px; border:1px solid var(--line); border-radius:999px;
+  background:rgba(255,255,255,.04);
+  text-shadow:0 1px 1px rgba(0,0,0,.25);
+}
+.kicker .dot{ width:6px; height:6px; border-radius:50%;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2)); box-shadow:0 0 0 4px rgba(255,255,255,0.02) inset; }
+.h1-alt{ font-size:54px; line-height:1.04; letter-spacing:.2px; margin:10px 0 10px;
+  text-shadow:0 1px 1px rgba(0,0,0,.28), 0 6px 24px rgba(0,0,0,.25); }
+@media(max-width:560px){ .h1-alt{ font-size:38px; } }
+.lead{ opacity:.95; max-width:920px; font-size:18px; line-height:1.7;
+  text-shadow:0 1px 1px rgba(0,0,0,.28); }
+.nowrap{ white-space:nowrap; }
+.shine{
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
 /* Headings / badges */
 h1{font-size:44px;line-height:1.1;margin:0 0 8px}
-.lead{opacity:.9;max-width:920px;font-size:18px;line-height:1.7}
 .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .badges .badge{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:12px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04)}
 .badge .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2))}
