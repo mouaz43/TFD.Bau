@@ -8,10 +8,32 @@
 <body class="logo-bg">
   <nav class="nav"><div class="container bar">
     <div class="brand">
-      <!-- logo -->
+      <!-- Inline 3D TFD monogram (prismatic frame + beams). Looks crisp at 28px+ -->
       <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs><linearGradient id="tfdb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF5C00"/><stop offset="100%" stop-color="#2B5BD3"/></linearGradient><linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".9"/><stop offset="100%" stop-color="#B9C6D6" stop-opacity=".35"/></linearGradient><filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/></filter></defs>
-        <g filter="url(#soft)"><polygon points="100,18 172,60 172,140 100,182 28,140 28,60" fill="url(#edge)" opacity=".10" stroke="url(#edge)" stroke-width="2"/><path d="M52 92 H148" stroke="url(#tfdb)" stroke-width="14" stroke-linecap="round"/><path d="M100 62 V138" stroke="url(#tfdb)" stroke-width="14" stroke-linecap="round"/><path d="M136 76 V138" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/><path d="M118 100 H152" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/><path d="M122 120 H148" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/><path d="M64 76 V138" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/><path d="M64 80 C92 80, 92 134, 64 134" stroke="#FFFFFF" stroke-width="8" fill="none" stroke-linecap="round" opacity=".95"/></g>
+        <defs>
+          <linearGradient id="tfdb" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FF5C00"/><stop offset="100%" stop-color="#2B5BD3"/>
+          </linearGradient>
+          <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fff" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#B9C6D6" stop-opacity=".35"/>
+          </linearGradient>
+          <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/>
+          </filter>
+        </defs>
+        <g filter="url(#soft)">
+          <polygon points="100,18 172,60 172,140 100,182 28,140 28,60"
+                   fill="url(#edge)" opacity=".10" stroke="url(#edge)" stroke-width="2"/>
+          <path d="M52 92 H148" stroke="url(#tfdb)" stroke-width="14" stroke-linecap="round"/>
+          <path d="M100 62 V138" stroke="url(#tfdb)" stroke-width="14" stroke-linecap="round"/>
+          <path d="M136 76 V138" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+          <path d="M118 100 H152" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+          <path d="M122 120 H148" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+          <path d="M64 76 V138" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+          <path d="M64 80 C92 80, 92 134, 64 134" stroke="#FFFFFF" stroke-width="8"
+                fill="none" stroke-linecap="round" opacity=".95"/>
+        </g>
       </svg>
       <strong>TFD</strong>
     </div>
