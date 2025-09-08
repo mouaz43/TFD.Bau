@@ -1,7 +1,7 @@
 /* TFD BAU — simple, consistent UI for all pages (HTML + JS only) */
 :root{
   --bg:#0F1115; --surface:#12161E; --card:#0F131A; --text:#F3F6F9; --muted:#A9B4C2;
-  --line:#1B2230; --accent1:#FF5C00; --accent2:#2B5BD3;
+  --line:#1B2230; --accent1:#FF6A1A; --accent2:#2B5BD3; --teal:#14F1D9;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
@@ -12,14 +12,15 @@ a{color:inherit}
 .nav{position:sticky;top:0;z-index:50;background:rgba(10,12,16,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .nav .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 10px}
 .brand{display:flex;align-items:center;gap:10px}
-.brand .logo-svg{height:28px;width:28px;display:inline-block}
+.brand .logo3d{height:28px;width:28px;display:inline-block}
+.brand strong{font-weight:900}
 .menu{display:flex;gap:10px;flex-wrap:wrap}
 .menu a{padding:8px 10px;text-decoration:none;font-weight:700;opacity:.95;border-radius:10px}
 .cta{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:800}
 
 /* HERO */
 .hero{position:relative;overflow:hidden;padding:56px 0 60px;background:
-  radial-gradient(1200px 550px at 20% -10%, rgba(255,92,0,.28), transparent),
+  radial-gradient(1200px 550px at 20% -10%, rgba(255,106,26,.28), transparent),
   radial-gradient(1000px 360px at 90% 10%, rgba(43,91,211,.18), transparent);
   border-bottom:1px solid var(--line);
 }
