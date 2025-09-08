@@ -1,0 +1,24 @@
+[
+  {
+    "id": "innenausbau-ffm-01",
+    "category": "innenausbau",
+    "title": "Innenausbau — Wohnung Innenstadt",
+    "location": "Frankfurt am Main",
+    "date": "2025-07",
+    "metrics": { "qm": 48, "dauer_tage": 7 },
+    "before": "/assets/img/dummy_before_innenausbau.svg",
+    "after": "/assets/img/dummy_after_innenausbau.svg",
+    "highlights": ["Feinspachtel Q3", "Neue Decke", "Saubere Kanten"]
+  },
+  {
+    "id": "trockenbau-berlin-01",
+    "category": "trockenbau",
+    "title": "Trockenbau — Loft",
+    "location": "Berlin",
+    "date": "2025-05",
+    "metrics": { "qm": 60, "dauer_tage": 6 },
+    "before": "/assets/img/dummy_before_trockenbau.svg",
+    "after": "/assets/img/dummy_after_trockenbau.svg",
+    "highlights": ["Akustikdecke", "Brandschutz F90"]
+  ]
+]
