@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — TFD BAU</title>
+<link rel="stylesheet" href="/assets/css/styles.css">
+<body>
+<nav class="nav"><div class="container bar">
+  <div class="brand"><img src="/assets/img/logo.svg" alt="TFD BAU"><strong>TFD&nbsp;BAU</strong></div>
+  <div class="menu">
+    <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
+    <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
+    <a class="cta" href="/kontakt.html">Kontakt</a>
+  </div>
+</div></nav>
+
+<main class="container">
+  <section class="section">
+    <h1>Admin – Projekte hinzufügen</h1>
+    <div class="card" id="gate">
+      <p class="muted">Passphrase eingeben, um fortzufahren:</p>
+      <input id="pass" class="btn" type="password" placeholder="Passphrase">
+      <button class="btn primary" onclick="unlock()">Entsperren</button>
+      <p class="muted">Hinweis: Diese Seite speichert nichts auf dem Server. Sie erzeugt Dateien, die Sie anschließend in GitHub hochladen.</p>
+    </div>
+    <div class="card" id="tool" style="display:none">
+      <div class="controls">
+        <select id="category" class="btn">
+          <option value="innenausbau">Innenausbau</option>
+          <option value="trockenbau">Trockenbau</option>
+          <option value="bodenleger">Bodenleger</option>
+          <option value="gartenarbeit">Gartenarbeit</option>
+        </select>
+        <input id="title" class="btn" placeholder="Titel (z. B. Küche — Innenstadt)" style="min-width:260px">
+        <input id="location" class="btn" placeholder="Ort (z. B. Frankfurt am Main)">
+        <input id="qm" class="btn" type="number" placeholder="Fläche m²">
+        <input id="tage" class="btn" type="number" placeholder="Dauer (Tage)">
+        <input id="slug" class="btn" placeholder="Slug (z. B. kueche-ffm-02)">
+      </div>
+      <div class="controls">
+        <label class="muted">Before:</label><input id="before" type="file" accept="image/*">
+        <label class="muted">After:</label><input id="after" type="file" accept="image/*">
+        <button class="btn primary" onclick="generate()">JSON & Dateien erzeugen</button>
+      </div>
+      <div id="out" class="muted" style="white-space:pre-wrap;margin-top:10px"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><div class="container">
+  © <span id="year"></span> TFD&nbsp;BAU · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a>
+</div></footer>
+
+<script src="/assets/js/main.js"></script>
+<script>
+  const PASSPHRASE = "TFD-Only-Me"; // <- CHANGE this string.
+
+  function unlock(){
+    const p = document.getElementById('pass').value;
+    if(p===PASSPHRASE){
+      document.getElementById('gate').style.display='none';
+      document.getElementById('tool').style.display='block';
+    } else { alert('Falsche Passphrase'); }
+  }
+
+  function generate(){
+    const cat = document.getElementById('category').value;
+    const title = document.getElementById('title').value || 'Projekt';
+    const loc = document.getElementById('location').value || '';
+    const qm = parseInt(document.getElementById('qm').value||0,10);
+    const tage = parseInt(document.getElementById('tage').value||0,10);
+    const slug = document.getElementById('slug').value || ('projekt-'+Date.now());
+    const id = `${cat}-${slug}`;
+    const folder = `/assets/img/projects/${cat}/${slug}/`;
+
+    const item = {
+      id, category: cat, title, location: loc,
+      date: new Date().toISOString().slice(0,7),
+      metrics: { qm, dauer_tage: tage },
+      before: folder + 'before.jpg',
+      after: folder + 'after.jpg',
+      highlights: []
+    };
+
+    const jsonStr = JSON.stringify(item, null, 2);
+    const out = document.getElementById('out');
+    out.textContent = `Fügen Sie folgenden Block in content/projects.json ein:\n\n${jsonStr}\n\n` +
+      `Legen Sie zwei Dateien in Ihrem Repo an:\n${folder}before.jpg\n${folder}after.jpg\n\n` +
+      `Tipp: GitHub Web-Upload nutzen. Nur Repo-Owner kann veröffentlichen.`;
+
+    // download JSON fragment
+    const blob = new Blob([jsonStr], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${id}.json`; a.textContent = 'Fragment herunterladen'; a.className = 'btn';
+    out.appendChild(document.createElement('br')); out.appendChild(a);
+
+    // prepare images with given names (client-side rename)
+    const bf = document.getElementById('before').files[0];
+    const af = document.getElementById('after').files[0];
+    if(bf) renameAndDownload(bf, 'before.jpg');
+    if(af) renameAndDownload(af, 'after.jpg');
+  }
+
+  function renameAndDownload(file, newName){
+    const a = document.createElement('a'); a.download = newName;
+    const r = new FileReader(); r.onload = () => { a.href = r.result; a.click(); };
+    r.readAsDataURL(file);
+  }
+</script>
+</body></html>
