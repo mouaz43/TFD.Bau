@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF5C00"/>
+      <stop offset="100%" stop-color="#2B5BD3"/>
+    </linearGradient>
+  </defs>
+  <!-- Subtle hex frame (nut/bolt vibe) -->
+  <path d="M32 4 L52 16 L52 48 L32 60 L12 48 L12 16 Z" stroke="rgba(255,255,255,0.22)" stroke-width="2" fill="none"/>
+  <!-- T beam -->
+  <path d="M18 24 H46" stroke="url(#acc)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M32 18 V42" stroke="url(#acc)" stroke-width="5" stroke-linecap="round"/>
+  <!-- F scaffold -->
+  <path d="M42 22 V42" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M35 28 H46" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M37 35 H45" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <!-- D arc -->
+  <path d="M22 22 V42" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M22 24 C30 24, 30 40, 22 40" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>
