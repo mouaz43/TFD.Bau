@@ -7,12 +7,14 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Ccircle cx='48' cy='48' r='44' fill='%230F1115' stroke='%23ffffff33' stroke-width='2'/%3E%3Cpath d='M48 20 L28 32 L28 56 L48 44 Z' fill='%23FF5C00'/%3E%3Cpath d='M28 56 L48 44 L68 56 L48 68 Z' fill='%2312181F'/%3E%3Cpath d='M48 20 L68 32 L68 56 L48 44 Z' fill='%232B5BD3'/%3E%3C/svg%3E">
 </head>
 <body class="logo-bg">
+  <!-- NAV -->
   <nav class="nav"><div class="container bar">
-    <div class="brand">
+    <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false">
+      <span class="bars"></span><span>Menü</span>
+    </button>
+
+    <a class="brand" href="/index.html" aria-label="Startseite">
       <!-- CoreSection logo -->
-      <!-- (embedded; no need to paste anything else) -->
-      <!-- START LOGO -->
-      <!-- CoreSection — service-describing logo (wall/floor/garden) -->
       <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <radialGradient id="ring" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity=".20"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity=".02"/></radialGradient>
@@ -30,22 +32,52 @@
             <polygon points="100,35 48,66 48,120 100,88" fill="url(#wallWarm)" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
             <path d="M66,108 L66,74" stroke="#F9FAFB" stroke-width="6" stroke-linecap="round" opacity=".9"/>
             <polygon points="48,120 100,88 152,120 100,152" fill="url(#floorNeutral)" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
-            <g clip-path="url(#plankClip)" stroke="rgba(255,255,255,.32)" stroke-width="3" stroke-linecap="round"><path d="M62,132 L140,89"/><path d="M82,146 L158,104"/></g>
+            <g clip-path="url(#plankClip)" stroke="rgba(255,255,255,.32)" stroke-width="3" stroke-linecap="round">
+              <path d="M62,132 L140,89"/><path d="M82,146 L158,104"/>
+            </g>
             <polygon points="100,35 152,66 152,120 100,88" fill="url(#yardCool)" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
-            <g clip-path="url(#paverClip)" stroke="rgba(255,255,255,.55)" stroke-width="2" opacity=".75"><path d="M122,98 L150,82"/><path d="M122,108 L150,92"/><path d="M136,76 L136,114"/></g>
-            <g transform="translate(150,118)"><path d="M-4,6 C6,2 8,-6 2,-10 C-2,-7 -3,-1 -4,6 Z" fill="#21C55D" opacity=".95"/><path d="M-7,6 C-2,4 1,1 2,-2" stroke="#E6FBEF" stroke-width="2" stroke-linecap="round" opacity=".9"/></g>
+            <g clip-path="url(#paverClip)" stroke="rgba(255,255,255,.55)" stroke-width="2" opacity=".75">
+              <path d="M122,98 L150,82"/><path d="M122,108 L150,92"/><path d="M136,76 L136,114"/>
+            </g>
+            <g transform="translate(150,118)">
+              <path d="M-4,6 C6,2 8,-6 2,-10 C-2,-7 -3,-1 -4,6 Z" fill="#21C55D" opacity=".95"/>
+              <path d="M-7,6 C-2,4 1,1 2,-2" stroke="#E6FBEF" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+            </g>
           </g>
         </g>
       </svg>
-      <!-- END LOGO -->
       <strong>TFD</strong>
-    </div>
-    <div class="menu">
-      <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a><a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
-      <a class="cta" href="/kontakt.html">Kontakt</a>
-    </div>
+    </a>
+
+    <div class="spacer"></div>
   </div></nav>
 
+  <!-- Slide-in menu (shared) -->
+  <div class="menu-panel" id="menuPanel" aria-hidden="true">
+    <div class="menu-head">
+      <div class="mini-brand"><strong>Menü</strong></div>
+      <button class="menu-close" id="menuClose" aria-label="Schließen">Schließen ✕</button>
+    </div>
+    <nav class="menu-links">
+      <a href="/index.html">Start</a>
+      <a href="/leistungen.html">Leistungen</a>
+      <a href="/galerie.html">Galerie</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/kontakt.html" class="cta">Kontakt</a>
+    </nav>
+    <div class="menu-quick">
+      <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
+      <a href="tel:+4915770070701">Anrufen</a>
+      <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="menu-footer">
+      <a href="/legal/impressum.html">Impressum</a>
+      <a href="/legal/datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+
+  <!-- HERO -->
   <header class="hero"><div class="container">
     <h1>Präzision im Bau. Bundesweit.</h1>
     <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — termintreu, sauber, transparent. Antwort innerhalb von <strong>24 Stunden</strong>.</p>
@@ -59,7 +91,7 @@
 
   <main class="container">
     <section class="section">
-      <div class="row"><h2>Leistungen</h2><span class="muted hidden-mobile">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span></div>
+      <div class="row"><h2>Leistungen</h2><span class="muted">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span></div>
       <div class="grid services">
         <div class="card"><span class="chip">🏠 Innenausbau</span><p class="muted">Turn-key Interiors mit sauberen Kanten und zuverlässiger Abnahme.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Innenausbau&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
         <div class="card"><span class="chip">🧱 Trockenbau</span><p class="muted">Leichtbauwände, Decken, Akustik & Brandschutz – millimetergenau.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Trockenbau&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
@@ -68,12 +100,6 @@
       </div>
     </section>
   </main>
-
-  <div class="mbar">
-    <a href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20" class="primary">E-Mail</a>
-    <a href="tel:+4915770070701">Anrufen</a>
-    <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
-  </div>
 
   <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
   <script src="/assets/js/main.js"></script>
