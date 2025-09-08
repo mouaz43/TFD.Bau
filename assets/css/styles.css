@@ -1,4 +1,4 @@
-/* TFD — simple, consistent UI for all pages (HTML + JS only) */
+/* TFD — clean, consistent UI (HTML + JS only) */
 :root{
   --bg:#0F1115; --surface:#12161E; --card:#0F131A; --text:#F3F6F9; --muted:#A9B4C2;
   --line:#1B2230; --accent1:#FF5C00; --accent2:#2B5BD3;
@@ -24,7 +24,7 @@ body.logo-bg::before{
   position:fixed; z-index:-1; top:10vh; left:50%; transform:translateX(-50%);
   width:72vmin; height:72vmin; pointer-events:none; opacity:.06;
   background-repeat:no-repeat; background-size:contain;
-  /* Clean outline version of the new 3D logo (encoded SVG) */
+  /* Outline version of the logo as subtle watermark */
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg opacity='.9'%3E%3Cpolygon points='100,18 172,60 172,140 100,182 28,140 28,60' fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='3'/%3E%3Cpath d='M52 92 H148' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M100 66 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M136 80 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M118 102 H152' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M122 120 H148' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 80 V134' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M64 84 C88 84, 88 130, 64 130' fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='6' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
   filter:saturate(120%) contrast(110%);
 }
