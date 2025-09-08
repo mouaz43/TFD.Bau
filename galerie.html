@@ -4,29 +4,39 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Galerie — TFD</title>
   <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Ccircle cx='48' cy='48' r='44' fill='%230F1115' stroke='%23ffffff33' stroke-width='2'/%3E%3Cpath d='M48 20 L28 32 L28 56 L48 44 Z' fill='%23FF5C00'/%3E%3Cpath d='M28 56 L48 44 L68 56 L48 68 Z' fill='%2312181F'/%3E%3Cpath d='M48 20 L68 32 L68 56 L48 44 Z' fill='%232B5BD3'/%3E%3C/svg%3E">
 </head>
 <body class="logo-bg">
   <nav class="nav"><div class="container bar">
     <div class="brand">
-      <!-- Inline 3D TFD monogram -->
-      <!-- (Use the same SVG block as in index.html) -->
+      <!-- CoreSection logo -->
+      <!-- START LOGO -->
+      <!-- CoreSection — service-describing logo (wall/floor/garden) -->
       <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <linearGradient id="tfdb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF5C00"/><stop offset="100%" stop-color="#2B5BD3"/></linearGradient>
-          <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".9"/><stop offset="100%" stop-color="#B9C6D6" stop-opacity=".35"/></linearGradient>
-          <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/></filter>
+          <radialGradient id="ring" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity=".20"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity=".02"/></radialGradient>
+          <linearGradient id="wallWarm" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF8A3D"/><stop offset="100%" stop-color="#FF5C00"/></linearGradient>
+          <linearGradient id="floorNeutral" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1A2230"/><stop offset="100%" stop-color="#0F141D"/></linearGradient>
+          <linearGradient id="yardCool" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7AA3FF"/><stop offset="100%" stop-color="#2B5BD3"/></linearGradient>
+          <filter id="csShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/></filter>
+          <clipPath id="csClip"><circle cx="100" cy="100" r="88"/></clipPath>
+          <clipPath id="plankClip"><polygon points="48,120 100,88 152,120 100,152"/></clipPath>
+          <clipPath id="paverClip"><polygon points="100,35 152,66 152,120 100,88"/></clipPath>
         </defs>
-        <g filter="url(#soft)">
-          <polygon points="100,18 172,60 172,140 100,182 28,140 28,60" fill="url(#edge)" opacity=".10" stroke="url(#edge)" stroke-width="2"/>
-          <path d="M52 92 H148" stroke="url(#tfdb)" stroke-width="14" stroke-linecap="round"/>
-          <path d="M100 62 V138" stroke="url(#tfdb)" stroke-width="14" stroke-linecap="round"/>
-          <path d="M136 76 V138" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
-          <path d="M118 100 H152" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
-          <path d="M122 120 H148" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
-          <path d="M64 76 V138" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".95"/>
-          <path d="M64 80 C92 80, 92 134, 64 134" stroke="#FFFFFF" stroke-width="8" fill="none" stroke-linecap="round" opacity=".95"/>
+        <g filter="url(#csShadow)">
+          <circle cx="100" cy="100" r="88" fill="none" stroke="url(#ring)" stroke-width="3"/>
+          <g clip-path="url(#csClip)">
+            <polygon points="100,35 48,66 48,120 100,88" fill="url(#wallWarm)" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
+            <path d="M66,108 L66,74" stroke="#F9FAFB" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+            <polygon points="48,120 100,88 152,120 100,152" fill="url(#floorNeutral)" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
+            <g clip-path="url(#plankClip)" stroke="rgba(255,255,255,.32)" stroke-width="3" stroke-linecap="round"><path d="M62,132 L140,89"/><path d="M82,146 L158,104"/></g>
+            <polygon points="100,35 152,66 152,120 100,88" fill="url(#yardCool)" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
+            <g clip-path="url(#paverClip)" stroke="rgba(255,255,255,.55)" stroke-width="2" opacity=".75"><path d="M122,98 L150,82"/><path d="M122,108 L150,92"/><path d="M136,76 L136,114"/></g>
+            <g transform="translate(150,118)"><path d="M-4,6 C6,2 8,-6 2,-10 C-2,-7 -3,-1 -4,6 Z" fill="#21C55D" opacity=".95"/><path d="M-7,6 C-2,4 1,1 2,-2" stroke="#E6FBEF" stroke-width="2" stroke-linecap="round" opacity=".9"/></g>
+          </g>
         </g>
       </svg>
+      <!-- END LOGO -->
       <strong>TFD</strong>
     </div>
     <div class="menu"><a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a><a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a><a class="cta" href="/kontakt.html">Kontakt</a></div>
