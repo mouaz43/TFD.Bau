@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galerie — TFD BAU</title>
+<link rel="stylesheet" href="/assets/css/styles.css">
+<body>
+<nav class="nav"><div class="container bar">
+  <div class="brand"><img src="/assets/img/logo.svg" alt="TFD BAU"><strong>TFD&nbsp;BAU</strong></div>
+  <div class="menu">
+    <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
+    <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
+    <a class="cta" href="/kontakt.html">Kontakt</a>
+  </div>
+</div></nav>
+
+<main class="container">
+  <section class="section">
+    <div class="row">
+      <h1>Vorher/Nachher Galerie</h1>
+      <select id="filter" class="btn" onchange="renderGallery(this.value)">
+        <option value="alle">Alle Kategorien</option>
+        <option value="innenausbau">Innenausbau</option>
+        <option value="trockenbau">Trockenbau</option>
+        <option value="bodenleger">Bodenleger</option>
+        <option value="gartenarbeit">Gartenarbeit</option>
+      </select>
+    </div>
+    <div id="gallery" class="grid" style="grid-template-columns:1fr; gap:20px"></div>
+  </section>
+</main>
+
+<footer class="footer"><div class="container">
+  © <span id="year"></span> TFD&nbsp;BAU · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a>
+</div></footer>
+
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/ba-slider.js"></script>
+<script>
+  async function fetchProjects(){
+    const res = await fetch('/content/projects.json');
+    return await res.json();
+  }
+  function baCard(project, idx){
+    return `
+      <div class="card">
+        <div class="row"><strong>${project.title}</strong><span class="muted">${project.location}</span></div>
+        <div class="ba" id="ba_${idx}">
+          <img src="${project.before}" alt="Before">
+          <div class="top"><img src="${project.after}" alt="After"></div>
+          <div class="handle"></div>
+          <div class="labels"><span>Vorher</span><span>Nachher</span></div>
+        </div>
+        <div class="muted" style="margin-top:8px">${(project.metrics?.qm||'?')} m² · ${(project.metrics?.dauer_tage||'?')} Tage</div>
+      </div>`;
+  }
+  async function renderGallery(filter='alle'){
+    const mount = document.getElementById('gallery');
+    const data = await fetchProjects();
+    const list = data.filter(p => filter==='alle' ? true : p.category===filter);
+    mount.innerHTML = list.map((p,i)=>baCard(p,i)).join('');
+    list.forEach((p,i)=> initBASlider('ba_'+i, 50));
+  }
+  renderGallery('alle');
+</script>
+</body></html>
