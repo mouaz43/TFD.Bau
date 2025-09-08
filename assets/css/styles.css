@@ -50,3 +50,29 @@ h1{font-size:44px;line-height:1.1;margin:0 0 8px}
 .mbar{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;background:var(--surface);border:1px solid var(--line);border-radius:16px;display:flex;gap:8px;padding:10px;box-shadow:0 16px 40px rgba(0,0,0,.25)}
 .mbar a{flex:1;text-align:center;text-decoration:none;font-weight:900;padding:10px;border-radius:12px;border:1px solid var(--line)}
 .mbar a.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none}
+
+/* Hero personality */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero::before, .hero::after{
+  content:""; position:absolute; inset:-20% -10% auto -10%;
+  background: radial-gradient(600px 300px at 20% 20%, rgba(255,92,0,.30), transparent),
+              radial-gradient(700px 320px at 80% 0%,  rgba(43,91,211,.22), transparent);
+  filter: blur(0.5px);
+  pointer-events:none;
+}
+.hero::after{
+  inset:auto -15% -30% -15%;
+  background: radial-gradient(700px 320px at 10% 100%, rgba(20,241,217,.16), transparent);
+  animation: float 12s ease-in-out infinite alternate;
+}
+@keyframes float{ from{ transform: translateY(0) } to{ transform: translateY(-14px) } }
+
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.badges .badge{display:inline-flex;align-items:center;gap:8px;font-weight:800;
+  font-size:12px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04)}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2))}
+.brand .logo{height:28px}
