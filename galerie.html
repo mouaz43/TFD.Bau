@@ -15,9 +15,14 @@
     </a>
     <div class="spacer"></div>
   </div></nav>
+
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
     <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">Schließen ✕</button></div>
-    <nav class="menu-links"><a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a><a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a><a class="cta" href="/kontakt.html">Kontakt</a></nav>
+    <nav class="menu-links">
+      <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
+      <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
+      <a class="cta" href="/kontakt.html">Kontakt</a>
+    </nav>
     <div class="menu-quick">
       <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
       <a href="tel:+4915770070701">Anrufen</a>
@@ -44,7 +49,7 @@
 
     <section class="section">
       <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
-        <div><strong>Nur für Inhaber:</strong> <span class="muted">Loggen Sie sich im Admin ein, um Projekte zu bearbeiten.</span></div>
+        <div><strong>Nur für Inhaber:</strong> <span class="muted">Projekte verwalten.</span></div>
         <div class="controls">
           <a class="btn" href="/admin/" target="_blank" rel="noopener">Admin öffnen</a>
         </div>
@@ -59,31 +64,39 @@
   <script>
     async function fetchProjects(){
       try{
-        const res = await fetch('/content/projects.json', {cache:'no-store'});
+        // uses your root-array file
+        const res = await fetch('/content/project.json?ts=' + Date.now(), {cache:'no-store'});
         const data = await res.json();
+        // tolerate either array root or {items:[...]}
         return Array.isArray(data) ? data : (data.items || []);
       }catch(e){ console.error('Fehler beim Laden der Projekte', e); return []; }
     }
-    function baCard(project, idx){
-      const qm = project.metrics && project.metrics.qm ? project.metrics.qm+' m²' : '';
-      const tage = project.metrics && project.metrics.dauer_tage ? project.metrics.dauer_tage+' Tage' : '';
-      const meta = [qm, tage].filter(Boolean).join(' · ');
+    function tags(list){
+      if(!list || !list.length) return '';
+      return '<div class="badges" style="margin-top:8px">' +
+        list.map(t => `<span class="badge">${t}</span>`).join('') + '</div>';
+    }
+    function card(p, idx){
+      const qm = p.metrics && p.metrics.qm ? p.metrics.qm+' m²' : '';
+      const tage = p.metrics && p.metrics.dauer_tage ? p.metrics.dauer_tage+' Tage' : '';
+      const meta = [p.date || '', qm, tage].filter(Boolean).join(' · ');
       return `<div class="card">
-        <div class="row"><strong>${project.title}</strong><span class="muted">${project.location||''}</span></div>
+        <div class="row"><strong>${p.title}</strong><span class="muted">${p.location||''}</span></div>
         <div class="ba" id="ba_${idx}">
-          <img src="${project.before}" alt="Vorher">
-          <div class="top"><img src="${project.after}" alt="Nachher"></div>
+          <img src="${p.before}" alt="Vorher">
+          <div class="top"><img src="${p.after}" alt="Nachher"></div>
           <div class="handle"></div>
           <div class="labels"><span>Vorher</span><span>Nachher</span></div>
         </div>
         ${meta? `<div class="muted" style="margin-top:8px">${meta}</div>`: '' }
+        ${tags(p.highlights)}
       </div>`;
     }
     async function renderGallery(filter='alle'){
       const mount = document.getElementById('gallery');
-      const data = (await fetchProjects()).filter(p => (p.published ?? true));
+      const data = await fetchProjects();
       const list = data.filter(p => filter==='alle' ? true : (p.category||'').toLowerCase()===filter);
-      mount.innerHTML = list.map((p,i)=>baCard(p,i)).join('') || '<div class="muted">Noch keine Projekte.</div>';
+      mount.innerHTML = list.map((p,i)=>card(p,i)).join('') || '<div class="muted">Noch keine Projekte.</div>';
       list.forEach((p,i)=> initBASlider('ba_'+i, 50));
     }
     renderGallery('alle');
