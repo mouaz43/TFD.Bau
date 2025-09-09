@@ -27,7 +27,7 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- HERO (cinematic) -->
+  <!-- HERO -->
   <header class="hero">
     <!-- Blueprint/house/ruler overlay -->
     <svg class="hero-art" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -35,9 +35,7 @@
         <linearGradient id="ha-metal" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#DDE6F3" stop-opacity=".85"/><stop offset=".6" stop-color="#9FB2C8" stop-opacity=".35"/><stop offset="1" stop-color="#5A6A7F" stop-opacity=".2"/>
         </linearGradient>
-        <linearGradient id="ha-accent" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#FFA25A"/><stop offset="1" stop-color="#FF6A1A"/>
-        </linearGradient>
+        <linearGradient id="ha-accent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFA25A"/><stop offset="1" stop-color="#FF6A1A"/></linearGradient>
         <radialGradient id="ha-fade" cx="50%" cy="38%" r="72%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#000"/></radialGradient>
         <mask id="ha-mask"><rect width="1200" height="600" fill="url(#ha-fade)"/></mask>
       </defs>
@@ -47,19 +45,14 @@
         <path d="M430 380 V470" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
         <path d="M430 470 H560" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
         <g class="ruler"><rect x="680" y="295" width="54" height="168" rx="12" fill="url(#ha-accent)"/><path d="M734 295 L818 252 L818 334 L734 334 Z" fill="url(#ha-accent)"/></g>
-        <g class="dashes" stroke="url(#ha-metal)" stroke-width="2" fill="none" stroke-dasharray="10 10">
-          <path d="M600 240 L600 120"/><path d="M600 240 L520 190"/><path d="M600 240 L680 190"/>
-        </g>
+        <g class="dashes" stroke="url(#ha-metal)" stroke-width="2" fill="none" stroke-dasharray="10 10"><path d="M600 240 L600 120"/><path d="M600 240 L520 190"/><path d="M600 240 L680 190"/></g>
       </g>
     </svg>
 
     <div class="container">
       <span class="kicker"><span class="dot"></span> Ausbau & Außenanlagen</span>
       <h1 class="h1-alt">Präzision im Bau. <span class="nowrap">Deutschlandweit.</span></h1>
-      <p class="lead">
-        Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu.
-        Angebot in <span class="shine">24&nbsp;Stunden</span>.
-      </p>
+      <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <span class="shine">24&nbsp;Stunden</span>.</p>
       <div class="badges">
         <span class="badge"><span class="dot"></span>TÜV-nahe Standards</span>
         <span class="badge"><span class="dot"></span>Versichert</span>
@@ -70,13 +63,66 @@
   </header>
 
   <main class="container">
+    <!-- Quick actions instead of full Leistungen grid -->
     <section class="section">
-      <div class="row"><h2>Leistungen</h2><span class="muted">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span></div>
-      <div class="grid services">
-        <div class="card"><span class="chip">🏠 Innenausbau</span><p class="muted">Turn-key Interiors mit sauberen Kanten und zuverlässiger Abnahme.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Innenausbau&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
-        <div class="card"><span class="chip">🧱 Trockenbau</span><p class="muted">Leichtbauwände, Decken, Akustik & Brandschutz – millimetergenau.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Trockenbau&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
-        <div class="card"><span class="chip">🪵 Bodenleger</span><p class="muted">Parkett, Vinyl, Laminat – fachgerecht vorbereitet und sauber verlegt.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Bodenleger&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
-        <div class="card"><span class="chip">🌿 Gartenarbeit</span><p class="muted">Terrassen, Pflaster, Rasen, Hecken – robuste Außenflächen & Pflege.</p><div class="controls"><a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20Gartenarbeit&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a><a class="btn" href="tel:+4915770070701">Anrufen</a></div></div>
+      <div class="grid quick">
+        <div class="card">
+          <div class="title">Schnelles Angebot</div>
+          <div class="desc">Antwort innerhalb von 24&nbsp;Stunden — mit klaren Preisen.</div>
+          <div class="controls">
+            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a>
+            <a class="btn" href="tel:+4915770070701">Anrufen</a>
+            <a class="btn" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="title">Kostenloses Aufmaß</div>
+          <div class="desc">Wir kommen vorbei, messen auf und beraten vor Ort.</div>
+          <div class="controls">
+            <a class="btn primary" href="/kontakt.html">Termin anfragen</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="title">Transparente Abnahme</div>
+          <div class="desc">Dokumentation mit Fotos & Checkliste – sauber übergeben.</div>
+          <div class="controls">
+            <a class="btn" href="/galerie.html">Galerie ansehen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process steps -->
+    <section class="section">
+      <div class="row"><h2>Ablauf</h2><span class="muted">So arbeiten wir – schnell, sauber, verlässlich.</span></div>
+      <div class="grid steps">
+        <div class="card step"><div class="num">1</div><h3>Aufmaß & Beratung</h3><p>Vor Ort oder per Video – wir klären Details und Material.</p></div>
+        <div class="card step"><div class="num">2</div><h3>Angebot in 24 h</h3><p>Fixpreis mit Terminplan und klarer Leistungsbeschreibung.</p></div>
+        <div class="card step"><div class="num">3</div><h3>Ausführung</h3><p>Staubarm, termintreu, mit sauberer Baustelle jeden Abend.</p></div>
+        <div class="card step"><div class="num">4</div><h3>Abnahme & Doku</h3><p>Checkliste, Fotos, Pflegehinweise – alles transparent.</p></div>
+      </div>
+    </section>
+
+    <!-- USPs -->
+    <section class="section">
+      <div class="row"><h2>Warum TFD?</h2><span class="muted">Handwerk mit System.</span></div>
+      <div class="grid usps">
+        <div class="card usp"><span class="icon">✓</span><div><strong>Versichert & dokumentiert</strong><p>Jedes Projekt mit Fotoprotokoll und Gewährleistung.</p></div></div>
+        <div class="card usp"><span class="icon">★</span><div><strong>Premium-Finish</strong><p>Saubere Kanten, bündige Fugen, millimetergenau.</p></div></div>
+        <div class="card usp"><span class="icon">⏱</span><div><strong>Termintreu</strong><p>Verbindliche Planung – wir halten Deadlines.</p></div></div>
+        <div class="card usp"><span class="icon">🌍</span><div><strong>Ganz Deutschland</strong><p>Teams bundesweit für kleine und große Projekte.</p></div></div>
+      </div>
+    </section>
+
+    <!-- CTA row -->
+    <section class="section">
+      <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+        <div><strong>Bereit?</strong> <span class="muted">Leistungen ansehen oder Beispiele in der Galerie.</span></div>
+        <div class="controls">
+          <a class="btn primary" href="/leistungen.html">Alle Leistungen</a>
+          <a class="btn" href="/galerie.html">Galerie</a>
+          <a class="btn" href="/kontakt.html">Kontakt</a>
+        </div>
       </div>
     </section>
   </main>
