@@ -114,13 +114,13 @@
     const OWNER = "mouaz43";
     const REPO  = "TFD.Bau";
     const BRANCH = "main";
-    const JSON_PATH = "content/project.json"; // <-- array format (your existing)
-    const UPLOAD_DIR = "assets/uploads/";     // images will be created here
+    const JSON_PATH = "content/project.json"; // array format
+    const UPLOAD_DIR = "assets/uploads/";     // where images go
 
     /* ====== STATE ====== */
-    let TOKEN = null;       // set ONLY at login (prompt)
+    let TOKEN = null;
     let isAuthed = false;
-    let projectsSha = null; // sha of project.json for updates
+    let projectsSha = null;
 
     /* ====== PUBLIC GALLERY ====== */
     async function loadPublicProjects(){
@@ -172,29 +172,54 @@
       });
     const utf8ToB64 = str => btoa(unescape(encodeURIComponent(str)));
     const b64ToStr  = b64 => decodeURIComponent(escape(atob(b64.replace(/\n/g,''))));
-    const contentUrl = p => `/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(p)}?ref=${BRANCH}`;
+    const contentsUrl = p => `/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(p)}?ref=${BRANCH}`;
+    const putUrl      = p => `/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(p)}`;
 
-    async function loadProjectsViaAPI(){
-      const r = await gh(contentUrl(JSON_PATH));
-      if(!r.ok) throw new Error("project.json nicht gefunden (API)");
+    /* Load via API, but if missing -> create empty file and return [] */
+    async function ensureProjectsFile(){
+      const r = await gh(contentsUrl(JSON_PATH));
+      if (r.status === 404){
+        // create the file with []
+        const create = await gh(putUrl(JSON_PATH), {
+          method:"PUT",
+          body: JSON.stringify({
+            message: "init project.json",
+            content: utf8ToB64("[]\n"),
+            branch: BRANCH
+          })
+        });
+        if(!create.ok){
+          const t = await create.text();
+          throw new Error("Konnte project.json nicht anlegen: " + t);
+        }
+        const j = await create.json();
+        projectsSha = j.content.sha;
+        return [];
+      }
+      if(!r.ok){
+        const t = await r.text();
+        throw new Error("project.json nicht gefunden (API) — " + t);
+      }
       const j = await r.json();
       projectsSha = j.sha;
       try { return JSON.parse(b64ToStr(j.content)); } catch { return []; }
     }
-    async function uploadFile(pathPrefix, file){
+
+    async function uploadFile(prefix, file){
       const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-      const name = pathPrefix + Date.now() + '.' + ext;
+      const name = prefix + Date.now() + '.' + ext;
       const b64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
-      const r = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(name)}`, {
+      const r = await gh(putUrl(name), {
         method:"PUT",
         body: JSON.stringify({ message:`upload image: ${name}`, content:b64, branch:BRANCH })
       });
       if(!r.ok){ const t=await r.text(); throw new Error("Upload fehlgeschlagen: "+t); }
       return "/"+name;
     }
+
     async function saveProjectsArray(arr, msg){
       const content = JSON.stringify(arr, null, 2) + "\n";
-      const r = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(JSON_PATH)}`, {
+      const r = await gh(putUrl(JSON_PATH), {
         method:"PUT",
         body: JSON.stringify({ message: msg, content: utf8ToB64(content), branch: BRANCH, sha: projectsSha })
       });
@@ -235,6 +260,7 @@
       if(!TOKEN){ alert("Bitte einloggen."); return; }
       const id = document.getElementById('f_id').value.trim();
       if(!id){ alert("ID ist erforderlich"); return; }
+
       const category = document.getElementById('f_cat').value;
       const date = document.getElementById('f_date').value.trim();
       const title = document.getElementById('f_title').value.trim();
@@ -248,12 +274,16 @@
 
       statusEl.textContent = "Lade hoch…";
       try{
-        const arr = await loadProjectsViaAPI();
+        // ensure file exists + get sha + current array
+        const arr = await ensureProjectsFile();
         if(arr.find(x=>x.id===id)) throw new Error("ID existiert bereits");
+
+        // upload images
         const base = UPLOAD_DIR + id + "-";
         const beforeUrl = await uploadFile(base + "before-", bf);
         const afterUrl  = await uploadFile(base + "after-",  af);
 
+        // append new project
         arr.push({
           id, category, title, location, date,
           metrics: { qm: qm?Number(qm):undefined, dauer_tage: days?Number(days):undefined },
@@ -261,6 +291,7 @@
         });
         await saveProjectsArray(arr, `gallery: add ${id}`);
         statusEl.textContent = "Gespeichert.";
+        // reset
         ["f_id","f_date","f_title","f_loc","f_qm","f_days","f_high"].forEach(i=>document.getElementById(i).value="");
         document.getElementById('f_before').value=""; document.getElementById('f_after').value="";
         renderGallery(document.getElementById('filter').value, true);
@@ -271,7 +302,7 @@
       if(!TOKEN){ alert("Bitte einloggen."); return; }
       if(!confirm(`Projekt ${id} löschen?`)) return;
       try{
-        const arr = await loadProjectsViaAPI();
+        const arr = await ensureProjectsFile();
         const idx = arr.findIndex(x=>x.id===id);
         if(idx<0) throw new Error("Nicht gefunden");
         arr.splice(idx,1);
