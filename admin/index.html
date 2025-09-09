@@ -1,24 +1,241 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TFD Admin</title>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TFD Admin — Projekte</title>
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
   <style>
-    body{background:#0F1115;color:#F3F6F9;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    .wrap{max-width:860px;margin:40px auto;padding:0 16px}
-    .tip{opacity:.75;margin:16px 0 24px}
-    a{color:#F3F6F9}
-    code{background:#12161E;padding:2px 6px;border-radius:6px;border:1px solid #1B2230}
+    :root{--bg:#0F1115;--surf:#12161E;--line:#1B2230;--text:#F3F6F9;--mut:#A9B4C2;--a1:#FF5C00;--a2:#2B5BD3}
+    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{max-width:1100px;margin:28px auto;padding:0 16px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+    .btn{border:1px solid var(--line);background:var(--surf);padding:10px 12px;border-radius:12px;font-weight:800;color:var(--text);cursor:pointer}
+    .primary{background:linear-gradient(90deg,var(--a1),var(--a2));border:none}
+    input,select,textarea{background:#0F131A;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+    label{font-size:12px;opacity:.9}
+    table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+    .mut{color:var(--mut)}
+    .grid{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)} .grid-2{grid-template-columns:repeat(2,1fr)}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+    .hlp{font-size:12px;color:var(--mut)}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>TFD Admin</h1>
-    <p class="tip">Melden Sie sich mit GitHub an, um Projekte in der Galerie zu erstellen, zu bearbeiten oder zu löschen.</p>
+    <div class="row"><h1>TFD Admin — Galerie</h1><button id="loginBtn" class="btn primary">Mit GitHub anmelden</button></div>
+    <p class="mut">Bearbeiten von <code>content/project.json</code> (Array-Format beibehalten). Bilder werden unter <code>assets/uploads/</code> gespeichert.</p>
+
+    <div id="app" style="display:none">
+      <div class="card">
+        <div class="row"><h2>Bestehende Projekte</h2><span id="status" class="mut"></span></div>
+        <div class="mut hlp">Löschen entfernt auch die zugehörigen Bilder.</div>
+        <table id="tbl"><thead><tr><th>ID</th><th>Titel</th><th>Kategorie</th><th>Ort</th><th>Aktionen</th></tr></thead><tbody></tbody></table>
+      </div>
+
+      <div class="card">
+        <h2>Neues Projekt</h2>
+        <div class="grid">
+          <div><label>ID</label><input id="f_id" placeholder="innenausbau-ffm-02"></div>
+          <div><label>Kategorie</label>
+            <select id="f_cat">
+              <option value="innenausbau">innenausbau</option>
+              <option value="trockenbau">trockenbau</option>
+              <option value="bodenleger">bodenleger</option>
+              <option value="gartenarbeit">gartenarbeit</option>
+            </select>
+          </div>
+          <div><label>Datum (YYYY-MM)</label><input id="f_date" placeholder="2025-09"></div>
+          <div class="grid-2">
+            <div><label>Titel</label><input id="f_title" placeholder="Innenausbau — Wohnung Innenstadt"></div>
+            <div><label>Ort</label><input id="f_loc" placeholder="Frankfurt am Main"></div>
+          </div>
+          <div class="grid-2">
+            <div><label>Fläche (m²)</label><input id="f_qm" type="number" min="0" step="1" placeholder="48"></div>
+            <div><label>Dauer (Tage)</label><input id="f_days" type="number" min="0" step="1" placeholder="7"></div>
+          </div>
+          <div class="grid-2">
+            <div><label>Vorher Bild</label><input id="f_before" type="file" accept="image/*"></div>
+            <div><label>Nachher Bild</label><input id="f_after" type="file" accept="image/*"></div>
+          </div>
+          <div style="grid-column:1/-1"><label>Highlights (Komma-getrennt)</label><input id="f_high" placeholder="Feinspachtel Q3, Neue Decke, Saubere Kanten"></div>
+        </div>
+        <div style="margin-top:12px" class="row">
+          <button id="addBtn" class="btn primary">Projekt speichern</button>
+          <span class="mut hlp">Bilder werden zuerst hochgeladen, dann die JSON aktualisiert.</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<script>
+/*** CONFIG ***/
+const OWNER = "mouaz43";
+const REPO  = "TFD.Bau";
+const BRANCH = "main";
+const JSON_PATH = "content/project.json";
+const UPLOAD_DIR = "assets/uploads/";
+const OAUTH_BASE = "https://tfd-bau-oauth.onrender.com"; // <- change if different
+
+/*** STATE ***/
+let TOKEN = null;
+let projects = [];
+let jsonSha = null;
+
+/*** HELPERS ***/
+const api = (path, opts={}) =>
+  fetch(`https://api.github.com${path}`, {
+    ...opts,
+    headers: {
+      "Accept":"application/vnd.github+json",
+      ...(opts.headers||{}),
+      ...(TOKEN ? {"Authorization":`token ${TOKEN}`} : {})
+    }
+  });
+
+const fileToBase64 = file =>
+  new Promise((res, rej) => { const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+
+const utf8ToB64 = str => btoa(unescape(encodeURIComponent(str)));
+const b64ToStr  = b64 => decodeURIComponent(escape(atob(b64.replace(/\n/g,''))));
+
+const contentUrl = p => `/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(p)}` + `?ref=${BRANCH}`;
+
+/*** AUTH ***/
+document.getElementById('loginBtn').addEventListener('click', () => {
+  const w = window.open(`${OAUTH_BASE}/auth`, "oauth", "width=900,height=700");
+  window.addEventListener('message', (ev) => {
+    if (!ev.data || !ev.data.token) return;
+    TOKEN = ev.data.token;
+    document.getElementById('loginBtn').style.display='none';
+    document.getElementById('app').style.display='block';
+    loadAll();
+    w && w.close();
+  }, { once:true });
+});
+
+/*** LOAD ***/
+async function loadAll(){
+  // Load JSON via API (to get sha)
+  const r = await api(contentUrl(JSON_PATH));
+  if (!r.ok){ alert("Konnte project.json nicht laden"); return; }
+  const j = await r.json();
+  jsonSha = j.sha;
+  try{ projects = JSON.parse(b64ToStr(j.content)); }
+  catch(e){ projects = []; }
+  renderTable();
+}
+
+function renderTable(){
+  const tb = document.querySelector('#tbl tbody');
+  tb.innerHTML = projects.map(p => `
+    <tr>
+      <td><code>${p.id}</code></td>
+      <td>${p.title||''}</td>
+      <td>${p.category||''}</td>
+      <td>${p.location||''}</td>
+      <td>
+        <button class="btn" onclick="delProject('${p.id}')">Löschen</button>
+      </td>
+    </tr>
+  `).join('');
+  document.getElementById('status').textContent = projects.length + ' Projekt(e)';
+}
+
+/*** ADD ***/
+document.getElementById('addBtn').addEventListener('click', async () => {
+  const id = document.getElementById('f_id').value.trim();
+  if (!id){ alert("ID ist erforderlich"); return; }
+  if (projects.find(p => p.id === id)){ alert("ID existiert bereits"); return; }
+
+  const P = {
+    id,
+    category: document.getElementById('f_cat').value,
+    title: document.getElementById('f_title').value.trim(),
+    location: document.getElementById('f_loc').value.trim(),
+    date: document.getElementById('f_date').value.trim(),
+    metrics: {
+      qm: Number(document.getElementById('f_qm').value||0) || undefined,
+      dauer_tage: Number(document.getElementById('f_days').value||0) || undefined
+    },
+    before: "",
+    after: "",
+    highlights: document.getElementById('f_high').value
+      .split(',').map(s=>s.trim()).filter(Boolean)
+  };
+
+  const beforeFile = document.getElementById('f_before').files[0];
+  const afterFile  = document.getElementById('f_after').files[0];
+  if (!beforeFile || !afterFile){ alert("Bitte Vorher & Nachher Bilder auswählen"); return; }
+
+  // upload images
+  const upBeforePath = UPLOAD_DIR + `${id}-before.${beforeFile.name.split('.').pop()}`;
+  const upAfterPath  = UPLOAD_DIR + `${id}-after.${afterFile.name.split('.').pop()}`;
+  await uploadBinary(upBeforePath, await fileToBase64(beforeFile), `upload image: ${upBeforePath}`);
+  await uploadBinary(upAfterPath,  await fileToBase64(afterFile),  `upload image: ${upAfterPath}`);
+  P.before = `/${upBeforePath}`; P.after = `/${upAfterPath}`;
+
+  // update JSON (append)
+  projects.push(P);
+  await saveProjects(`gallery: add ${id}`);
+
+  // reset UI
+  document.querySelectorAll('input[type=text], input[type=number]').forEach(i=>i.value='');
+  document.getElementById('f_before').value = ''; document.getElementById('f_after').value = '';
+  renderTable();
+  alert("Projekt hinzugefügt.");
+});
+
+async function uploadBinary(path, b64, message){
+  const r = await api(contentUrl(path), {
+    method:'PUT',
+    body: JSON.stringify({ message, content: b64, branch: BRANCH })
+  });
+  if (!r.ok){ const t = await r.text(); throw new Error('Upload fehlgeschlagen: '+t); }
+}
+
+/*** SAVE JSON ***/
+async function saveProjects(message){
+  const content = JSON.stringify(projects, null, 2) + "\n";
+  const r = await api(contentUrl(JSON_PATH), {
+    method:'PUT',
+    body: JSON.stringify({
+      message, branch: BRANCH,
+      content: utf8ToB64(content), sha: jsonSha
+    })
+  });
+  if (!r.ok){ const t=await r.text(); alert("Speichern fehlgeschlagen: "+t); return; }
+  const j = await r.json();
+  jsonSha = j.content.sha;
+}
+
+/*** DELETE ***/
+async function delProject(id){
+  if (!confirm(`Projekt ${id} löschen?`)) return;
+  const idx = projects.findIndex(p=>p.id===id);
+  if (idx<0) return;
+
+  // Try to delete image files too (if exist)
+  const p = projects[idx];
+  const delIfExists = async (path) => {
+    if (!path) return;
+    const get = await api(contentUrl(path.replace(/^\//,'')));
+    if (!get.ok) return;
+    const { sha } = await get.json();
+    await api(contentUrl(path.replace(/^\//,'')), {
+      method:'DELETE',
+      body: JSON.stringify({ message:`remove image ${path}`, sha, branch: BRANCH })
+    });
+  };
+  await delIfExists(p.before);
+  await delIfExists(p.after);
+
+  // remove from array and save
+  projects.splice(idx,1);
+  await saveProjects(`gallery: delete ${id}`);
+  renderTable();
+  alert("Projekt gelöscht.");
+}
+</script>
 </body>
 </html>
