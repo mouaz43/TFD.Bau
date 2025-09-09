@@ -1,0 +1,39 @@
+backend:
+  name: github
+  repo: mouaz43/TFD.Bau
+  branch: main
+  base_url: https://tfd-bau-oauth.onrender.com   # <— your OAuth server on Render
+  auth_endpoint: /auth
+  app_id: YOUR_GITHUB_OAUTH_CLIENT_ID
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - label: "Galerie"
+    name: "projects"
+    files:
+      - file: "content/projects.json"
+        label: "Projektliste"
+        name: "liste"
+        format: "json"
+        fields:
+          - label: "Projekte"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} — {{fields.category}}"
+            fields:
+              - {label: "Titel", name: "title", widget: "string"}
+              - {label: "Kategorie", name: "category", widget: "select", options: ["innenausbau","trockenbau","bodenleger","gartenarbeit"]}
+              - {label: "Ort", name: "location", widget: "string", required: false}
+              - {label: "Vorher Bild", name: "before", widget: "image"}
+              - {label: "Nachher Bild", name: "after", widget: "image"}
+              - label: "Kennzahlen"
+                name: "metrics"
+                widget: "object"
+                collapsed: true
+                required: false
+                fields:
+                  - {label: "Fläche (m²)", name: "qm", widget: "number", required: false, min: 0}
+                  - {label: "Dauer (Tage)", name: "dauer_tage", widget: "number", required: false, min: 0}
+              - {label: "Veröffentlicht", name: "published", widget: "boolean", default: true}
