@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "123",
+    "category": "innenausbau",
+    "title": "",
+    "location": "Frankfurt am Main",
+    "date": "2025-04",
+    "metrics": {
+      "qm": 89,
+      "dauer_tage": 7
+    },
+    "before": "/assets/uploads/123-before-1757387276233.jpeg",
+    "after": "/assets/uploads/123-after-1757387277155.jpeg",
+    "highlights": []
+  }
+]
