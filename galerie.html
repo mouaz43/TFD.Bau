@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
   <style>
-    /* admin ui (scoped) */
     .admin-wrap{display:none}
     .admin-wrap.authed{display:block}
     .admin-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:20px}
@@ -14,7 +13,6 @@
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
     @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
     input,select{background:#0F131A;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px}
-    .danger{background:#3b1111;border-color:#5a2020}
     .delete-btn{border:1px solid var(--line);background:#1a1010;color:#ffb0b0;padding:6px 8px;border-radius:10px;font-weight:800;cursor:pointer}
     .card .top-right{position:absolute;right:12px;top:12px}
   </style>
@@ -49,7 +47,7 @@
     <section class="section">
       <div class="row">
         <h1>Vorher/Nachher Galerie</h1>
-        <select id="filter" class="btn" onchange="renderGallery(this.value)">
+        <select id="filter" class="btn" onchange="renderGallery(this.value, isAuthed)">
           <option value="alle">Alle Kategorien</option>
           <option value="innenausbau">Innenausbau</option>
           <option value="trockenbau">Trockenbau</option>
@@ -60,10 +58,10 @@
       <div id="gallery" class="grid" style="grid-template-columns:1fr; gap:20px"></div>
     </section>
 
-    <!-- Admin login + panel -->
+    <!-- Login + Admin -->
     <section class="section">
       <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
-        <div><strong>Nur für Inhaber:</strong> <span class="muted">Einloggen zum Verwalten der Projekte.</span></div>
+        <div><strong>Nur für Inhaber:</strong> <span class="muted">Einloggen mit GitHub-Token (wird nur im Speicher gehalten).</span></div>
         <div class="controls">
           <button class="btn" id="loginBtn">Login</button>
           <button class="btn" id="logoutBtn" style="display:none">Logout</button>
@@ -112,10 +110,19 @@
   <script src="/assets/js/main.js"></script>
   <script src="/assets/js/ba-slider.js"></script>
   <script>
-    // ==== CONFIG ====
-    const API_BASE = "https://tfd-bau-admin-api.onrender.com"; // <— change to your Render API URL
+    /* ====== CONFIG (your repo) ====== */
+    const OWNER = "mouaz43";
+    const REPO  = "TFD.Bau";
+    const BRANCH = "main";
+    const JSON_PATH = "content/project.json"; // <-- array format (your existing)
+    const UPLOAD_DIR = "assets/uploads/";     // images will be created here
 
-    // ==== PUBLIC GALLERY ====
+    /* ====== STATE ====== */
+    let TOKEN = null;       // set ONLY at login (prompt)
+    let isAuthed = false;
+    let projectsSha = null; // sha of project.json for updates
+
+    /* ====== PUBLIC GALLERY ====== */
     async function loadPublicProjects(){
       try{
         const res = await fetch('/content/project.json?ts='+Date.now(), {cache:'no-store'});
@@ -153,74 +160,127 @@
       list.forEach((_p,i)=> initBASlider('ba_'+i, 50));
     }
 
-    // ==== ADMIN ====
+    /* ====== GITHUB API HELPERS ====== */
+    const gh = (path, opts={}) =>
+      fetch(`https://api.github.com${path}`, {
+        ...opts,
+        headers: {
+          "Accept":"application/vnd.github+json",
+          ...(opts.headers||{}),
+          ...(TOKEN ? {"Authorization":`token ${TOKEN}`} : {})
+        }
+      });
+    const utf8ToB64 = str => btoa(unescape(encodeURIComponent(str)));
+    const b64ToStr  = b64 => decodeURIComponent(escape(atob(b64.replace(/\n/g,''))));
+    const contentUrl = p => `/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(p)}?ref=${BRANCH}`;
+
+    async function loadProjectsViaAPI(){
+      const r = await gh(contentUrl(JSON_PATH));
+      if(!r.ok) throw new Error("project.json nicht gefunden (API)");
+      const j = await r.json();
+      projectsSha = j.sha;
+      try { return JSON.parse(b64ToStr(j.content)); } catch { return []; }
+    }
+    async function uploadFile(pathPrefix, file){
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      const name = pathPrefix + Date.now() + '.' + ext;
+      const b64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+      const r = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(name)}`, {
+        method:"PUT",
+        body: JSON.stringify({ message:`upload image: ${name}`, content:b64, branch:BRANCH })
+      });
+      if(!r.ok){ const t=await r.text(); throw new Error("Upload fehlgeschlagen: "+t); }
+      return "/"+name;
+    }
+    async function saveProjectsArray(arr, msg){
+      const content = JSON.stringify(arr, null, 2) + "\n";
+      const r = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(JSON_PATH)}`, {
+        method:"PUT",
+        body: JSON.stringify({ message: msg, content: utf8ToB64(content), branch: BRANCH, sha: projectsSha })
+      });
+      if(!r.ok){ const t=await r.text(); throw new Error("Speichern fehlgeschlagen: "+t); }
+      const j = await r.json(); projectsSha = j.content.sha;
+    }
+
+    /* ====== ADMIN UI ====== */
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const adminWrap = document.getElementById('adminWrap');
     const statusEl = document.getElementById('adminStatus');
 
-    async function adminLogin(){
-      const email = prompt("Login E-Mail:");
-      if(!email) return;
-      const password = prompt("Passwort:");
-      if(!password) return;
-      const r = await fetch(API_BASE + "/login", {
-        method:"POST", credentials:"include",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      if(!r.ok){ alert("Login fehlgeschlagen"); return; }
-      loginBtn.style.display = 'none';
-      logoutBtn.style.display = 'inline-flex';
-      adminWrap.classList.add('authed');
-      renderGallery(document.getElementById('filter').value, true);
-    }
-    async function adminLogout(){
-      await fetch(API_BASE + "/logout", { method:"POST", credentials:"include" });
-      loginBtn.style.display = 'inline-flex';
-      logoutBtn.style.display = 'none';
+    loginBtn.addEventListener('click', async () => {
+      const token = prompt("Füge deinen GitHub Fine-grained Token ein (Repo: TFD.Bau, Contents: Read & write):");
+      if(!token) return;
+      TOKEN = token.trim();
+      try{
+        const me = await gh("/user");
+        if(!me.ok) throw 0;
+        isAuthed = true;
+        loginBtn.style.display='none';
+        logoutBtn.style.display='inline-flex';
+        adminWrap.classList.add('authed');
+        renderGallery(document.getElementById('filter').value, true);
+      }catch{
+        alert("Token ungültig oder keine Rechte."); TOKEN = null;
+      }
+    });
+    logoutBtn.addEventListener('click', () => {
+      TOKEN = null; isAuthed = false;
+      loginBtn.style.display='inline-flex'; logoutBtn.style.display='none';
       adminWrap.classList.remove('authed');
       renderGallery(document.getElementById('filter').value, false);
-    }
-    loginBtn.addEventListener('click', adminLogin);
-    logoutBtn.addEventListener('click', adminLogout);
+    });
 
     document.getElementById('addBtn').addEventListener('click', async () => {
-      const fd = new FormData();
-      fd.append("id", document.getElementById('f_id').value.trim());
-      fd.append("category", document.getElementById('f_cat').value);
-      fd.append("date", document.getElementById('f_date').value.trim());
-      fd.append("title", document.getElementById('f_title').value.trim());
-      fd.append("location", document.getElementById('f_loc').value.trim());
-      fd.append("qm", document.getElementById('f_qm').value);
-      fd.append("dauer_tage", document.getElementById('f_days').value);
-      fd.append("highlights", document.getElementById('f_high').value);
+      if(!TOKEN){ alert("Bitte einloggen."); return; }
+      const id = document.getElementById('f_id').value.trim();
+      if(!id){ alert("ID ist erforderlich"); return; }
+      const category = document.getElementById('f_cat').value;
+      const date = document.getElementById('f_date').value.trim();
+      const title = document.getElementById('f_title').value.trim();
+      const location = document.getElementById('f_loc').value.trim();
+      const qm = document.getElementById('f_qm').value;
+      const days = document.getElementById('f_days').value;
+      const highlights = document.getElementById('f_high').value.split(',').map(s=>s.trim()).filter(Boolean);
       const bf = document.getElementById('f_before').files[0];
       const af = document.getElementById('f_after').files[0];
       if(!bf || !af){ alert("Bitte Vorher & Nachher Bilder auswählen"); return; }
-      fd.append("before", bf);
-      fd.append("after", af);
+
       statusEl.textContent = "Lade hoch…";
-      const r = await fetch(API_BASE + "/projects", { method:"POST", credentials:"include", body: fd });
-      const j = await r.json();
-      if(!r.ok || !j.ok){ alert("Fehler: " + (j.error||r.status)); statusEl.textContent=""; return; }
-      statusEl.textContent = "Gespeichert.";
-      // clear fields
-      ["f_id","f_date","f_title","f_loc","f_qm","f_days","f_high"].forEach(id=>document.getElementById(id).value="");
-      document.getElementById('f_before').value=""; document.getElementById('f_after').value="";
-      renderGallery(document.getElementById('filter').value, true);
+      try{
+        const arr = await loadProjectsViaAPI();
+        if(arr.find(x=>x.id===id)) throw new Error("ID existiert bereits");
+        const base = UPLOAD_DIR + id + "-";
+        const beforeUrl = await uploadFile(base + "before-", bf);
+        const afterUrl  = await uploadFile(base + "after-",  af);
+
+        arr.push({
+          id, category, title, location, date,
+          metrics: { qm: qm?Number(qm):undefined, dauer_tage: days?Number(days):undefined },
+          before: beforeUrl, after: afterUrl, highlights
+        });
+        await saveProjectsArray(arr, `gallery: add ${id}`);
+        statusEl.textContent = "Gespeichert.";
+        ["f_id","f_date","f_title","f_loc","f_qm","f_days","f_high"].forEach(i=>document.getElementById(i).value="");
+        document.getElementById('f_before').value=""; document.getElementById('f_after').value="";
+        renderGallery(document.getElementById('filter').value, true);
+      }catch(e){ alert(e.message || e); statusEl.textContent = ""; }
     });
 
     window.adminDelete = async (id) => {
+      if(!TOKEN){ alert("Bitte einloggen."); return; }
       if(!confirm(`Projekt ${id} löschen?`)) return;
-      const r = await fetch(API_BASE + "/projects/" + encodeURIComponent(id), { method:"DELETE", credentials:"include" });
-      const j = await r.json();
-      if(!r.ok || !j.ok){ alert("Löschen fehlgeschlagen"); return; }
-      renderGallery(document.getElementById('filter').value, true);
+      try{
+        const arr = await loadProjectsViaAPI();
+        const idx = arr.findIndex(x=>x.id===id);
+        if(idx<0) throw new Error("Nicht gefunden");
+        arr.splice(idx,1);
+        await saveProjectsArray(arr, `gallery: delete ${id}`);
+        renderGallery(document.getElementById('filter').value, true);
+      }catch(e){ alert(e.message || e); }
     };
 
-    // boot
-    renderGallery('alle');
+    renderGallery('alle'); // boot
   </script>
 </body>
 </html>
