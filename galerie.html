@@ -5,6 +5,19 @@
   <title>Galerie — TFD</title>
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
+  <style>
+    /* admin ui (scoped) */
+    .admin-wrap{display:none}
+    .admin-wrap.authed{display:block}
+    .admin-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:20px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+    input,select{background:#0F131A;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px}
+    .danger{background:#3b1111;border-color:#5a2020}
+    .delete-btn{border:1px solid var(--line);background:#1a1010;color:#ffb0b0;padding:6px 8px;border-radius:10px;font-weight:800;cursor:pointer}
+    .card .top-right{position:absolute;right:12px;top:12px}
+  </style>
 </head>
 <body class="logo-bg">
   <!-- NAV -->
@@ -47,11 +60,48 @@
       <div id="gallery" class="grid" style="grid-template-columns:1fr; gap:20px"></div>
     </section>
 
+    <!-- Admin login + panel -->
     <section class="section">
       <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
-        <div><strong>Nur für Inhaber:</strong> <span class="muted">Projekte verwalten.</span></div>
+        <div><strong>Nur für Inhaber:</strong> <span class="muted">Einloggen zum Verwalten der Projekte.</span></div>
         <div class="controls">
-          <a class="btn" href="/admin/" target="_blank" rel="noopener">Admin öffnen</a>
+          <button class="btn" id="loginBtn">Login</button>
+          <button class="btn" id="logoutBtn" style="display:none">Logout</button>
+        </div>
+      </div>
+
+      <div class="admin-wrap" id="adminWrap">
+        <div class="admin-card">
+          <h2>Neues Projekt</h2>
+          <div class="grid-3">
+            <div><label>ID</label><input id="f_id" placeholder="innenausbau-ffm-02"></div>
+            <div><label>Kategorie</label>
+              <select id="f_cat">
+                <option value="innenausbau">innenausbau</option>
+                <option value="trockenbau">trockenbau</option>
+                <option value="bodenleger">bodenleger</option>
+                <option value="gartenarbeit">gartenarbeit</option>
+              </select>
+            </div>
+            <div><label>Datum (YYYY-MM)</label><input id="f_date" placeholder="2025-09"></div>
+          </div>
+          <div class="grid-2" style="margin-top:12px">
+            <div><label>Titel</label><input id="f_title" placeholder="Innenausbau — Wohnung Innenstadt"></div>
+            <div><label>Ort</label><input id="f_loc" placeholder="Frankfurt am Main"></div>
+          </div>
+          <div class="grid-2" style="margin-top:12px">
+            <div><label>Fläche (m²)</label><input id="f_qm" type="number" min="0" step="1" placeholder="48"></div>
+            <div><label>Dauer (Tage)</label><input id="f_days" type="number" min="0" step="1" placeholder="7"></div>
+          </div>
+          <div class="grid-2" style="margin-top:12px">
+            <div><label>Vorher Bild</label><input id="f_before" type="file" accept="image/*"></div>
+            <div><label>Nachher Bild</label><input id="f_after" type="file" accept="image/*"></div>
+          </div>
+          <div style="margin-top:12px"><label>Highlights (Komma-getrennt)</label><input id="f_high" placeholder="Feinspachtel Q3, Neue Decke, Saubere Kanten"></div>
+          <div class="row" style="margin-top:12px">
+            <button class="btn primary" id="addBtn">Projekt speichern</button>
+            <span class="muted" id="adminStatus"></span>
+          </div>
         </div>
       </div>
     </section>
@@ -62,25 +112,28 @@
   <script src="/assets/js/main.js"></script>
   <script src="/assets/js/ba-slider.js"></script>
   <script>
-    async function fetchProjects(){
+    // ==== CONFIG ====
+    const API_BASE = "https://tfd-bau-admin-api.onrender.com"; // <— change to your Render API URL
+
+    // ==== PUBLIC GALLERY ====
+    async function loadPublicProjects(){
       try{
-        // uses your root-array file
-        const res = await fetch('/content/project.json?ts=' + Date.now(), {cache:'no-store'});
+        const res = await fetch('/content/project.json?ts='+Date.now(), {cache:'no-store'});
         const data = await res.json();
-        // tolerate either array root or {items:[...]}
         return Array.isArray(data) ? data : (data.items || []);
-      }catch(e){ console.error('Fehler beim Laden der Projekte', e); return []; }
+      }catch(e){ console.error(e); return []; }
     }
     function tags(list){
       if(!list || !list.length) return '';
       return '<div class="badges" style="margin-top:8px">' +
         list.map(t => `<span class="badge">${t}</span>`).join('') + '</div>';
     }
-    function card(p, idx){
+    function card(p, idx, authed){
       const qm = p.metrics && p.metrics.qm ? p.metrics.qm+' m²' : '';
       const tage = p.metrics && p.metrics.dauer_tage ? p.metrics.dauer_tage+' Tage' : '';
-      const meta = [p.date || '', qm, tage].filter(Boolean).join(' · ');
-      return `<div class="card">
+      const meta = [p.date||'', qm, tage].filter(Boolean).join(' · ');
+      return `<div class="card" style="position:relative">
+        ${authed? `<div class="top-right"><button class="delete-btn" onclick="adminDelete('${p.id}')">Löschen</button></div>`:''}
         <div class="row"><strong>${p.title}</strong><span class="muted">${p.location||''}</span></div>
         <div class="ba" id="ba_${idx}">
           <img src="${p.before}" alt="Vorher">
@@ -92,13 +145,81 @@
         ${tags(p.highlights)}
       </div>`;
     }
-    async function renderGallery(filter='alle'){
+    async function renderGallery(filter='alle', authed=false){
       const mount = document.getElementById('gallery');
-      const data = await fetchProjects();
+      const data = await loadPublicProjects();
       const list = data.filter(p => filter==='alle' ? true : (p.category||'').toLowerCase()===filter);
-      mount.innerHTML = list.map((p,i)=>card(p,i)).join('') || '<div class="muted">Noch keine Projekte.</div>';
-      list.forEach((p,i)=> initBASlider('ba_'+i, 50));
+      mount.innerHTML = list.map((p,i)=>card(p,i,authed)).join('') || '<div class="muted">Noch keine Projekte.</div>';
+      list.forEach((_p,i)=> initBASlider('ba_'+i, 50));
     }
+
+    // ==== ADMIN ====
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const adminWrap = document.getElementById('adminWrap');
+    const statusEl = document.getElementById('adminStatus');
+
+    async function adminLogin(){
+      const email = prompt("Login E-Mail:");
+      if(!email) return;
+      const password = prompt("Passwort:");
+      if(!password) return;
+      const r = await fetch(API_BASE + "/login", {
+        method:"POST", credentials:"include",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if(!r.ok){ alert("Login fehlgeschlagen"); return; }
+      loginBtn.style.display = 'none';
+      logoutBtn.style.display = 'inline-flex';
+      adminWrap.classList.add('authed');
+      renderGallery(document.getElementById('filter').value, true);
+    }
+    async function adminLogout(){
+      await fetch(API_BASE + "/logout", { method:"POST", credentials:"include" });
+      loginBtn.style.display = 'inline-flex';
+      logoutBtn.style.display = 'none';
+      adminWrap.classList.remove('authed');
+      renderGallery(document.getElementById('filter').value, false);
+    }
+    loginBtn.addEventListener('click', adminLogin);
+    logoutBtn.addEventListener('click', adminLogout);
+
+    document.getElementById('addBtn').addEventListener('click', async () => {
+      const fd = new FormData();
+      fd.append("id", document.getElementById('f_id').value.trim());
+      fd.append("category", document.getElementById('f_cat').value);
+      fd.append("date", document.getElementById('f_date').value.trim());
+      fd.append("title", document.getElementById('f_title').value.trim());
+      fd.append("location", document.getElementById('f_loc').value.trim());
+      fd.append("qm", document.getElementById('f_qm').value);
+      fd.append("dauer_tage", document.getElementById('f_days').value);
+      fd.append("highlights", document.getElementById('f_high').value);
+      const bf = document.getElementById('f_before').files[0];
+      const af = document.getElementById('f_after').files[0];
+      if(!bf || !af){ alert("Bitte Vorher & Nachher Bilder auswählen"); return; }
+      fd.append("before", bf);
+      fd.append("after", af);
+      statusEl.textContent = "Lade hoch…";
+      const r = await fetch(API_BASE + "/projects", { method:"POST", credentials:"include", body: fd });
+      const j = await r.json();
+      if(!r.ok || !j.ok){ alert("Fehler: " + (j.error||r.status)); statusEl.textContent=""; return; }
+      statusEl.textContent = "Gespeichert.";
+      // clear fields
+      ["f_id","f_date","f_title","f_loc","f_qm","f_days","f_high"].forEach(id=>document.getElementById(id).value="");
+      document.getElementById('f_before').value=""; document.getElementById('f_after').value="";
+      renderGallery(document.getElementById('filter').value, true);
+    });
+
+    window.adminDelete = async (id) => {
+      if(!confirm(`Projekt ${id} löschen?`)) return;
+      const r = await fetch(API_BASE + "/projects/" + encodeURIComponent(id), { method:"DELETE", credentials:"include" });
+      const j = await r.json();
+      if(!r.ok || !j.ok){ alert("Löschen fehlgeschlagen"); return; }
+      renderGallery(document.getElementById('filter').value, true);
+    };
+
+    // boot
     renderGallery('alle');
   </script>
 </body>
