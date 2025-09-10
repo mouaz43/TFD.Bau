@@ -7,36 +7,20 @@
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
 
-  <!-- Page-scoped styles: lively full-width hero background (one piece with the bar) -->
+  <!-- Page-scoped styles: lively full-width hero background with slow stud motion + details -->
   <style>
     :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --px:0px; --py:0px; }
 
-    /* ===== HERO LAYOUT (mobile-first, left-aligned) ===== */
-    .hero{
-      position:relative; overflow:hidden; background:transparent;
-      border-block:1px solid rgba(255,255,255,.05);
-      min-height:72svh; display:grid; place-items:stretch;
-    }
-    .hero .wrap{
-      position:relative; z-index:3; max-width:1120px; margin:0 auto;
-      padding:28px 18px 44px; display:grid; gap:16px; grid-template-columns:1fr;
-    }
-    @media (min-width:980px){ .hero .wrap{ padding:56px 18px 70px; grid-template-columns:1fr; } }
+    /* ===== HERO LAYOUT ===== */
+    .hero{position:relative; overflow:hidden; background:transparent;
+      border-block:1px solid rgba(255,255,255,.05); min-height:72svh; display:grid; place-items:stretch}
+    .hero .wrap{position:relative; z-index:3; max-width:1120px; margin:0 auto; padding:28px 18px 44px; display:grid; gap:16px; grid-template-columns:1fr}
+    @media (min-width:980px){ .hero .wrap{ padding:56px 18px 70px; grid-template-columns:1fr } }
 
-    .eyebrow{
-      display:inline-block; font-weight:800; color:var(--mut);
-      background:#0F131A; border:1px solid var(--line); border-radius:999px; padding:7px 12px;
-    }
-    .hero h1{
-      font-size:clamp(30px,7vw,62px); line-height:1.06; margin:.25em 0 .2em; position:relative;
-    }
-    .hero h1::after{ /* subtle shine */
-      content:""; position:absolute; inset:0; pointer-events:none;
-      background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 70%);
-      transform:translateX(-120%) skewX(-16deg); animation:shine 7s linear infinite;
-    }
+    .eyebrow{display:inline-block; font-weight:800; color:var(--mut); background:#0F131A; border:1px solid var(--line); border-radius:999px; padding:7px 12px}
+    .hero h1{font-size:clamp(30px,7vw,62px); line-height:1.06; margin:.25em 0 .2em; position:relative}
+    .hero h1::after{content:""; position:absolute; inset:0; background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 70%); transform:translateX(-120%) skewX(-16deg); animation:shine 7s linear infinite}
     @keyframes shine{to{transform:translateX(120%) skewX(-16deg)}}
-
     .sub{color:var(--mut); margin:0 0 6px; font-size:clamp(15px,2.6vw,18px)}
     .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px}
     .btn{border:1px solid var(--line); background:#0F131A; color:var(--text); padding:12px 16px; border-radius:14px; font-weight:800}
@@ -45,12 +29,10 @@
     .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:#0F131A; color:#BFC9D7; font-weight:800}
     .pill .dot{width:8px; height:8px; border-radius:50%; background:linear-gradient(90deg,#FF7A18,#6EA0FF)}
 
-    /* ===== FULL-WIDTH BACKGROUND (one body with nav) ===== */
+    /* ===== Full-width hero background (one body with nav) ===== */
     .hero-bg{position:absolute; inset:0; z-index:1; overflow:hidden}
 
-    /* Brighter mesh */
-    .mesh{
-      position:absolute; inset:-20%;
+    .mesh{position:absolute; inset:-20%;
       background:
         radial-gradient(60vw 40vh at 8% 0%, rgba(255,122,24,.30), transparent 60%),
         radial-gradient(60vw 40vh at 100% 25%, rgba(110,160,255,.28), transparent 60%),
@@ -58,78 +40,67 @@
         linear-gradient(135deg,#0f1f33 0%, #0e1835 35%, #0c152c 100%);
       animation:meshShift 30s ease-in-out infinite alternate;
       filter:saturate(1.08);
-      transform:translate3d(var(--px),var(--py),0);
+      transform:translate3d(var(--px),var(--py),0)
     }
     @keyframes meshShift{
       0%{background-position:0 0,0 0,0 0,0 0}
       100%{background-position:-5vw -4vh,6vw -6vh,2vw 6vh,0 0}
     }
 
-    /* Brighter grid over the whole hero */
-    .gridlines{
-      position:absolute; inset:0; opacity:.20; mix-blend-mode:screen;
+    .gridlines{position:absolute; inset:0; opacity:.20; mix-blend-mode:screen;
       background:
         repeating-linear-gradient(to right, rgba(255,255,255,.12) 0 1px, transparent 1px 28px),
         repeating-linear-gradient(to bottom, rgba(255,255,255,.12) 0 1px, transparent 1px 28px);
-      animation:gridDrift 24s linear infinite;
-    }
+      animation:gridDrift 24s linear infinite}
     @keyframes gridDrift{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-90px,-60px,0)}}
 
-    /* Drifting color orbs for life */
-    .orbs{
-      position:absolute; inset:-10% -6%; pointer-events:none; opacity:.55; mix-blend-mode:screen;
+    .orbs{position:absolute; inset:-10% -6%; pointer-events:none; opacity:.55; mix-blend-mode:screen;
       background:
         radial-gradient(220px 220px at 18% 65%, rgba(255,122,24,.22), transparent 60%),
         radial-gradient(240px 240px at 82% 35%, rgba(110,160,255,.24), transparent 60%),
         radial-gradient(200px 200px at 52% 90%, rgba(0,212,255,.20), transparent 60%);
       animation:orbs 20s ease-in-out infinite alternate;
-      transform:translate3d(calc(var(--px)*.18), calc(var(--py)*.18), 0);
-    }
-    @keyframes orbs{
-      0%{background-position:18% 65%,82% 35%,52% 90%}
-      100%{background-position:22% 62%,78% 38%,48% 86%}
-    }
+      transform:translate3d(calc(var(--px)*.18), calc(var(--py)*.18), 0)}
+    @keyframes orbs{0%{background-position:18% 65%,82% 35%,52% 90%}100%{background-position:22% 62%,78% 38%,48% 86%}}
 
-    /* SVG blueprint occupying right side but spanning entire hero, no card */
-    .bp{
-      position:absolute; inset:-2% -2% -6% -2%; z-index:2; pointer-events:none;
-      filter:drop-shadow(0 12px 32px rgba(0,0,0,.35));
-      transform:translate3d(calc(var(--px)*.22),calc(var(--py)*.22),0);
-    }
+    .bp{position:absolute; inset:-2% -2% -6% -2%; z-index:2; pointer-events:none; filter:drop-shadow(0 12px 32px rgba(0,0,0,.35));
+      transform:translate3d(calc(var(--px)*.22),calc(var(--py)*.22),0)}
+
+    /* strokes */
     .stroke{fill:none; stroke:url(#grad); stroke-width:3; stroke-linecap:round; stroke-linejoin:round; opacity:.95}
     .thin{stroke-width:2}
     .ghost{stroke:rgba(220,230,245,.38)}
+
+    /* NEW: slow-moving studs (vertical lines) */
+    .stud{stroke:rgba(220,230,245,.46); stroke-width:2; stroke-linecap:round;
+      stroke-dasharray:6 14; animation:studFlow 12s linear infinite}
+    @keyframes studFlow{to{stroke-dashoffset:-200}}
+
+    /* NEW: roof scan highlight gliding along the ridge */
+    .roof-scan{stroke:rgba(255,255,255,.24); stroke-width:2; stroke-linecap:round;
+      stroke-dasharray:40 260; animation:roofSweep 9s linear infinite}
+    @keyframes roofSweep{to{stroke-dashoffset:-300}}
+
+    /* tiny spark nodes */
     .node{fill:url(#grad)}
+    .glow{filter:drop-shadow(0 0 6px rgba(110,160,255,.6)); opacity:.9}
+    .pulse{animation:pulse 3.2s ease-in-out 1.6s infinite}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.25);opacity:1}}
 
-    /* Continuous draw/erase loop */
-    .loop{stroke-dasharray:1; stroke-dashoffset:1; animation:drawLoop 11s ease-in-out infinite}
-    .loop2{animation-duration:13s; animation-delay:.6s}
-    .loop3{animation-duration:9.5s; animation-delay:1s}
-    @keyframes drawLoop{
-      0%{stroke-dashoffset:1}
-      30%{stroke-dashoffset:0}   /* fully drawn */
-      60%{stroke-dashoffset:-.85}/* erase beyond start */
-      100%{stroke-dashoffset:1}  /* back to hidden */
-    }
+    /* triangle ticks breathe */
+    .tick{opacity:.55; animation:tickBlink 6s ease-in-out infinite}
+    .t1{animation-delay:.5s} .t2{animation-delay:1.4s} .t3{animation-delay:2.3s}
+    @keyframes tickBlink{0%,100%{opacity:.35}50%{opacity:.95}}
 
-    /* Small triangle module gently drifting (continuous) */
-    .tri{transform-origin:640px 300px; animation:floatTri 16s ease-in-out infinite}
-    @keyframes floatTri{
-      0%,100%{transform:translate(0,0) rotate(0deg)}
-      50%{transform:translate(-8px,6px) rotate(-1.5deg)}
-    }
-
-    /* sweeping glow across whole hero */
-    .sweep{
-      position:absolute; inset:-40% -20%; z-index:1; pointer-events:none;
+    /* sweeping highlight across hero */
+    .sweep{position:absolute; inset:-40% -20%; z-index:1; pointer-events:none;
       background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.07) 50%, transparent 65%);
-      transform:translateX(-60%); animation:shinepane 14s linear infinite;
-    }
+      transform:translateX(-60%); animation:shinepane 14s linear infinite}
     @keyframes shinepane{to{transform:translateX(60%)}}
 
     /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .mesh,.gridlines,.orbs,.bp,.sweep{animation:none!important}
+      .mesh,.gridlines,.orbs,.bp,.sweep,.stud,.roof-scan,.pulse,.tick{animation:none!important}
     }
 
     /* Section below hero (unchanged) */
@@ -148,7 +119,7 @@
 </head>
 
 <body class="logo-bg">
-  <!-- NAV (unchanged) -->
+  <!-- NAV -->
   <nav class="nav">
     <div class="container bar">
       <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
@@ -159,7 +130,7 @@
     </div>
   </nav>
 
-  <!-- Drawer (unchanged) -->
+  <!-- Drawer -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
     <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">Schließen ✕</button></div>
     <nav class="menu-links">
@@ -176,16 +147,15 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- ===== HERO (one-body background) ===== -->
+  <!-- ===== HERO ===== -->
   <header class="hero" id="hero">
-    <!-- lively background spanning entire hero -->
     <div class="hero-bg" aria-hidden="true">
       <div class="mesh"></div>
       <div class="gridlines"></div>
       <div class="orbs"></div>
       <div class="sweep"></div>
 
-      <!-- Blueprint lines (looping) -->
+      <!-- Blueprint lines -->
       <svg class="bp" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
@@ -193,19 +163,39 @@
           </linearGradient>
         </defs>
 
-        <!-- Main house on right/top area -->
-        <g transform="translate(380,40)">
-          <path class="stroke loop"   pathLength="1" d="M 60 240 L 60 90" />
-          <path class="stroke loop3"  pathLength="1" d="M 60 90 L 160 20 L 260 90" />
-          <path class="stroke thin loop2" pathLength="1" d="M 80 200 L 220 200" />
-          <path class="ghost  loop2" pathLength="1" d="M 120 70 L 120 200" />
-          <path class="ghost  loop2" pathLength="1" d="M 180 70 L 180 120" />
-          <circle class="node" cx="60" cy="90" r="3"/><circle class="node" cx="160" cy="20" r="3"/><circle class="node" cx="260" cy="90" r="3"/>
+        <!-- House (top-right-ish) -->
+        <g transform="translate(360,36)">
+          <!-- roof ridge -->
+          <path class="stroke" d="M 60 90 L 160 20 L 260 90" />
+          <!-- subtle sweeping highlight along ridge -->
+          <path class="roof-scan" d="M 60 90 L 160 20 L 260 90" />
+
+          <!-- studs (slow moving dashes) -->
+          <path class="stud"  d="M 60 240 L 60 90" />
+          <path class="stud"  d="M 120 70 L 120 200" />
+          <path class="stud"  d="M 180 70 L 180 120" />
+
+          <!-- beam -->
+          <path class="stroke thin" d="M 80 200 L 220 200" />
+
+          <!-- glowing ridge nodes -->
+          <circle class="node glow pulse" cx="60"  cy="90"  r="3"/>
+          <circle class="node glow pulse" cx="160" cy="20"  r="3"/>
+          <circle class="node glow pulse" cx="260" cy="90"  r="3"/>
+
+          <!-- small spark cluster near apex -->
+          <g class="pulse" style="animation-duration:4.2s">
+            <circle class="node glow" cx="146" cy="34" r="2"/>
+            <circle class="node glow" cx="152" cy="28" r="1.6"/>
+          </g>
         </g>
 
-        <!-- Triangle module that drifts -->
-        <g class="tri" transform="translate(520,260)">
-          <path class="stroke loop" pathLength="1" d="M 0 40 L 60 -20 L 120 40 Z"/>
+        <!-- Triangle module with breathable ticks -->
+        <g transform="translate(520,260)">
+          <path class="stroke" d="M 0 40 L 60 -20 L 120 40 Z"/>
+          <path class="tick t1" d="M 24 24 L 36 12" />
+          <path class="tick t2" d="M 44 6 L 56 -6" />
+          <path class="tick t3" d="M 64 -12 L 76 -24" />
         </g>
       </svg>
     </div>
@@ -277,7 +267,7 @@
 
   <script src="/assets/js/main.js"></script>
   <script>
-    // Subtle parallax for the hero background layers
+    // Subtle parallax for the hero layers
     (function(){
       const hero = document.getElementById('hero');
       if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -289,7 +279,7 @@
         set(Math.max(-1,Math.min(1,x))*14, Math.max(-1,Math.min(1,y))*10);
       });
       hero.addEventListener('mouseleave', ()=> set(0,0));
-      // small tilt on mobile
+      // light device tilt on mobile
       window.addEventListener('deviceorientation', ev=>{
         const px = (ev.gamma||0)/4, py=(ev.beta||0)/8; set(px,py);
       }, {passive:true});
