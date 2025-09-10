@@ -1,167 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TFD — Präzision im Bau. Bundesweit.</title>
-  <meta name="description" content="Innenausbau, Trockenbau, Bodenleger & Gartenarbeit — bundesweit, termintreu, sauber. Antwort in 24h." />
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-  <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64" />
-
-  <!-- Page-scoped styles: unified hero background (clean & subtle), mobile-first -->
-  <style>
-    :root{
-      --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9;
-      --px:0px; --py:0px; /* parallax offsets */
-    }
-
-    /* Make nav float over the hero background (one body with the page) */
-    .nav{ background:transparent !important; border-bottom:1px solid rgba(255,255,255,.06) }
-    .nav::after{
-      content:""; position:absolute; inset:0;
-      background:linear-gradient(180deg, rgba(8,12,18,.70), rgba(8,12,18,.25) 70%, transparent 100%);
-      pointer-events:none;
-    }
-
-    /* ===== HERO ===== */
-    .hero{
-      position:relative; overflow:hidden; min-height:72svh;
-      display:grid; place-items:stretch;
-    }
-    .hero .wrap{
-      position:relative; z-index:3; max-width:1120px; margin:0 auto;
-      padding:28px 18px 44px; display:grid; gap:16px;
-    }
-    @media (min-width:980px){ .hero .wrap{ padding:56px 18px 72px } }
-
-    .eyebrow{
-      display:inline-block; font-weight:800; color:var(--mut);
-      background:#0F131A; border:1px solid var(--line); border-radius:999px; padding:7px 12px;
-    }
-    .hero h1{ font-size:clamp(30px,7vw,62px); line-height:1.06; margin:.25em 0 .2em; position:relative }
-    .hero h1::after{
-      content:""; position:absolute; inset:0; pointer-events:none;
-      background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 70%);
-      transform:translateX(-120%) skewX(-16deg); animation:shine 7s linear infinite;
-    }
-    @keyframes shine{ to{ transform:translateX(120%) skewX(-16deg) } }
-    .sub{ color:var(--mut); margin:0 0 6px; font-size:clamp(15px,2.6vw,18px) }
-
-    .cta{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px }
-    .btn{ border:1px solid var(--line); background:#0F131A; color:var(--text); padding:12px 16px; border-radius:14px; font-weight:800 }
-    .btn.primary{ background:linear-gradient(90deg,#FF7A18,#6EA0FF,#00D4FF); border:none }
-
-    .trust{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px }
-    .pill{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:#0F131A; color:#BFC9D7; font-weight:800 }
-    .pill .dot{ width:8px; height:8px; border-radius:50%; background:linear-gradient(90deg,#FF7A18,#6EA0FF) }
-
-    /* ===== Unified background under nav + hero (clean, subtle, responsive) ===== */
-    .hero-bg{ position:absolute; inset:0; z-index:1; overflow:hidden }
-
-    /* soft color mesh */
-    .mesh{
-      position:absolute; inset:-20%;
-      background:
-        radial-gradient(60vw 40vh at 8% 0%, rgba(255,122,24,.28), transparent 60%),
-        radial-gradient(60vw 40vh at 100% 25%, rgba(110,160,255,.26), transparent 60%),
-        radial-gradient(70vw 50vh at 50% 115%, rgba(0,212,255,.20), transparent 60%),
-        linear-gradient(135deg,#0f1f33 0%, #0e1835 35%, #0c152c 100%);
-      animation:meshShift 32s ease-in-out infinite alternate;
-      filter:saturate(1.06);
-      transform:translate3d(var(--px),var(--py),0);
-    }
-    @keyframes meshShift{
-      0%{background-position:0 0,0 0,0 0,0 0}
-      100%{background-position:-5vw -4vh,6vw -6vh,2vw 6vh,0 0}
-    }
-
-    /* blueprint grid */
-    .gridlines{
-      position:absolute; inset:0; opacity:.18; mix-blend-mode:screen;
-      background:
-        repeating-linear-gradient(to right, rgba(255,255,255,.12) 0 1px, transparent 1px 28px),
-        repeating-linear-gradient(to bottom, rgba(255,255,255,.12) 0 1px, transparent 1px 28px);
-      animation:gridDrift 24s linear infinite;
-    }
-    @keyframes gridDrift{ 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(-90px,-60px,0)} }
-
-    /* faint vignette for readability */
-    .vignette{ position:absolute; inset:-5% -5% -10% -5%; background:radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(0,0,0,.30) 100%); pointer-events:none }
-
-    /* SVG blueprint — very subtle, no fills, anchors to right on desktop */
-    .bp{
-      position:absolute; inset:-2% -2% -6% -2%; z-index:2; pointer-events:none;
-      filter:drop-shadow(0 10px 28px rgba(0,0,0,.3));
-      opacity:.55;
-      transform:translate3d(calc(var(--px)*.22),calc(var(--py)*.22),0);
-    }
-    @media (max-width:900px){ .bp{ opacity:.45 } }
-
-    .stroke{ fill:none; stroke:url(#grad); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round }
-    .thin{ stroke-width:2 }
-    .stud{ stroke:rgba(220,230,245,.46); stroke-width:1.8; stroke-dasharray:6 14; animation:studFlow 14s linear infinite }
-    @keyframes studFlow{ to{ stroke-dashoffset:-220 } }
-    .scan{ stroke:rgba(255,255,255,.22); stroke-width:2; stroke-dasharray:40 260; animation:roofSweep 10s linear infinite }
-    @keyframes roofSweep{ to{ stroke-dashoffset:-300 } }
-
-    .node{ fill:url(#grad) }
-    .node.glow{ filter:drop-shadow(0 0 6px rgba(110,160,255,.6)) }
-
-    /* tiny drifting particles */
-    .particle{ fill:url(#grad); opacity:.55; animation:floatUp 9s ease-in-out infinite }
-    .p2{ animation-duration:11s; animation-delay:.6s }
-    .p3{ animation-duration:13s; animation-delay:1.2s }
-    @keyframes floatUp{
-      0%{ transform:translateY(0); opacity:0 }
-      15%{ opacity:.7 }
-      60%{ transform:translateY(-26px) }
-      100%{ transform:translateY(-52px); opacity:0 }
-    }
-
-    /* gentle sweep across whole hero */
-    .sweep{ position:absolute; inset:-40% -20%; background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.06) 50%, transparent 65%); transform:translateX(-60%); animation:shinepane 14s linear infinite; pointer-events:none }
-    @keyframes shinepane{ to{ transform:translateX(60%) } }
-
-    /* motion safety */
-    @media (prefers-reduced-motion: reduce){
-      .mesh,.gridlines,.bp,.sweep,.stud,.scan,.particle{ animation:none !important }
-    }
-
-    /* Below hero (unchanged) */
-    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:22px 0}
-    .svc-nav{display:grid;gap:16px;grid-template-columns:1fr}
-    @media(min-width:980px){ .svc-nav{grid-template-columns:1fr 1fr} }
-    .svc-nav .card{position:relative;border:1px solid var(--line);background:#10141b;border-radius:18px;padding:18px;overflow:hidden;transition:transform .15s ease}
-    .svc-nav .card:hover{transform:translateY(-3px)}
-    .svc-nav .card::before{content:"";position:absolute;inset:-1px;border-radius:18px;pointer-events:none;background:
-      radial-gradient(900px 260px at -10% -60%,rgba(255,122,24,.10),transparent),
-      radial-gradient(800px 200px at 110% 140%,rgba(110,160,255,.08),transparent)}
-    .svc-ico{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#0f131a;display:grid;place-items:center;margin-bottom:10px}
-    .svc-title{font-weight:800;margin:0 0 4px}
-    .svc-sub{color:var(--mut);margin:0}
-  </style>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TFD — Präzision im Bau</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
 </head>
-
 <body class="logo-bg">
   <!-- NAV -->
-  <nav class="nav">
-    <div class="container bar">
-      <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
-      <a class="brand centered" href="/index.html" aria-label="Startseite">
-        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
-      </a>
-      <div class="spacer"></div>
-    </div>
-  </nav>
+  <nav class="nav"><div class="container bar">
+    <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
+    <a class="brand" href="/index.html" aria-label="Startseite"><img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong></a>
+    <div class="spacer"></div>
+  </div></nav>
 
-  <!-- Drawer (unchanged) -->
+  <!-- Slide-in menu -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
     <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">Schließen ✕</button></div>
-    <nav class="menu-links">
-      <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
-      <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
-      <a class="cta" href="/kontakt.html">Kontakt</a>
-    </nav>
+    <nav class="menu-links"><a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a><a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a><a class="cta" href="/kontakt.html">Kontakt</a></nav>
     <div class="menu-quick">
       <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
       <a href="tel:+4915770070701">Anrufen</a>
@@ -171,136 +27,107 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- ===== HERO (one-body background) ===== -->
-  <header class="hero" id="hero">
-    <div class="hero-bg" aria-hidden="true">
-      <div class="mesh"></div>
-      <div class="gridlines"></div>
-      <div class="sweep"></div>
-      <div class="vignette"></div>
+  <!-- HERO -->
+  <header class="hero">
+    <!-- Blueprint/house/ruler overlay -->
+    <svg class="hero-art" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="ha-metal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#DDE6F3" stop-opacity=".85"/><stop offset=".6" stop-color="#9FB2C8" stop-opacity=".35"/><stop offset="1" stop-color="#5A6A7F" stop-opacity=".2"/>
+        </linearGradient>
+        <linearGradient id="ha-accent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFA25A"/><stop offset="1" stop-color="#FF6A1A"/></linearGradient>
+        <radialGradient id="ha-fade" cx="50%" cy="38%" r="72%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#000"/></radialGradient>
+        <mask id="ha-mask"><rect width="1200" height="600" fill="url(#ha-fade)"/></mask>
+      </defs>
+      <g mask="url(#ha-mask)" opacity=".9" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="600,60 870,215 870,415 600,570 330,415 330,215" fill="none" stroke="url(#ha-metal)" stroke-width="2"/>
+        <path d="M430 380 L600 240 L770 305" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
+        <path d="M430 380 V470" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
+        <path d="M430 470 H560" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
+        <g class="ruler"><rect x="680" y="295" width="54" height="168" rx="12" fill="url(#ha-accent)"/><path d="M734 295 L818 252 L818 334 L734 334 Z" fill="url(#ha-accent)"/></g>
+        <g class="dashes" stroke="url(#ha-metal)" stroke-width="2" fill="none" stroke-dasharray="10 10"><path d="M600 240 L600 120"/><path d="M600 240 L520 190"/><path d="M600 240 L680 190"/></g>
+      </g>
+    </svg>
 
-      <!-- Subtle, clean blueprint (no fills) -->
-      <svg class="bp" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#FF7A18"/><stop offset=".6" stop-color="#6EA0FF"/><stop offset="1" stop-color="#00D4FF"/>
-          </linearGradient>
-        </defs>
-
-        <!-- House outline anchored right; scales nicely on mobile -->
-        <g transform="translate(740,80)">
-          <path class="stroke" d="M 40 160 L 160 60 L 280 160"/>
-          <path class="scan"   d="M 40 160 L 160 60 L 280 160"/>
-
-          <!-- studs (slow) & base beam -->
-          <path class="stud"  d="M 80 160 L 80 260"/>
-          <path class="stud"  d="M 160 100 L 160 220"/>
-          <path class="stud"  d="M 240 130 L 240 180"/>
-          <path class="thin stroke" d="M 60 220 L 260 220"/>
-
-          <!-- tiny nodes -->
-          <circle class="node glow" cx="40"  cy="160" r="2.5"/>
-          <circle class="node glow" cx="160" cy="60"  r="2.5"/>
-          <circle class="node glow" cx="280" cy="160" r="2.5"/>
-
-          <!-- drifting particles -->
-          <circle class="particle" cx="120" cy="210" r="1.8"/>
-          <circle class="particle p2" cx="190" cy="200" r="1.8"/>
-          <circle class="particle p3" cx="220" cy="185" r="1.8"/>
-        </g>
-
-        <!-- small floating triangle module lower-right -->
-        <g transform="translate(930,360) scale(1.05)">
-          <path class="stroke" d="M 0 60 L 60 0 L 120 60 Z" />
-        </g>
-      </svg>
-    </div>
-
-    <!-- Copy -->
-    <div class="wrap">
-      <div>
-        <span class="eyebrow">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span>
-        <h1>Präzision im Bau. Bundesweit.</h1>
-        <p class="sub">Bundesweit, termintreu, sauber. Antwort in <b>24&nbsp;Stunden</b>.</p>
-
-        <div class="cta">
-          <a class="btn primary" href="/anfrage.html">Kostenlose Einschätzung</a>
-          <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
-        </div>
-
-        <div class="trust">
-          <span class="pill"><span class="dot"></span>14+ Jahre Erfahrung</span>
-          <span class="pill">Versichert</span>
-          <span class="pill">Digitale Doku</span>
-        </div>
+    <div class="container">
+      <span class="kicker"><span class="dot"></span> Ausbau & Außenanlagen</span>
+      <h1 class="h1-alt">Präzision im Bau. <span class="nowrap">Deutschlandweit.</span></h1>
+      <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <span class="shine">24&nbsp;Stunden</span>.</p>
+      <div class="badges">
+        <span class="badge"><span class="dot"></span>TÜV-nahe Standards</span>
+        <span class="badge"><span class="dot"></span>Versichert</span>
+        <span class="badge"><span class="dot"></span>Termintreu</span>
+        <span class="badge"><span class="dot"></span>Ganz Deutschland</span>
       </div>
     </div>
   </header>
 
   <main class="container">
-    <div class="divider" aria-hidden="true"></div>
-
-    <!-- SERVICE NAV (unchanged) -->
-    <section class="svc-nav" aria-label="Leistungsnavigation">
-      <a class="card" href="/leistungen.html#innenausbau">
-        <div class="svc-ico">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M4 10L12 4l8 6v8a2 2 0 0 1-2 2h-4v-6H10v6H6a2 2 0 0 1-2-2v-8z" stroke="url(#g1)" stroke-width="1.6"/>
-            <defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs>
-          </svg>
+    <!-- Quick actions instead of full Leistungen grid -->
+    <section class="section">
+      <div class="grid quick">
+        <div class="card">
+          <div class="title">Schnelles Angebot</div>
+          <div class="desc">Antwort innerhalb von 24&nbsp;Stunden — mit klaren Preisen.</div>
+          <div class="controls">
+            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a>
+            <a class="btn" href="tel:+4915770070701">Anrufen</a>
+            <a class="btn" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
+          </div>
         </div>
-        <p class="svc-title">Innenausbau</p>
-        <p class="svc-sub">Feinspachtel, Decken, Details – abnahmefähig.</p>
-      </a>
-
-      <a class="card" href="/leistungen.html#trockenbau">
-        <div class="svc-ico">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v4H4zM4 14h16v4H4z" stroke="url(#g2)" stroke-width="1.6"/><defs><linearGradient id="g2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs></svg>
+        <div class="card">
+          <div class="title">Kostenloses Aufmaß</div>
+          <div class="desc">Wir kommen vorbei, messen auf und beraten vor Ort.</div>
+          <div class="controls">
+            <a class="btn primary" href="/kontakt.html">Termin anfragen</a>
+          </div>
         </div>
-        <p class="svc-title">Trockenbau</p>
-        <p class="svc-sub">Wände/Decken, Akustik & Brandschutz.</p>
-      </a>
-
-      <a class="card" href="/leistungen.html#bodenleger">
-        <div class="svc-ico">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4h8v8H4zM12 12h8v8h-8zM12 4h8v8h-8zM4 12h8v8H4z" stroke="url(#g3)" stroke-width="1.6"/><defs><linearGradient id="g3" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs></svg>
+        <div class="card">
+          <div class="title">Transparente Abnahme</div>
+          <div class="desc">Dokumentation mit Fotos & Checkliste – sauber übergeben.</div>
+          <div class="controls">
+            <a class="btn" href="/galerie.html">Galerie ansehen</a>
+          </div>
         </div>
-        <p class="svc-title">Bodenleger</p>
-        <p class="svc-sub">Parkett, Vinyl, Laminat – präzise verlegt.</p>
-      </a>
+      </div>
+    </section>
 
-      <a class="card" href="/leistungen.html#gartenarbeit">
-        <div class="svc-ico">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19h14M6 15l6-10 6 10" stroke="url(#g4)" stroke-width="1.6"/><defs><linearGradient id="g4" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs></svg>
+    <!-- Process steps -->
+    <section class="section">
+      <div class="row"><h2>Ablauf</h2><span class="muted">So arbeiten wir – schnell, sauber, verlässlich.</span></div>
+      <div class="grid steps">
+        <div class="card step"><div class="num">1</div><h3>Aufmaß & Beratung</h3><p>Vor Ort oder per Video – wir klären Details und Material.</p></div>
+        <div class="card step"><div class="num">2</div><h3>Angebot in 24 h</h3><p>Fixpreis mit Terminplan und klarer Leistungsbeschreibung.</p></div>
+        <div class="card step"><div class="num">3</div><h3>Ausführung</h3><p>Staubarm, termintreu, mit sauberer Baustelle jeden Abend.</p></div>
+        <div class="card step"><div class="num">4</div><h3>Abnahme & Doku</h3><p>Checkliste, Fotos, Pflegehinweise – alles transparent.</p></div>
+      </div>
+    </section>
+
+    <!-- USPs -->
+    <section class="section">
+      <div class="row"><h2>Warum TFD?</h2><span class="muted">Handwerk mit System.</span></div>
+      <div class="grid usps">
+        <div class="card usp"><span class="icon">✓</span><div><strong>Versichert & dokumentiert</strong><p>Jedes Projekt mit Fotoprotokoll und Gewährleistung.</p></div></div>
+        <div class="card usp"><span class="icon">★</span><div><strong>Premium-Finish</strong><p>Saubere Kanten, bündige Fugen, millimetergenau.</p></div></div>
+        <div class="card usp"><span class="icon">⏱</span><div><strong>Termintreu</strong><p>Verbindliche Planung – wir halten Deadlines.</p></div></div>
+        <div class="card usp"><span class="icon">🌍</span><div><strong>Ganz Deutschland</strong><p>Teams bundesweit für kleine und große Projekte.</p></div></div>
+      </div>
+    </section>
+
+    <!-- CTA row -->
+    <section class="section">
+      <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+        <div><strong>Bereit?</strong> <span class="muted">Leistungen ansehen oder Beispiele in der Galerie.</span></div>
+        <div class="controls">
+          <a class="btn primary" href="/leistungen.html">Alle Leistungen</a>
+          <a class="btn" href="/galerie.html">Galerie</a>
+          <a class="btn" href="/kontakt.html">Kontakt</a>
         </div>
-        <p class="svc-title">Gartenarbeit</p>
-        <p class="svc-sub">Terrassen, Pflaster, Rasen – robuste Außenflächen.</p>
-      </a>
+      </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div>
-  </footer>
-
+  <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
   <script src="/assets/js/main.js"></script>
-  <script>
-    // Subtle parallax for hero background layers
-    (function(){
-      const hero = document.getElementById('hero');
-      if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const set = (px,py)=>{ document.documentElement.style.setProperty('--px', px+'px'); document.documentElement.style.setProperty('--py', py+'px'); };
-      hero.addEventListener('mousemove', e=>{
-        const r = hero.getBoundingClientRect();
-        const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
-        const y = (e.clientY - (r.top + r.height/2)) / (r.height/2);
-        set(Math.max(-1,Math.min(1,x))*14, Math.max(-1,Math.min(1,y))*10);
-      });
-      hero.addEventListener('mouseleave', ()=> set(0,0));
-      window.addEventListener('deviceorientation', ev=>{
-        const px=(ev.gamma||0)/4, py=(ev.beta||0)/8; set(px,py);
-      }, {passive:true});
-    })();
-  </script>
 </body>
 </html>
