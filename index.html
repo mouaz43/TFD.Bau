@@ -15,108 +15,101 @@
   <meta property="og:url" content="https://tfd-bau.onrender.com/">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Page-scoped styles: animated “house being built” background -->
+  <!-- Page-scoped styles: mobile-first hero with animated blueprint -->
   <style>
-    :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --a1:#FF5C00; --a2:#2B5BD3; --px:0px; --py:0px; }
-
-    /* ===== HERO LAYOUT ===== */
-    .hero-pro{
-      position:relative; min-height:66vh; display:flex; align-items:center; overflow:hidden;
-      border:1px solid rgba(255,255,255,.04); border-left:none; border-right:none;
-      background:#0B0F14;
+    :root{
+      --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9;
+      --a1:#FF5C00; --a2:#2B5BD3; --px:0px; --py:0px;
     }
-    .hero-pro .inner{
-      position:relative; z-index:3; width:100%;
-      max-width:980px; margin:0 auto; padding:44px 18px;
-      text-align:center;
-    }
-    @media (min-width:980px){ .hero-pro .inner{ text-align:left; padding:64px 18px; } }
 
-    .services-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
-    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#0f131a;color:var(--mut);font-weight:800}
-    .hero-title{position:relative;font-size:clamp(32px,6vw,64px);line-height:1.06;margin:6px 0 10px}
-    .hero-title::after{
+    /* ===== HERO LAYOUT (mobile-first, left-aligned) ===== */
+    .hero{
+      position:relative; overflow:hidden; background:#0B0F14;
+      border-block:1px solid rgba(255,255,255,.05);
+    }
+    .hero .wrap{
+      position:relative; z-index:3;
+      max-width:1120px; margin:0 auto; padding:28px 18px 40px;
+      display:grid; gap:18px; grid-template-columns:1fr; /* 1-column on phones */
+    }
+    @media(min-width:980px){
+      .hero .wrap{ padding:54px 18px 64px; grid-template-columns:1.05fr .95fr; align-items:center; }
+    }
+
+    /* left column (copy) */
+    .hero h1{
+      font-size:clamp(30px,7vw,64px); line-height:1.05; margin:.2em 0 .4em;
+      position:relative;
+    }
+    .hero h1::after{ /* subtle shine */
       content:""; position:absolute; inset:0; pointer-events:none;
-      background:linear-gradient(115deg,transparent 20%, rgba(255,255,255,.12) 50%, transparent 70%);
-      transform:translateX(-130%) skewX(-16deg);
-      animation:shine 7s linear infinite;
+      background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 70%);
+      transform:translateX(-120%) skewX(-16deg); animation:shine 7s linear infinite;
     }
-    @keyframes shine{ to { transform:translateX(130%) skewX(-16deg);} }
+    @keyframes shine{to{transform:translateX(120%) skewX(-16deg)}}
 
-    .bullets{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0 18px}
-    .bullet{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#0f131a}
-    .bullet .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--a1),var(--a2))}
-    .cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-    .btn{border:1px solid var(--line);background:#0f131a;color:var(--text);padding:12px 16px;border-radius:14px;font-weight:800}
-    .btn.primary{background:linear-gradient(90deg,var(--a1),var(--a2));border:none}
-    .trust{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
-    .trust .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#0f131a;color:var(--mut);font-weight:800}
-    @media (min-width:980px){ .bullets,.cta,.trust,.services-chips{justify-content:flex-start} }
+    .bullet-row{display:flex; flex-wrap:wrap; gap:10px}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border-radius:12px;
+      border:1px solid var(--line); background:#0F131A; font-weight:800}
+    .pill .dot{width:8px; height:8px; border-radius:50%; background:linear-gradient(90deg,var(--a1),var(--a2))}
 
-    /* Soft float for chips */
-    .floaty{animation:floaty 6s ease-in-out infinite}
-    .floaty:nth-child(2){animation-delay:.8s}
-    .floaty:nth-child(3){animation-delay:1.6s}
-    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .btn{border:1px solid var(--line); background:#0F131A; color:var(--text); padding:12px 16px; border-radius:14px; font-weight:800}
+    .btn.primary{background:linear-gradient(90deg,var(--a1),var(--a2)); border:none}
 
-    /* ===== BACKGROUND LAYERS ===== */
-    .bg-wrap{position:absolute; inset:0; z-index:1; overflow:hidden}
+    /* scrollable service chips (one row on phone, no clutter) */
+    .svc-scroll{
+      margin:6px 0 8px; overflow:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px;
+      display:flex; gap:10px; scroll-snap-type:x proximity;
+    }
+    .svc-scroll .chip{white-space:nowrap; scroll-snap-align:center}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px;
+      border:1px solid var(--line); background:#0F131A; color:#DDE6F2; font-weight:900}
 
-    /* gradient mesh */
-    .mesh{
-      position:absolute; inset:-20%;
+    /* right column (animated blueprint) */
+    .blueprint{
+      position:relative; height:320px; border:1px solid var(--line); border-radius:18px;
+      background:radial-gradient(680px 360px at 20% 15%,rgba(255,92,0,.12),transparent 60%),
+                 radial-gradient(720px 400px at 85% 35%,rgba(43,91,211,.16),transparent 60%),
+                 #0E1220;
+      overflow:hidden;
+    }
+    @media(min-width:980px){ .blueprint{ height:420px } }
+
+    /* faint grid */
+    .blueprint::before{
+      content:""; position:absolute; inset:0; opacity:.18; mix-blend-mode:screen;
       background:
-        radial-gradient(520px 300px at 15% 20%, rgba(255,92,0,.18), transparent 60%),
-        radial-gradient(600px 340px at 85% 30%, rgba(43,91,211,.20), transparent 60%),
-        radial-gradient(540px 280px at 60% 80%, rgba(255,92,0,.12), transparent 60%);
-      filter:blur(10px) saturate(1.08);
-      animation:meshShift 28s ease-in-out infinite alternate;
-      transform:translate3d(var(--px), var(--py), 0);
+        repeating-linear-gradient(to right, rgba(255,255,255,.06) 0 1px, transparent 1px 32px),
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.06) 0 1px, transparent 1px 32px);
+      animation:grid 26s linear infinite;
     }
-    @keyframes meshShift{
-      0%{ background-position: 0 0, 0 0, 0 0; }
-      100%{ background-position: 10% -6%, -8% 12%, 6% 4%; }
-    }
+    @keyframes grid{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-80px,-50px,0)}}
 
-    /* thin moving grid */
-    .gridlines{
-      position:absolute; inset:0; opacity:.14;
-      background:
-        repeating-linear-gradient( to right, rgba(255,255,255,.06) 0 1px, transparent 1px 32px ),
-        repeating-linear-gradient( to bottom, rgba(255,255,255,.06) 0 1px, transparent 1px 32px );
-      animation:gridDrift 26s linear infinite;
-      mix-blend-mode:screen;
-    }
-    @keyframes gridDrift{ 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(-80px,-40px,0)} }
+    /* SVG drawing */
+    .bp-svg{position:absolute; inset:-6% -4% -6% -4%; filter:drop-shadow(0 12px 30px rgba(0,0,0,.35));
+      transform:translate3d(calc(var(--px)*.25),calc(var(--py)*.25),0)}
+    .stroke{fill:none; stroke:url(#grad); stroke-width:3; stroke-linecap:round; stroke-linejoin:round}
+    .thin{stroke-width:2; opacity:.9}
+    .ghost{stroke:rgba(220,230,245,.25)}
 
-    /* ===== SVG HOUSE LINE BUILD ===== */
-    .house{position:absolute; inset:0; z-index:2; pointer-events:none; opacity:.85;
-      transform:translate3d(calc(var(--px)*.25), calc(var(--py)*.25),0); }
-    .house svg{width:120%; max-width:none; height:120%; position:absolute; left:-10%; top:-10%}
-    .house .stroke{fill:none; stroke:url(#grad); stroke-width:3; stroke-linecap:round; stroke-linejoin:round;
-      filter:drop-shadow(0 8px 24px rgba(0,0,0,.35)); opacity:.95}
-    .house .thin{stroke-width:2; opacity:.85}
-    .house .ghost{stroke:rgba(255,255,255,.25)}
+    /* line-draw animation using pathLength=1 */
+    .draw{stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1.15s ease forwards}
+    .d1{animation-delay:.1s} .d2{animation-delay:.45s} .d3{animation-delay:.8s}
+    .d4{animation-delay:1.15s} .d5{animation-delay:1.45s} .d6{animation-delay:1.75s}
+    @keyframes draw{to{stroke-dashoffset:0}}
 
-    /* Draw effect: pathLength=1 allows 0..1 dash lengths */
-    .draw{stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1.2s ease forwards}
-    .delay1{animation-delay:.2s} .delay2{animation-delay:.55s} .delay3{animation-delay:.9s}
-    .delay4{animation-delay:1.2s} .delay5{animation-delay:1.55s}
-    @keyframes draw { to { stroke-dashoffset:0 } }
+    /* scanning light */
+    .scan{position:absolute; inset:-20% -10%; background:linear-gradient(180deg,transparent,rgba(255,255,255,.06),transparent);
+      transform:translateY(-120%); animation:scan 9s ease-in-out 1.2s infinite}
+    @keyframes scan{50%{transform:translateY(120%)} 100%{transform:translateY(-120%)}}
 
-    /* subtle glow pulse after built */
-    .glow{animation:glow 3.5s ease-in-out 1.6s infinite}
-    @keyframes glow{
-      0%,100%{ filter:drop-shadow(0 8px 24px rgba(0,0,0,.35)) }
-      50%{ filter:drop-shadow(0 10px 34px rgba(43,91,211,.28)) }
-    }
-
-    /* reduced motion */
+    /* reduce motion */
     @media (prefers-reduced-motion: reduce){
-      .mesh,.gridlines,.house,.hero-title::after,.floaty{animation:none!important}
+      .blueprint::before,.bp-svg,.scan,.hero h1::after{animation:none!important}
     }
 
-    /* ===== Section after hero ===== */
+    /* section after hero */
     .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:22px 0}
     .svc-nav{display:grid;gap:16px;grid-template-columns:1fr}
     @media(min-width:980px){ .svc-nav{grid-template-columns:1fr 1fr} }
@@ -161,75 +154,70 @@
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
   <!-- ===== HERO ===== -->
-  <header class="hero-pro" id="hero">
-    <!-- motion background -->
-    <div class="bg-wrap" aria-hidden="true">
-      <div class="mesh"></div>
-      <div class="gridlines"></div>
+  <header class="hero" id="hero">
+    <div class="wrap">
+      <!-- COPY (left on desktop, top on mobile) -->
+      <div>
+        <!-- one-row scroll chips on mobile -->
+        <div class="svc-scroll" aria-label="Leistungen">
+          <span class="chip">Innenausbau</span>
+          <span class="chip">Trockenbau</span>
+          <span class="chip">Bodenleger</span>
+          <span class="chip">Gartenarbeit</span>
+        </div>
 
-      <!-- HOUSE line animation -->
-      <div class="house">
-        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid meet">
+        <h1>Präzision im Bau. Bundesweit.</h1>
+
+        <div class="bullet-row">
+          <span class="pill"><span class="dot"></span><b>14+ Jahre Erfahrung</b></span>
+          <span class="pill"><span class="dot"></span><b>Antwort in 24&nbsp;Stunden</b></span>
+          <span class="pill"><span class="dot"></span><b>TÜV-nahe Standards</b></span>
+        </div>
+
+        <div class="cta">
+          <a class="btn primary" href="/anfrage.html">Kostenlose Einschätzung</a>
+          <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
+        </div>
+
+        <div class="bullet-row" style="margin-top:10px">
+          <span class="pill" style="color:var(--mut)">Versichert</span>
+          <span class="pill" style="color:var(--mut)">Digitale Doku</span>
+          <span class="pill" style="color:var(--mut)">Staubarm</span>
+          <span class="pill" style="color:var(--mut)">Ganz Deutschland</span>
+        </div>
+      </div>
+
+      <!-- BLUEPRINT (right on desktop, bottom on mobile) -->
+      <div class="blueprint" aria-hidden="true">
+        <div class="scan"></div>
+        <svg class="bp-svg" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#FF5C00"/>
-              <stop offset="1" stop-color="#2B5BD3"/>
+              <stop offset="0" stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/>
             </linearGradient>
           </defs>
 
           <!-- foundation -->
-          <path class="stroke draw delay1" pathLength="1" d="M120 360 L680 360"/>
+          <path class="stroke draw d1" pathLength="1" d="M120 350 L680 350"/>
 
-          <!-- pillars & floor beam -->
-          <path class="stroke thin draw delay2" pathLength="1" d="M200 360 L200 220"/>
-          <path class="stroke thin draw delay2" pathLength="1" d="M420 360 L420 220"/>
-          <path class="stroke thin draw delay2" pathLength="1" d="M220 330 L400 330"/>
+          <!-- pillars & beam -->
+          <path class="stroke thin draw d2" pathLength="1" d="M210 350 L210 220"/>
+          <path class="stroke thin draw d2" pathLength="1" d="M430 350 L430 220"/>
+          <path class="stroke thin draw d2" pathLength="1" d="M230 320 L410 320"/>
 
           <!-- roof -->
-          <path class="stroke draw delay3 glow" pathLength="1" d="M200 220 L300 140 L420 220"/>
+          <path class="stroke draw d3" pathLength="1" d="M210 220 L305 140 L430 220"/>
 
-          <!-- inner rafters (ghost) -->
-          <path class="stroke ghost draw delay4" pathLength="1" d="M260 180 L260 330"/>
-          <path class="stroke ghost draw delay4" pathLength="1" d="M340 180 L340 220"/>
+          <!-- inner studs (ghost) -->
+          <path class="stroke ghost draw d4" pathLength="1" d="M270 180 L270 320"/>
+          <path class="stroke ghost draw d4" pathLength="1" d="M350 180 L350 220"/>
 
-          <!-- set square (right) -->
-          <path class="stroke draw delay4" pathLength="1" d="M510 360 L590 280 L670 360 Z"/>
-          <!-- measure ticks on the square -->
-          <path class="stroke thin draw delay5" pathLength="1" d="M520 350 L535 335"/>
-          <path class="stroke thin draw delay5" pathLength="1" d="M540 330 L555 315"/>
-          <path class="stroke thin draw delay5" pathLength="1" d="M560 310 L575 295"/>
-          <path class="stroke thin draw delay5" pathLength="1" d="M580 290 L595 275"/>
+          <!-- square (right) -->
+          <path class="stroke draw d4" pathLength="1" d="M520 350 L600 270 L680 350 Z"/>
+          <path class="stroke thin draw d5" pathLength="1" d="M530 340 L545 325"/>
+          <path class="stroke thin draw d5" pathLength="1" d="M550 320 L565 305"/>
+          <path class="stroke thin draw d6" pathLength="1" d="M570 300 L585 285"/>
         </svg>
-      </div>
-    </div>
-
-    <!-- content -->
-    <div class="inner">
-      <div class="services-chips">
-        <span class="chip floaty">Innenausbau</span>
-        <span class="chip floaty">Trockenbau</span>
-        <span class="chip floaty">Bodenleger</span>
-        <span class="chip floaty">Gartenarbeit</span>
-      </div>
-
-      <h1 class="hero-title">Präzision im Bau. Bundesweit.</h1>
-
-      <div class="bullets">
-        <span class="bullet"><span class="dot"></span><b>14+ Jahre Erfahrung</b></span>
-        <span class="bullet"><span class="dot"></span><b>Antwort in 24&nbsp;Stunden</b></span>
-        <span class="bullet"><span class="dot"></span><b>TÜV-nahe Standards</b></span>
-      </div>
-
-      <div class="cta">
-        <a class="btn primary" href="/anfrage.html">Kostenlose Einschätzung</a>
-        <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
-      </div>
-
-      <div class="trust">
-        <span class="pill">Versichert</span>
-        <span class="pill">Digitale Doku</span>
-        <span class="pill">Staubarm</span>
-        <span class="pill">Ganz Deutschland</span>
       </div>
     </div>
   </header>
@@ -280,12 +268,10 @@
 
   <script src="/assets/js/main.js"></script>
   <script>
-    // Subtle parallax for background layers (disabled for reduced motion)
+    // Tiny parallax on hero blueprint (desktop only)
     (function(){
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const hero = document.getElementById('hero');
-      if (prefersReduced || !hero) return;
-
+      if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       function set(px,py){
         document.documentElement.style.setProperty('--px', px + 'px');
         document.documentElement.style.setProperty('--py', py + 'px');
