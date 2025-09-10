@@ -3,35 +3,121 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>TFD — Präzision im Bau. Bundesweit.</title>
-  <meta name="description" content="TFD: Innenausbau, Trockenbau, Bodenleger & Gartenarbeit. Bundesweit, termintreu, sauber. Antwort innerhalb von 24 Stunden.">
+  <meta name="description" content="Innenausbau, Trockenbau, Bodenleger & Gartenarbeit — termintreu, sauber, transparent. Antwort innerhalb von 24 Stunden.">
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
 
-  <!-- Open Graph / Twitter -->
+  <!-- Social preview -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="TFD — Präzision im Bau. Bundesweit.">
-  <meta property="og:description" content="Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — termintreu, sauber, transparent.">
+  <meta property="og:description" content="Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — bundesweit, termintreu, sauber.">
   <meta property="og:image" content="https://tfd-bau.onrender.com/assets/img/tfd-logo-3d.png">
   <meta property="og:url" content="https://tfd-bau.onrender.com/">
   <meta name="twitter:card" content="summary_large_image">
 
+  <!-- Page-scoped hero styles (safe: only affect this page) -->
   <style>
-    :root{--bg:#0F1115;--surf:#12161E;--card:#10141b;--line:#1B2230;--text:#F3F6F9;--mut:#A9B4C2;--a1:#FF5C00;--a2:#2B5BD3}
-    .hero{position:relative;padding:56px 0 28px}
-    .eyebrow{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#0f131a;color:var(--mut);font-weight:700;margin-bottom:10px}
-    .hero h1{font-size:clamp(30px,4.6vw,56px);line-height:1.08;margin:0}
-    .bullets{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 18px}
-    .bullet{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:#0f131a}
+    :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --a1:#FF5C00; --a2:#2B5BD3; }
+
+    /* ===== HERO LAYOUT ===== */
+    .hero-pro{
+      position:relative; min-height:66vh; display:flex; align-items:center; overflow:hidden;
+      border:1px solid rgba(255,255,255,.04); border-left:none; border-right:none;
+    }
+    .hero-pro .inner{
+      position:relative; z-index:2; width:100%;
+      max-width:980px; margin:0 auto; padding:44px 18px;
+      text-align:center;
+    }
+    @media (min-width:980px){
+      .hero-pro .inner{ text-align:left; padding:64px 18px; }
+    }
+
+    .services-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#0f131a;color:var(--mut);font-weight:800}
+    .hero-title{
+      position:relative; font-size:clamp(32px,6vw,64px); line-height:1.06; margin:6px 0 10px;
+    }
+    /* Subtle shine sweep across H1 */
+    .hero-title::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(115deg,transparent 20%, rgba(255,255,255,.12) 50%, transparent 70%);
+      transform:translateX(-130%) skewX(-16deg);
+      animation:shine 7s linear infinite;
+    }
+    @keyframes shine{ to { transform:translateX(130%) skewX(-16deg);} }
+
+    .bullets{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0 18px}
+    .bullet{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#0f131a}
     .bullet .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--a1),var(--a2))}
-    .cta{display:flex;gap:10px;flex-wrap:wrap}
+    .cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
     .btn{border:1px solid var(--line);background:#0f131a;color:var(--text);padding:12px 16px;border-radius:14px;font-weight:800}
     .btn.primary{background:linear-gradient(90deg,var(--a1),var(--a2));border:none}
-    .trust{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-    .trust .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#0f131a;color:var(--mut);font-weight:700}
-    .grid{display:grid;gap:16px}
-    .grid-2{grid-template-columns:1fr 1fr}
-    @media(max-width:980px){.grid-2{grid-template-columns:1fr}}
-    .svc-nav .card{position:relative;border:1px solid var(--line);background:var(--card);border-radius:18px;padding:18px;overflow:hidden;transition:transform .15s ease}
+    .trust{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+    .trust .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#0f131a;color:var(--mut);font-weight:800}
+
+    @media (min-width:980px){
+      .bullets,.cta,.trust,.services-chips{justify-content:flex-start}
+    }
+
+    /* Micro float on chips/buttons */
+    .floaty{animation:floaty 6s ease-in-out infinite}
+    .floaty:nth-child(2){animation-delay:.8s}
+    .floaty:nth-child(3){animation-delay:1.6s}
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+    /* ===== BACKGROUND (gradient mesh + moving grid + drifting orbs) ===== */
+    .hero-bg{position:absolute; inset:0; z-index:1; overflow:hidden}
+    /* Base moving gradient mesh */
+    .hero-bg .mesh{
+      position:absolute; inset:-20%;
+      background:
+        radial-gradient(480px 280px at 15% 20%, rgba(255,92,0,.20), transparent 60%),
+        radial-gradient(560px 320px at 85% 30%, rgba(43,91,211,.22), transparent 60%),
+        radial-gradient(520px 260px at 60% 80%, rgba(255,92,0,.14), transparent 60%),
+        #0B0F14;
+      filter:blur(10px) saturate(1.1);
+      animation:meshShift 28s ease-in-out infinite alternate;
+      transform:translate3d(var(--px,0px), var(--py,0px), 0); /* parallax */
+    }
+    @keyframes meshShift{
+      0%{ background-position: 0 0, 0 0, 0 0; }
+      100%{ background-position: 10% -6%, -8% 12%, 6% 4%; }
+    }
+
+    /* Thin moving grid overlay */
+    .hero-bg .grid{
+      position:absolute; inset:0; opacity:.16;
+      background:
+        repeating-linear-gradient( to right, rgba(255,255,255,.06) 0 1px, transparent 1px 32px ),
+        repeating-linear-gradient( to bottom, rgba(255,255,255,.06) 0 1px, transparent 1px 32px );
+      transform:translate3d(0,0,0);
+      animation:gridDrift 26s linear infinite;
+      mix-blend-mode:screen;
+    }
+    @keyframes gridDrift{ 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(-80px,-40px,0)} }
+
+    /* Drifting orbs */
+    .hero-bg .orbs{
+      position:absolute; inset:0; pointer-events:none; opacity:.65;
+      background:
+        radial-gradient(120px 120px at 25% 75%, rgba(43,91,211,.10), transparent 60%),
+        radial-gradient(140px 140px at 80% 35%, rgba(255,92,0,.12), transparent 60%);
+      animation:orbs 22s ease-in-out infinite alternate;
+      transform:translate3d(calc(var(--px,0px)*.6), calc(var(--py,0px)*.6), 0); /* parallax */
+    }
+    @keyframes orbs{ 0%{ background-position: 25% 75%, 80% 35% } 100%{ background-position: 28% 78%, 76% 40% } }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .hero-title::after, .mesh, .grid, .orbs, .floaty { animation: none !important; }
+    }
+
+    /* ===== Section after hero (service nav) ===== */
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:22px 0}
+    .svc-nav{display:grid;gap:16px;grid-template-columns:1fr}
+    @media(min-width:980px){ .svc-nav{grid-template-columns:1fr 1fr} }
+    .svc-nav .card{position:relative;border:1px solid var(--line);background:#10141b;border-radius:18px;padding:18px;overflow:hidden;transition:transform .15s ease}
     .svc-nav .card:hover{transform:translateY(-3px)}
     .svc-nav .card::before{content:"";position:absolute;inset:-1px;border-radius:18px;pointer-events:none;
       background:radial-gradient(900px 260px at -10% -60%,rgba(255,92,0,.10),transparent),
@@ -39,24 +125,20 @@
     .svc-ico{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#0f131a;display:grid;place-items:center;margin-bottom:10px}
     .svc-title{font-weight:800;margin:0 0 4px}
     .svc-sub{color:var(--mut);margin:0}
-    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:22px 0}
-    /* Sticky dock (desktop only) */
-    .desk-dock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:50;display:none}
-    .desk-dock.show{display:block}
-    .desk-dock .wrap{display:flex;gap:10px;background:rgba(16,20,27,.85);backdrop-filter:blur(6px);
-      border:1px solid var(--line);border-radius:16px;padding:8px}
-    @media(max-width:900px){.desk-dock{display:none!important}}
   </style>
 </head>
+
 <body class="logo-bg">
   <!-- NAV -->
-  <nav class="nav"><div class="container bar">
-    <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
-    <a class="brand" href="/index.html" aria-label="Startseite">
-      <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
-    </a>
-    <div class="spacer"></div>
-  </div></nav>
+  <nav class="nav">
+    <div class="container bar">
+      <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
+      <a class="brand centered" href="/index.html" aria-label="Startseite">
+        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
+      </a>
+      <div class="spacer"></div>
+    </div>
+  </nav>
 
   <!-- Drawer -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
@@ -75,11 +157,23 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <main class="container">
-    <!-- HERO -->
-    <section class="hero">
-      <span class="eyebrow">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span>
-      <h1>Präzision im Bau. Bundesweit.</h1>
+  <!-- ===== HERO ===== -->
+  <header class="hero-pro" id="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="mesh"></div>
+      <div class="grid"></div>
+      <div class="orbs"></div>
+    </div>
+
+    <div class="inner">
+      <div class="services-chips">
+        <span class="chip floaty">Innenausbau</span>
+        <span class="chip floaty">Trockenbau</span>
+        <span class="chip floaty">Bodenleger</span>
+        <span class="chip floaty">Gartenarbeit</span>
+      </div>
+
+      <h1 class="hero-title">Präzision im Bau. Bundesweit.</h1>
 
       <div class="bullets">
         <span class="bullet"><span class="dot"></span><b>14+ Jahre Erfahrung</b></span>
@@ -98,12 +192,14 @@
         <span class="pill">Staubarm</span>
         <span class="pill">Ganz Deutschland</span>
       </div>
-    </section>
+    </div>
+  </header>
 
+  <main class="container">
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- SERVICE NAVIGATOR (replaces duplicate Leistungen) -->
-    <section class="svc-nav grid grid-2" aria-label="Leistungsnavigation">
+    <!-- SERVICE NAVIGATOR (kept simple + modern) -->
+    <section class="svc-nav" aria-label="Leistungsnavigation">
       <a class="card" href="/leistungen.html#innenausbau">
         <div class="svc-ico">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -120,7 +216,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v4H4zM4 14h16v4H4z" stroke="url(#g2)" stroke-width="1.6"/><defs><linearGradient id="g2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/></linearGradient></defs></svg>
         </div>
         <p class="svc-title">Trockenbau</p>
-        <p class="svc-sub">Wände/Decken, Akustik & Brandschutz – millimetergenau.</p>
+        <p class="svc-sub">Wände/Decken, Akustik & Brandschutz.</p>
       </a>
 
       <a class="card" href="/leistungen.html#bodenleger">
@@ -128,7 +224,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4h8v8H4zM12 12h8v8h-8zM12 4h8v8h-8zM4 12h8v8H4z" stroke="url(#g3)" stroke-width="1.6"/><defs><linearGradient id="g3" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/></linearGradient></defs></svg>
         </div>
         <p class="svc-title">Bodenleger</p>
-        <p class="svc-sub">Parkett, Vinyl, Laminat – vorbereitet & präzise verlegt.</p>
+        <p class="svc-sub">Parkett, Vinyl, Laminat – präzise verlegt.</p>
       </a>
 
       <a class="card" href="/leistungen.html#gartenarbeit">
@@ -141,26 +237,36 @@
     </section>
   </main>
 
-  <!-- Sticky desktop dock -->
-  <div class="desk-dock" id="deskDock">
-    <div class="wrap">
-      <a class="btn primary" href="/anfrage.html">Kostenlose Einschätzung</a>
-      <a class="btn" href="tel:+4915770070701">Anrufen</a>
-      <a class="btn" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
-    </div>
-  </div>
-
   <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
 
   <script src="/assets/js/main.js"></script>
   <script>
-    // Show sticky dock after hero leaves viewport
-    const dock = document.getElementById('deskDock');
-    const hero = document.querySelector('.hero');
-    const io = new IntersectionObserver(([e]) => {
-      dock.classList.toggle('show', !e.isIntersecting);
-    }, {rootMargin: "-80px 0px 0px 0px", threshold: 0});
-    io.observe(hero);
+    // Tiny parallax for hero background (disabled for reduced motion)
+    (function(){
+      const root = document.querySelector(':root');
+      const hero = document.getElementById('hero');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!hero || prefersReduced) return;
+
+      function move(e){
+        const r = hero.getBoundingClientRect();
+        const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
+        const y = (e.clientY - (r.top + r.height/2)) / (r.height/2);
+        // limit to a few pixels for elegance
+        const px = Math.max(-1, Math.min(1, x)) * 14;
+        const py = Math.max(-1, Math.min(1, y)) * 10;
+        root.style.setProperty('--px', px + 'px');
+        root.style.setProperty('--py', py + 'px');
+      }
+      hero.addEventListener('mousemove', move);
+      hero.addEventListener('mouseleave', ()=>{ root.style.setProperty('--px','0px'); root.style.setProperty('--py','0px'); });
+      // also react to device tilt a little (mobile)
+      window.addEventListener('deviceorientation', (ev)=>{
+        const px = (ev.gamma||0)/4; // left-right
+        const py = (ev.beta||0)/8;  // front-back
+        root.style.setProperty('--px', px+'px'); root.style.setProperty('--py', py+'px');
+      }, { passive:true });
+    })();
   </script>
 </body>
 </html>
