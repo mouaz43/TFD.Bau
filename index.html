@@ -7,110 +7,140 @@
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
 
-  <!-- Page-scoped styles: brighten ONLY the right blueprint panel + keep hero tidy -->
+  <!-- Page-scoped styles: lively full-width hero background (one piece with the bar) -->
   <style>
-    :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --a1:#FF5C00; --a2:#2B5BD3; --px:0px; --py:0px; }
+    :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --px:0px; --py:0px; }
 
-    /* ===== HERO LAYOUT (same structure, mobile-first) ===== */
-    .hero{position:relative; overflow:hidden; background:transparent; border-block:1px solid rgba(255,255,255,.05); min-height:72svh}
-    .hero .wrap{position:relative; z-index:3; max-width:1120px; margin:0 auto; padding:28px 18px 44px; display:grid; gap:16px; grid-template-columns:1fr}
-    @media (min-width:980px){ .hero .wrap{ padding:56px 18px 70px; grid-template-columns:1.05fr .95fr; align-items:center } }
+    /* ===== HERO LAYOUT (mobile-first, left-aligned) ===== */
+    .hero{
+      position:relative; overflow:hidden; background:transparent;
+      border-block:1px solid rgba(255,255,255,.05);
+      min-height:72svh; display:grid; place-items:stretch;
+    }
+    .hero .wrap{
+      position:relative; z-index:3; max-width:1120px; margin:0 auto;
+      padding:28px 18px 44px; display:grid; gap:16px; grid-template-columns:1fr;
+    }
+    @media (min-width:980px){ .hero .wrap{ padding:56px 18px 70px; grid-template-columns:1fr; } }
 
-    .eyebrow{display:inline-block;font-weight:800;color:var(--mut);background:#0F131A;border:1px solid var(--line);border-radius:999px;padding:7px 12px}
-    .hero h1{font-size:clamp(30px,7vw,62px);line-height:1.06;margin:.25em 0 .2em;position:relative}
-    .hero h1::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 70%);transform:translateX(-120%) skewX(-16deg);animation:shine 7s linear infinite}
+    .eyebrow{
+      display:inline-block; font-weight:800; color:var(--mut);
+      background:#0F131A; border:1px solid var(--line); border-radius:999px; padding:7px 12px;
+    }
+    .hero h1{
+      font-size:clamp(30px,7vw,62px); line-height:1.06; margin:.25em 0 .2em; position:relative;
+    }
+    .hero h1::after{ /* subtle shine */
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 70%);
+      transform:translateX(-120%) skewX(-16deg); animation:shine 7s linear infinite;
+    }
     @keyframes shine{to{transform:translateX(120%) skewX(-16deg)}}
-    .sub{color:var(--mut);margin:0 0 6px;font-size:clamp(15px,2.6vw,18px)}
-    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-    .btn{border:1px solid var(--line);background:#0F131A;color:var(--text);padding:12px 16px;border-radius:14px;font-weight:800}
-    .btn.primary{background:linear-gradient(90deg,var(--a1),var(--a2));border:none}
-    .trust{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#0F131A;color:var(--mut);font-weight:800}
-    .pill .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--a1),var(--a2))}
 
-    /* ===== BRIGHT, LIVELY BLUEPRINT PANEL (right column) ===== */
-    .bp{
-      position:relative; border:1px solid rgba(255,255,255,.10); border-radius:22px; overflow:hidden;
-      height:320px;
+    .sub{color:var(--mut); margin:0 0 6px; font-size:clamp(15px,2.6vw,18px)}
+    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px}
+    .btn{border:1px solid var(--line); background:#0F131A; color:var(--text); padding:12px 16px; border-radius:14px; font-weight:800}
+    .btn.primary{background:linear-gradient(90deg,#FF7A18,#6EA0FF,#00D4FF); border:none}
+    .trust{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:#0F131A; color:#BFC9D7; font-weight:800}
+    .pill .dot{width:8px; height:8px; border-radius:50%; background:linear-gradient(90deg,#FF7A18,#6EA0FF)}
+
+    /* ===== FULL-WIDTH BACKGROUND (one body with nav) ===== */
+    .hero-bg{position:absolute; inset:0; z-index:1; overflow:hidden}
+
+    /* Brighter mesh */
+    .mesh{
+      position:absolute; inset:-20%;
       background:
-        radial-gradient(900px 520px at 15% 0%, rgba(255,92,0,.22), transparent 60%),
-        radial-gradient(900px 520px at 100% 40%, rgba(43,91,211,.26), transparent 60%),
-        radial-gradient(1000px 520px at 50% 110%, rgba(0,194,255,.18), transparent 60%),
-        linear-gradient(180deg,#0f1f33 0%, #101d3e 40%, #0e1835 100%); /* brighter base */
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.05),
-        0 30px 60px rgba(0,0,0,.35);
+        radial-gradient(60vw 40vh at 8% 0%, rgba(255,122,24,.30), transparent 60%),
+        radial-gradient(60vw 40vh at 100% 25%, rgba(110,160,255,.28), transparent 60%),
+        radial-gradient(70vw 50vh at 50% 115%, rgba(0,212,255,.22), transparent 60%),
+        linear-gradient(135deg,#0f1f33 0%, #0e1835 35%, #0c152c 100%);
+      animation:meshShift 30s ease-in-out infinite alternate;
+      filter:saturate(1.08);
+      transform:translate3d(var(--px),var(--py),0);
     }
-    @media (min-width:980px){ .bp{ height:420px } }
-
-    /* soft glow ring around panel */
-    .bp::before{
-      content:""; position:absolute; inset:-1px; border-radius:22px; pointer-events:none;
-      background:
-        conic-gradient(from 200deg at 70% 20%, rgba(43,91,211,.35), transparent 35%, rgba(255,92,0,.35), transparent 75%);
-      filter:blur(22px); opacity:.6; mix-blend-mode:screen;
+    @keyframes meshShift{
+      0%{background-position:0 0,0 0,0 0,0 0}
+      100%{background-position:-5vw -4vh,6vw -6vh,2vw 6vh,0 0}
     }
 
-    /* brighter grid */
-    .bp-grid{
-      position:absolute; inset:0; opacity:.25; mix-blend-mode:screen; z-index:2;
+    /* Brighter grid over the whole hero */
+    .gridlines{
+      position:absolute; inset:0; opacity:.20; mix-blend-mode:screen;
       background:
-        repeating-linear-gradient(to right, rgba(255,255,255,.10) 0 1px, transparent 1px 28px),
-        repeating-linear-gradient(to bottom, rgba(255,255,255,.10) 0 1px, transparent 1px 28px);
-      animation:gridDrift 26s linear infinite;
+        repeating-linear-gradient(to right, rgba(255,255,255,.12) 0 1px, transparent 1px 28px),
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.12) 0 1px, transparent 1px 28px);
+      animation:gridDrift 24s linear infinite;
     }
     @keyframes gridDrift{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-90px,-60px,0)}}
 
-    /* drifting orbs for life */
-    .bp-orbs{
-      position:absolute; inset:-10% -6%; z-index:1; pointer-events:none; opacity:.6;
+    /* Drifting color orbs for life */
+    .orbs{
+      position:absolute; inset:-10% -6%; pointer-events:none; opacity:.55; mix-blend-mode:screen;
       background:
-        radial-gradient(220px 220px at 18% 65%, rgba(255,92,0,.18), transparent 60%),
-        radial-gradient(220px 220px at 82% 35%, rgba(43,91,211,.20), transparent 60%);
+        radial-gradient(220px 220px at 18% 65%, rgba(255,122,24,.22), transparent 60%),
+        radial-gradient(240px 240px at 82% 35%, rgba(110,160,255,.24), transparent 60%),
+        radial-gradient(200px 200px at 52% 90%, rgba(0,212,255,.20), transparent 60%);
       animation:orbs 20s ease-in-out infinite alternate;
       transform:translate3d(calc(var(--px)*.18), calc(var(--py)*.18), 0);
     }
-    @keyframes orbs{0%{background-position:18% 65%,82% 35%}100%{background-position:22% 62%,78% 38%}}
+    @keyframes orbs{
+      0%{background-position:18% 65%,82% 35%,52% 90%}
+      100%{background-position:22% 62%,78% 38%,48% 86%}
+    }
 
-    /* a soft diagonal shine that moves slowly */
-    .bp-shine{
-      position:absolute; inset:-30% -10%; z-index:3; pointer-events:none;
-      background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.08) 50%, transparent 65%);
+    /* SVG blueprint occupying right side but spanning entire hero, no card */
+    .bp{
+      position:absolute; inset:-2% -2% -6% -2%; z-index:2; pointer-events:none;
+      filter:drop-shadow(0 12px 32px rgba(0,0,0,.35));
+      transform:translate3d(calc(var(--px)*.22),calc(var(--py)*.22),0);
+    }
+    .stroke{fill:none; stroke:url(#grad); stroke-width:3; stroke-linecap:round; stroke-linejoin:round; opacity:.95}
+    .thin{stroke-width:2}
+    .ghost{stroke:rgba(220,230,245,.38)}
+    .node{fill:url(#grad)}
+
+    /* Continuous draw/erase loop */
+    .loop{stroke-dasharray:1; stroke-dashoffset:1; animation:drawLoop 11s ease-in-out infinite}
+    .loop2{animation-duration:13s; animation-delay:.6s}
+    .loop3{animation-duration:9.5s; animation-delay:1s}
+    @keyframes drawLoop{
+      0%{stroke-dashoffset:1}
+      30%{stroke-dashoffset:0}   /* fully drawn */
+      60%{stroke-dashoffset:-.85}/* erase beyond start */
+      100%{stroke-dashoffset:1}  /* back to hidden */
+    }
+
+    /* Small triangle module gently drifting (continuous) */
+    .tri{transform-origin:640px 300px; animation:floatTri 16s ease-in-out infinite}
+    @keyframes floatTri{
+      0%,100%{transform:translate(0,0) rotate(0deg)}
+      50%{transform:translate(-8px,6px) rotate(-1.5deg)}
+    }
+
+    /* sweeping glow across whole hero */
+    .sweep{
+      position:absolute; inset:-40% -20%; z-index:1; pointer-events:none;
+      background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.07) 50%, transparent 65%);
       transform:translateX(-60%); animation:shinepane 14s linear infinite;
     }
     @keyframes shinepane{to{transform:translateX(60%)}}
 
-    /* blueprint lines */
-    .bp-svg{position:absolute; inset:-6% -4%; z-index:4; filter:drop-shadow(0 12px 32px rgba(0,0,0,.35));
-      transform:translate3d(calc(var(--px)*.22), calc(var(--py)*.22), 0)}
-    .stroke{fill:none; stroke:url(#grad); stroke-width:3; stroke-linecap:round; stroke-linejoin:round}
-    .thin{stroke-width:2; opacity:.95}
-    .ghost{stroke:rgba(220,230,245,.35)}
-    .node{fill:url(#grad)}
-
-    .draw{stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1.05s ease forwards}
-    .d1{animation-delay:.05s} .d2{animation-delay:.35s} .d3{animation-delay:.65s}
-    .d4{animation-delay:.95s} .d5{animation-delay:1.25s} .d6{animation-delay:1.5s}
-    @keyframes draw{to{stroke-dashoffset:0}}
-
-    /* subtle breathing glow on nodes */
-    .pulse{animation:pulse 3.2s ease-in-out 1.6s infinite}
-    @keyframes pulse{0%,100%{opacity:.75}50%{opacity:1}}
-
-    /* reduced motion */
+    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .bp-grid,.bp-orbs,.bp-shine,.bp-svg{animation:none!important}
+      .mesh,.gridlines,.orbs,.bp,.sweep{animation:none!important}
     }
 
-    /* section below hero (unchanged) */
+    /* Section below hero (unchanged) */
     .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:22px 0}
     .svc-nav{display:grid;gap:16px;grid-template-columns:1fr}
     @media(min-width:980px){ .svc-nav{grid-template-columns:1fr 1fr} }
     .svc-nav .card{position:relative;border:1px solid var(--line);background:#10141b;border-radius:18px;padding:18px;overflow:hidden;transition:transform .15s ease}
     .svc-nav .card:hover{transform:translateY(-3px)}
     .svc-nav .card::before{content:"";position:absolute;inset:-1px;border-radius:18px;pointer-events:none;background:
-      radial-gradient(900px 260px at -10% -60%,rgba(255,92,0,.10),transparent),
-      radial-gradient(800px 200px at 110% 140%,rgba(43,91,211,.08),transparent)}
+      radial-gradient(900px 260px at -10% -60%,rgba(255,122,24,.10),transparent),
+      radial-gradient(800px 200px at 110% 140%,rgba(110,160,255,.08),transparent)}
     .svc-ico{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#0f131a;display:grid;place-items:center;margin-bottom:10px}
     .svc-title{font-weight:800;margin:0 0 4px}
     .svc-sub{color:var(--mut);margin:0}
@@ -146,10 +176,42 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- ===== HERO ===== -->
+  <!-- ===== HERO (one-body background) ===== -->
   <header class="hero" id="hero">
+    <!-- lively background spanning entire hero -->
+    <div class="hero-bg" aria-hidden="true">
+      <div class="mesh"></div>
+      <div class="gridlines"></div>
+      <div class="orbs"></div>
+      <div class="sweep"></div>
+
+      <!-- Blueprint lines (looping) -->
+      <svg class="bp" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#FF7A18"/><stop offset=".6" stop-color="#6EA0FF"/><stop offset="1" stop-color="#00D4FF"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Main house on right/top area -->
+        <g transform="translate(380,40)">
+          <path class="stroke loop"   pathLength="1" d="M 60 240 L 60 90" />
+          <path class="stroke loop3"  pathLength="1" d="M 60 90 L 160 20 L 260 90" />
+          <path class="stroke thin loop2" pathLength="1" d="M 80 200 L 220 200" />
+          <path class="ghost  loop2" pathLength="1" d="M 120 70 L 120 200" />
+          <path class="ghost  loop2" pathLength="1" d="M 180 70 L 180 120" />
+          <circle class="node" cx="60" cy="90" r="3"/><circle class="node" cx="160" cy="20" r="3"/><circle class="node" cx="260" cy="90" r="3"/>
+        </g>
+
+        <!-- Triangle module that drifts -->
+        <g class="tri" transform="translate(520,260)">
+          <path class="stroke loop" pathLength="1" d="M 0 40 L 60 -20 L 120 40 Z"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Copy -->
     <div class="wrap">
-      <!-- LEFT: text -->
       <div>
         <span class="eyebrow">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span>
         <h1>Präzision im Bau. Bundesweit.</h1>
@@ -166,61 +228,19 @@
           <span class="pill">Digitale Doku</span>
         </div>
       </div>
-
-      <!-- RIGHT: brighter, lively blueprint panel -->
-      <div class="bp" aria-hidden="true">
-        <div class="bp-orbs"></div>
-        <div class="bp-grid"></div>
-        <div class="bp-shine"></div>
-
-        <svg class="bp-svg" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/>
-            </linearGradient>
-          </defs>
-
-          <!-- foundation -->
-          <path class="stroke draw d1" pathLength="1" d="M110 350 L690 350"/>
-
-          <!-- pillars + beam -->
-          <path class="stroke thin draw d2" pathLength="1" d="M200 350 L200 220"/>
-          <path class="stroke thin draw d2" pathLength="1" d="M430 350 L430 220"/>
-          <path class="stroke thin draw d2" pathLength="1" d="M220 320 L410 320"/>
-
-          <!-- roof -->
-          <path class="stroke draw d3" pathLength="1" d="M200 220 L305 140 L430 220"/>
-
-          <!-- studs (ghost) -->
-          <path class="stroke ghost draw d4" pathLength="1" d="M260 180 L260 320"/>
-          <path class="stroke ghost draw d4" pathLength="1" d="M345 180 L345 220"/>
-
-          <!-- set square -->
-          <path class="stroke draw d4" pathLength="1" d="M520 350 L600 270 L680 350 Z"/>
-          <path class="stroke thin draw d5" pathLength="1" d="M530 340 L545 325"/>
-          <path class="stroke thin draw d5" pathLength="1" d="M550 320 L565 305"/>
-          <path class="stroke thin draw d6" pathLength="1" d="M570 300 L585 285"/>
-
-          <!-- glowing nodes -->
-          <circle class="node pulse" cx="200" cy="220" r="3"/>
-          <circle class="node pulse" cx="305" cy="140" r="3"/>
-          <circle class="node pulse" cx="430" cy="220" r="3"/>
-          <circle class="node pulse" cx="600" cy="270" r="3"/>
-        </svg>
-      </div>
     </div>
   </header>
 
   <main class="container">
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- SERVICE NAV (unchanged cards) -->
+    <!-- SERVICE NAV -->
     <section class="svc-nav" aria-label="Leistungsnavigation">
       <a class="card" href="/leistungen.html#innenausbau">
         <div class="svc-ico">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path d="M4 10L12 4l8 6v8a2 2 0 0 1-2 2h-4v-6H10v6H6a2 2 0 0 1-2-2v-8z" stroke="url(#g1)" stroke-width="1.6"/>
-            <defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/></linearGradient></defs>
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs>
           </svg>
         </div>
         <p class="svc-title">Innenausbau</p>
@@ -229,7 +249,7 @@
 
       <a class="card" href="/leistungen.html#trockenbau">
         <div class="svc-ico">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v4H4zM4 14h16v4H4z" stroke="url(#g2)" stroke-width="1.6"/><defs><linearGradient id="g2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/></linearGradient></defs></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v4H4zM4 14h16v4H4z" stroke="url(#g2)" stroke-width="1.6"/><defs><linearGradient id="g2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs></svg>
         </div>
         <p class="svc-title">Trockenbau</p>
         <p class="svc-sub">Wände/Decken, Akustik & Brandschutz.</p>
@@ -237,7 +257,7 @@
 
       <a class="card" href="/leistungen.html#bodenleger">
         <div class="svc-ico">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4h8v8H4zM12 12h8v8h-8zM12 4h8v8h-8zM4 12h8v8H4z" stroke="url(#g3)" stroke-width="1.6"/><defs><linearGradient id="g3" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/></linearGradient></defs></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4h8v8H4zM12 12h8v8h-8zM12 4h8v8h-8zM4 12h8v8H4z" stroke="url(#g3)" stroke-width="1.6"/><defs><linearGradient id="g3" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs></svg>
         </div>
         <p class="svc-title">Bodenleger</p>
         <p class="svc-sub">Parkett, Vinyl, Laminat – präzise verlegt.</p>
@@ -245,7 +265,7 @@
 
       <a class="card" href="/leistungen.html#gartenarbeit">
         <div class="svc-ico">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19h14M6 15l6-10 6 10" stroke="url(#g4)" stroke-width="1.6"/><defs><linearGradient id="g4" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF5C00"/><stop offset="1" stop-color="#2B5BD3"/></linearGradient></defs></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19h14M6 15l6-10 6 10" stroke="url(#g4)" stroke-width="1.6"/><defs><linearGradient id="g4" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#FF7A18"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs></svg>
         </div>
         <p class="svc-title">Gartenarbeit</p>
         <p class="svc-sub">Terrassen, Pflaster, Rasen – robuste Außenflächen.</p>
@@ -257,18 +277,22 @@
 
   <script src="/assets/js/main.js"></script>
   <script>
-    // Gentle parallax limited to the right panel
+    // Subtle parallax for the hero background layers
     (function(){
       const hero = document.getElementById('hero');
       if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      function set(px,py){ document.documentElement.style.setProperty('--px', px + 'px'); document.documentElement.style.setProperty('--py', py + 'px'); }
-      hero.addEventListener('mousemove', (e)=>{
+      const set = (px,py)=>{ document.documentElement.style.setProperty('--px', px+'px'); document.documentElement.style.setProperty('--py', py+'px'); };
+      hero.addEventListener('mousemove', e=>{
         const r = hero.getBoundingClientRect();
         const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
         const y = (e.clientY - (r.top + r.height/2)) / (r.height/2);
         set(Math.max(-1,Math.min(1,x))*14, Math.max(-1,Math.min(1,y))*10);
       });
       hero.addEventListener('mouseleave', ()=> set(0,0));
+      // small tilt on mobile
+      window.addEventListener('deviceorientation', ev=>{
+        const px = (ev.gamma||0)/4, py=(ev.beta||0)/8; set(px,py);
+      }, {passive:true});
     })();
   </script>
 </body>
