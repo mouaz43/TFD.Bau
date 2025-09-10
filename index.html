@@ -15,30 +15,26 @@
   <meta property="og:url" content="https://tfd-bau.onrender.com/">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Page-scoped hero styles (safe: only affect this page) -->
+  <!-- Page-scoped styles: animated “house being built” background -->
   <style>
-    :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --a1:#FF5C00; --a2:#2B5BD3; }
+    :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --a1:#FF5C00; --a2:#2B5BD3; --px:0px; --py:0px; }
 
     /* ===== HERO LAYOUT ===== */
     .hero-pro{
       position:relative; min-height:66vh; display:flex; align-items:center; overflow:hidden;
       border:1px solid rgba(255,255,255,.04); border-left:none; border-right:none;
+      background:#0B0F14;
     }
     .hero-pro .inner{
-      position:relative; z-index:2; width:100%;
+      position:relative; z-index:3; width:100%;
       max-width:980px; margin:0 auto; padding:44px 18px;
       text-align:center;
     }
-    @media (min-width:980px){
-      .hero-pro .inner{ text-align:left; padding:64px 18px; }
-    }
+    @media (min-width:980px){ .hero-pro .inner{ text-align:left; padding:64px 18px; } }
 
     .services-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
     .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#0f131a;color:var(--mut);font-weight:800}
-    .hero-title{
-      position:relative; font-size:clamp(32px,6vw,64px); line-height:1.06; margin:6px 0 10px;
-    }
-    /* Subtle shine sweep across H1 */
+    .hero-title{position:relative;font-size:clamp(32px,6vw,64px);line-height:1.06;margin:6px 0 10px}
     .hero-title::after{
       content:""; position:absolute; inset:0; pointer-events:none;
       background:linear-gradient(115deg,transparent 20%, rgba(255,255,255,.12) 50%, transparent 70%);
@@ -55,65 +51,72 @@
     .btn.primary{background:linear-gradient(90deg,var(--a1),var(--a2));border:none}
     .trust{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
     .trust .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#0f131a;color:var(--mut);font-weight:800}
+    @media (min-width:980px){ .bullets,.cta,.trust,.services-chips{justify-content:flex-start} }
 
-    @media (min-width:980px){
-      .bullets,.cta,.trust,.services-chips{justify-content:flex-start}
-    }
-
-    /* Micro float on chips/buttons */
+    /* Soft float for chips */
     .floaty{animation:floaty 6s ease-in-out infinite}
     .floaty:nth-child(2){animation-delay:.8s}
     .floaty:nth-child(3){animation-delay:1.6s}
     @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
-    /* ===== BACKGROUND (gradient mesh + moving grid + drifting orbs) ===== */
-    .hero-bg{position:absolute; inset:0; z-index:1; overflow:hidden}
-    /* Base moving gradient mesh */
-    .hero-bg .mesh{
+    /* ===== BACKGROUND LAYERS ===== */
+    .bg-wrap{position:absolute; inset:0; z-index:1; overflow:hidden}
+
+    /* gradient mesh */
+    .mesh{
       position:absolute; inset:-20%;
       background:
-        radial-gradient(480px 280px at 15% 20%, rgba(255,92,0,.20), transparent 60%),
-        radial-gradient(560px 320px at 85% 30%, rgba(43,91,211,.22), transparent 60%),
-        radial-gradient(520px 260px at 60% 80%, rgba(255,92,0,.14), transparent 60%),
-        #0B0F14;
-      filter:blur(10px) saturate(1.1);
+        radial-gradient(520px 300px at 15% 20%, rgba(255,92,0,.18), transparent 60%),
+        radial-gradient(600px 340px at 85% 30%, rgba(43,91,211,.20), transparent 60%),
+        radial-gradient(540px 280px at 60% 80%, rgba(255,92,0,.12), transparent 60%);
+      filter:blur(10px) saturate(1.08);
       animation:meshShift 28s ease-in-out infinite alternate;
-      transform:translate3d(var(--px,0px), var(--py,0px), 0); /* parallax */
+      transform:translate3d(var(--px), var(--py), 0);
     }
     @keyframes meshShift{
       0%{ background-position: 0 0, 0 0, 0 0; }
       100%{ background-position: 10% -6%, -8% 12%, 6% 4%; }
     }
 
-    /* Thin moving grid overlay */
-    .hero-bg .grid{
-      position:absolute; inset:0; opacity:.16;
+    /* thin moving grid */
+    .gridlines{
+      position:absolute; inset:0; opacity:.14;
       background:
         repeating-linear-gradient( to right, rgba(255,255,255,.06) 0 1px, transparent 1px 32px ),
         repeating-linear-gradient( to bottom, rgba(255,255,255,.06) 0 1px, transparent 1px 32px );
-      transform:translate3d(0,0,0);
       animation:gridDrift 26s linear infinite;
       mix-blend-mode:screen;
     }
     @keyframes gridDrift{ 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(-80px,-40px,0)} }
 
-    /* Drifting orbs */
-    .hero-bg .orbs{
-      position:absolute; inset:0; pointer-events:none; opacity:.65;
-      background:
-        radial-gradient(120px 120px at 25% 75%, rgba(43,91,211,.10), transparent 60%),
-        radial-gradient(140px 140px at 80% 35%, rgba(255,92,0,.12), transparent 60%);
-      animation:orbs 22s ease-in-out infinite alternate;
-      transform:translate3d(calc(var(--px,0px)*.6), calc(var(--py,0px)*.6), 0); /* parallax */
-    }
-    @keyframes orbs{ 0%{ background-position: 25% 75%, 80% 35% } 100%{ background-position: 28% 78%, 76% 40% } }
+    /* ===== SVG HOUSE LINE BUILD ===== */
+    .house{position:absolute; inset:0; z-index:2; pointer-events:none; opacity:.85;
+      transform:translate3d(calc(var(--px)*.25), calc(var(--py)*.25),0); }
+    .house svg{width:120%; max-width:none; height:120%; position:absolute; left:-10%; top:-10%}
+    .house .stroke{fill:none; stroke:url(#grad); stroke-width:3; stroke-linecap:round; stroke-linejoin:round;
+      filter:drop-shadow(0 8px 24px rgba(0,0,0,.35)); opacity:.95}
+    .house .thin{stroke-width:2; opacity:.85}
+    .house .ghost{stroke:rgba(255,255,255,.25)}
 
-    /* Respect reduced motion */
+    /* Draw effect: pathLength=1 allows 0..1 dash lengths */
+    .draw{stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1.2s ease forwards}
+    .delay1{animation-delay:.2s} .delay2{animation-delay:.55s} .delay3{animation-delay:.9s}
+    .delay4{animation-delay:1.2s} .delay5{animation-delay:1.55s}
+    @keyframes draw { to { stroke-dashoffset:0 } }
+
+    /* subtle glow pulse after built */
+    .glow{animation:glow 3.5s ease-in-out 1.6s infinite}
+    @keyframes glow{
+      0%,100%{ filter:drop-shadow(0 8px 24px rgba(0,0,0,.35)) }
+      50%{ filter:drop-shadow(0 10px 34px rgba(43,91,211,.28)) }
+    }
+
+    /* reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .hero-title::after, .mesh, .grid, .orbs, .floaty { animation: none !important; }
+      .mesh,.gridlines,.house,.hero-title::after,.floaty{animation:none!important}
     }
 
-    /* ===== Section after hero (service nav) ===== */
+    /* ===== Section after hero ===== */
     .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:22px 0}
     .svc-nav{display:grid;gap:16px;grid-template-columns:1fr}
     @media(min-width:980px){ .svc-nav{grid-template-columns:1fr 1fr} }
@@ -159,12 +162,48 @@
 
   <!-- ===== HERO ===== -->
   <header class="hero-pro" id="hero">
-    <div class="hero-bg" aria-hidden="true">
+    <!-- motion background -->
+    <div class="bg-wrap" aria-hidden="true">
       <div class="mesh"></div>
-      <div class="grid"></div>
-      <div class="orbs"></div>
+      <div class="gridlines"></div>
+
+      <!-- HOUSE line animation -->
+      <div class="house">
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#FF5C00"/>
+              <stop offset="1" stop-color="#2B5BD3"/>
+            </linearGradient>
+          </defs>
+
+          <!-- foundation -->
+          <path class="stroke draw delay1" pathLength="1" d="M120 360 L680 360"/>
+
+          <!-- pillars & floor beam -->
+          <path class="stroke thin draw delay2" pathLength="1" d="M200 360 L200 220"/>
+          <path class="stroke thin draw delay2" pathLength="1" d="M420 360 L420 220"/>
+          <path class="stroke thin draw delay2" pathLength="1" d="M220 330 L400 330"/>
+
+          <!-- roof -->
+          <path class="stroke draw delay3 glow" pathLength="1" d="M200 220 L300 140 L420 220"/>
+
+          <!-- inner rafters (ghost) -->
+          <path class="stroke ghost draw delay4" pathLength="1" d="M260 180 L260 330"/>
+          <path class="stroke ghost draw delay4" pathLength="1" d="M340 180 L340 220"/>
+
+          <!-- set square (right) -->
+          <path class="stroke draw delay4" pathLength="1" d="M510 360 L590 280 L670 360 Z"/>
+          <!-- measure ticks on the square -->
+          <path class="stroke thin draw delay5" pathLength="1" d="M520 350 L535 335"/>
+          <path class="stroke thin draw delay5" pathLength="1" d="M540 330 L555 315"/>
+          <path class="stroke thin draw delay5" pathLength="1" d="M560 310 L575 295"/>
+          <path class="stroke thin draw delay5" pathLength="1" d="M580 290 L595 275"/>
+        </svg>
+      </div>
     </div>
 
+    <!-- content -->
     <div class="inner">
       <div class="services-chips">
         <span class="chip floaty">Innenausbau</span>
@@ -198,7 +237,7 @@
   <main class="container">
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- SERVICE NAVIGATOR (kept simple + modern) -->
+    <!-- SERVICE NAVIGATOR -->
     <section class="svc-nav" aria-label="Leistungsnavigation">
       <a class="card" href="/leistungen.html#innenausbau">
         <div class="svc-ico">
@@ -241,31 +280,23 @@
 
   <script src="/assets/js/main.js"></script>
   <script>
-    // Tiny parallax for hero background (disabled for reduced motion)
+    // Subtle parallax for background layers (disabled for reduced motion)
     (function(){
-      const root = document.querySelector(':root');
-      const hero = document.getElementById('hero');
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(!hero || prefersReduced) return;
+      const hero = document.getElementById('hero');
+      if (prefersReduced || !hero) return;
 
-      function move(e){
+      function set(px,py){
+        document.documentElement.style.setProperty('--px', px + 'px');
+        document.documentElement.style.setProperty('--py', py + 'px');
+      }
+      hero.addEventListener('mousemove', (e)=>{
         const r = hero.getBoundingClientRect();
         const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
         const y = (e.clientY - (r.top + r.height/2)) / (r.height/2);
-        // limit to a few pixels for elegance
-        const px = Math.max(-1, Math.min(1, x)) * 14;
-        const py = Math.max(-1, Math.min(1, y)) * 10;
-        root.style.setProperty('--px', px + 'px');
-        root.style.setProperty('--py', py + 'px');
-      }
-      hero.addEventListener('mousemove', move);
-      hero.addEventListener('mouseleave', ()=>{ root.style.setProperty('--px','0px'); root.style.setProperty('--py','0px'); });
-      // also react to device tilt a little (mobile)
-      window.addEventListener('deviceorientation', (ev)=>{
-        const px = (ev.gamma||0)/4; // left-right
-        const py = (ev.beta||0)/8;  // front-back
-        root.style.setProperty('--px', px+'px'); root.style.setProperty('--py', py+'px');
-      }, { passive:true });
+        set(Math.max(-1,Math.min(1,x))*14, Math.max(-1,Math.min(1,y))*10);
+      });
+      hero.addEventListener('mouseleave', ()=> set(0,0));
     })();
   </script>
 </body>
