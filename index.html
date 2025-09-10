@@ -7,15 +7,14 @@
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
 
-  <!-- Page-scoped styles: one-body hero with animated blueprint details -->
+  <!-- Page-scoped styles for the hero -->
   <style>
     :root{ --line:#1B2230; --mut:#A9B4C2; --text:#F3F6F9; --px:0px; --py:0px; }
 
-    /* ===== HERO LAYOUT ===== */
-    .hero{position:relative; overflow:hidden; background:transparent;
-      border-block:1px solid rgba(255,255,255,.05); min-height:72svh; display:grid; place-items:stretch}
+    /* Layout */
+    .hero{position:relative; overflow:hidden; background:transparent; border-block:1px solid rgba(255,255,255,.05); min-height:72svh; display:grid; place-items:stretch}
     .hero .wrap{position:relative; z-index:3; max-width:1120px; margin:0 auto; padding:28px 18px 44px; display:grid; gap:16px; grid-template-columns:1fr}
-    @media (min-width:980px){ .hero .wrap{ padding:56px 18px 70px; grid-template-columns:1fr } }
+    @media (min-width:980px){ .hero .wrap{ padding:56px 18px 70px } }
 
     .eyebrow{display:inline-block; font-weight:800; color:var(--mut); background:#0F131A; border:1px solid var(--line); border-radius:999px; padding:7px 12px}
     .hero h1{font-size:clamp(30px,7vw,62px); line-height:1.06; margin:.25em 0 .2em; position:relative}
@@ -29,7 +28,7 @@
     .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:#0F131A; color:#BFC9D7; font-weight:800}
     .pill .dot{width:8px; height:8px; border-radius:50%; background:linear-gradient(90deg,#FF7A18,#6EA0FF)}
 
-    /* ===== One-body hero background ===== */
+    /* One-body background */
     .hero-bg{position:absolute; inset:0; z-index:1; overflow:hidden}
     .mesh{position:absolute; inset:-20%;
       background:
@@ -37,13 +36,9 @@
         radial-gradient(60vw 40vh at 100% 25%, rgba(110,160,255,.28), transparent 60%),
         radial-gradient(70vw 50vh at 50% 115%, rgba(0,212,255,.22), transparent 60%),
         linear-gradient(135deg,#0f1f33 0%, #0e1835 35%, #0c152c 100%);
-      animation:meshShift 30s ease-in-out infinite alternate;
-      filter:saturate(1.08);
+      animation:meshShift 30s ease-in-out infinite alternate; filter:saturate(1.08);
       transform:translate3d(var(--px),var(--py),0)}
-    @keyframes meshShift{
-      0%{background-position:0 0,0 0,0 0,0 0}
-      100%{background-position:-5vw -4vh,6vw -6vh,2vw 6vh,0 0}
-    }
+    @keyframes meshShift{0%{background-position:0 0,0 0,0 0,0 0}100%{background-position:-5vw -4vh,6vw -6vh,2vw 6vh,0 0}}
     .gridlines{position:absolute; inset:0; opacity:.20; mix-blend-mode:screen;
       background:
         repeating-linear-gradient(to right, rgba(255,255,255,.12) 0 1px, transparent 1px 28px),
@@ -59,10 +54,9 @@
       transform:translate3d(calc(var(--px)*.18), calc(var(--py)*.18), 0)}
     @keyframes orbs{0%{background-position:18% 65%,82% 35%,52% 90%}100%{background-position:22% 62%,78% 38%,48% 86%}}
 
-    /* SVG layer */
+    /* SVG */
     .bp{position:absolute; inset:-2% -2% -6% -2%; z-index:2; pointer-events:none; filter:drop-shadow(0 12px 32px rgba(0,0,0,.35));
       transform:translate3d(calc(var(--px)*.22),calc(var(--py)*.22),0)}
-
     .stroke{fill:none; stroke:url(#grad); stroke-width:3; stroke-linecap:round; stroke-linejoin:round; opacity:.95}
     .thin{stroke-width:2}
     .ghost{stroke:rgba(220,230,245,.38)}
@@ -71,37 +65,28 @@
     .pulse{animation:pulse 3.2s ease-in-out 1.6s infinite}
     @keyframes pulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.25);opacity:1}}
 
-    /* Slow-moving studs */
     .stud{stroke:rgba(220,230,245,.46); stroke-width:2; stroke-linecap:round; stroke-dasharray:6 14; animation:studFlow 12s linear infinite}
     @keyframes studFlow{to{stroke-dashoffset:-200}}
-
-    /* Sweep along the roof */
     .roof-scan{stroke:rgba(255,255,255,.24); stroke-width:2; stroke-linecap:round; stroke-dasharray:40 260; animation:roofSweep 9s linear infinite}
     @keyframes roofSweep{to{stroke-dashoffset:-300}}
 
-    /* Roof interior: gradient + animated hatch, clipped to the house shape */
-    .roof-fill{mix-blend-mode:screen; opacity:.9}
-    .roof-grad{opacity:.22}
+    /* NEW: direct polygon fill (no black), plus animated hatch inside */
+    .roofArea{fill:url(#roofGradLocal); fill-opacity:.22; mix-blend-mode:screen}
     .hatch line{stroke:rgba(220,230,245,.18); stroke-width:1.2}
     .hatch{animation:hatchMove 14s linear infinite}
     @keyframes hatchMove{to{transform:translateX(-80px)}}
 
-    /* Foundation ticks */
+    /* base ticks & triangle ticks */
     .tick{stroke:rgba(220,230,245,.38); fill:none; stroke-width:2; opacity:.55}
     .tick.breathe{animation:tickBlink 6s ease-in-out infinite}
     .t1{animation-delay:.5s} .t2{animation-delay:1.4s} .t3{animation-delay:2.3s}
     @keyframes tickBlink{0%,100%{opacity:.35}50%{opacity:.95}}
 
-    /* Floating blueprint particles */
+    /* floating particles */
     .particle{fill:url(#grad); opacity:.7; animation:floatUp 8s ease-in-out infinite}
     .p2{animation-duration:10s; animation-delay:.7s}
     .p3{animation-duration:12s; animation-delay:1.3s}
-    @keyframes floatUp{
-      0%{transform:translateY(0); opacity:.0}
-      15%{opacity:.7}
-      50%{transform:translateY(-30px)}
-      100%{transform:translateY(-60px); opacity:0}
-    }
+    @keyframes floatUp{0%{transform:translateY(0);opacity:0}15%{opacity:.7}50%{transform:translateY(-30px)}100%{transform:translateY(-60px);opacity:0}}
 
     .sweep{position:absolute; inset:-40% -20%; z-index:1; pointer-events:none; background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.07) 50%, transparent 65%); transform:translateX(-60%); animation:shinepane 14s linear infinite}
     @keyframes shinepane{to{transform:translateX(60%)}}
@@ -110,7 +95,7 @@
       .mesh,.gridlines,.orbs,.bp,.sweep,.stud,.roof-scan,.pulse,.hatch,.tick.breathe,.particle{animation:none!important}
     }
 
-    /* Below hero (unchanged) */
+    /* Below hero */
     .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:22px 0}
     .svc-nav{display:grid;gap:16px;grid-template-columns:1fr}
     @media(min-width:980px){ .svc-nav{grid-template-columns:1fr 1fr} }
@@ -162,45 +147,55 @@
       <div class="orbs"></div>
       <div class="sweep"></div>
 
-      <!-- Blueprint -->
+      <!-- Blueprint layer -->
       <svg class="bp" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stop-color="#FF7A18"/><stop offset=".6" stop-color="#6EA0FF"/><stop offset="1" stop-color="#00D4FF"/>
           </linearGradient>
-
-          <!-- Roof interior clip + gradient -->
-          <clipPath id="roofClip">
-            <!-- polygon matching house interior -->
-            <polygon points="420,126 520,56 620,126 620,236 440,236 420,236"/>
-          </clipPath>
-          <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#6EA0FF"/><stop offset="50%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#FF7A18"/>
-          </linearGradient>
         </defs>
 
-        <!-- HOUSE (positioned top-right-ish via translate) -->
+        <!-- House group (coords local to the group) -->
         <g transform="translate(360,36)">
-          <!-- Roof ridge (color stroke) -->
-          <path class="stroke" d="M 60 90 L 160 20 L 260 90"/>
 
-          <!-- Roof scan highlight -->
+          <!-- local gradient for roof interior -->
+          <defs>
+            <linearGradient id="roofGradLocal" x1="60" y1="20" x2="260" y2="200" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#6EA0FF"/>
+              <stop offset="55%" stop-color="#00D4FF"/>
+              <stop offset="100%" stop-color="#FF7A18"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Roof interior — direct polygon (no black) -->
+          <polygon class="roofArea"
+                   points="60,90 160,20 260,90 260,200 80,200 60,200"/>
+
+          <!-- Optional animated hatch clipped to same polygon via CSS transform-box -->
+          <g class="hatch" style="transform-box:fill-box; transform-origin:center">
+            <clipPath id="roofClipLocal">
+              <polygon points="60,90 160,20 260,90 260,200 80,200 60,200"></polygon>
+            </clipPath>
+            <g clip-path="url(#roofClipLocal)">
+              <line x1="40" y1="60" x2="320" y2="340"></line>
+              <line x1="60" y1="40" x2="340" y2="320"></line>
+              <line x1="80" y1="20" x2="360" y2="300"></line>
+              <line x1="100" y1="0" x2="380" y2="280"></line>
+              <line x1="120" y1="-20" x2="400" y2="260"></line>
+            </g>
+          </g>
+
+          <!-- roof ridge + sweep -->
+          <path class="stroke" d="M 60 90 L 160 20 L 260 90"/>
           <path class="roof-scan" d="M 60 90 L 160 20 L 260 90"/>
 
-          <!-- Glowing ridge nodes -->
-          <circle class="node glow pulse" cx="60"  cy="90"  r="3"/>
-          <circle class="node glow pulse" cx="160" cy="20"  r="3"/>
-          <circle class="node glow pulse" cx="260" cy="90"  r="3"/>
+          <!-- studs (slow motion) -->
+          <path class="stud" d="M 60 240 L 60 90"/>
+          <path class="stud" d="M 120 70 L 120 200"/>
+          <path class="stud" d="M 180 70 L 180 120"/>
 
-          <!-- SLOW studs -->
-          <path class="stud"  d="M 60 240 L 60 90"/>
-          <path class="stud"  d="M 120 70 L 120 200"/>
-          <path class="stud"  d="M 180 70 L 180 120"/>
-
-          <!-- Base beam -->
+          <!-- base beam + ticks -->
           <path class="stroke thin" d="M 80 200 L 220 200"/>
-
-          <!-- Foundation ticks (short verticals) -->
           <path class="tick breathe t1" d="M 92 200 v 10"/>
           <path class="tick breathe t2" d="M 108 200 v 10"/>
           <path class="tick breathe t3" d="M 124 200 v 10"/>
@@ -210,28 +205,22 @@
           <path class="tick breathe t1" d="M 188 200 v 10"/>
           <path class="tick breathe t2" d="M 204 200 v 10"/>
 
-          <!-- ROOF INTERIOR FILL (clip + gradient + animated hatch) -->
-          <g clip-path="url(#roofClip)" class="roof-fill">
-            <!-- gradient wash -->
-            <rect class="roof-grad" x="420" y="56" width="200" height="200" fill="url(#roofGrad)"/>
-            <!-- animated hatch lines -->
-            <g class="hatch" style="transform-box:fill-box; transform-origin:center">
-              <!-- diagonal lines across the clip region -->
-              <line x1="410" y1="80"  x2="650" y2="320"/>
-              <line x1="430" y1="60"  x2="670" y2="300"/>
-              <line x1="390" y1="100" x2="630" y2="340"/>
-              <line x1="450" y1="40"  x2="690" y2="280"/>
-              <line x1="470" y1="20"  x2="710" y2="260"/>
-            </g>
+          <!-- ridge nodes & spark -->
+          <circle class="node glow pulse" cx="60"  cy="90"  r="3"/>
+          <circle class="node glow pulse" cx="160" cy="20"  r="3"/>
+          <circle class="node glow pulse" cx="260" cy="90"  r="3"/>
+          <g class="pulse" style="animation-duration:4.2s">
+            <circle class="node glow" cx="146" cy="34" r="2"/>
+            <circle class="node glow" cx="152" cy="28" r="1.6"/>
           </g>
 
-          <!-- Floating blueprint particles inside the house area -->
+          <!-- floating particles -->
           <circle class="particle" cx="140" cy="180" r="2"/>
           <circle class="particle p2" cx="170" cy="190" r="2"/>
           <circle class="particle p3" cx="200" cy="175" r="2"/>
         </g>
 
-        <!-- TRIANGLE MODULE with breathing ticks -->
+        <!-- Triangle module -->
         <g transform="translate(520,260)">
           <path class="stroke" d="M 0 40 L 60 -20 L 120 40 Z"/>
           <path class="tick" d="M 24 24 L 36 12"/>
@@ -241,7 +230,7 @@
       </svg>
     </div>
 
-    <!-- TEXT -->
+    <!-- Text side -->
     <div class="wrap">
       <div>
         <span class="eyebrow">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</span>
@@ -265,7 +254,7 @@
   <main class="container">
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- SERVICE NAV -->
+    <!-- Service nav (as-is) -->
     <section class="svc-nav" aria-label="Leistungsnavigation">
       <a class="card" href="/leistungen.html#innenausbau">
         <div class="svc-ico">
@@ -308,7 +297,7 @@
 
   <script src="/assets/js/main.js"></script>
   <script>
-    // Subtle parallax for the hero layers
+    // subtle parallax
     (function(){
       const hero = document.getElementById('hero');
       if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
