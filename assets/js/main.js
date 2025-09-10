@@ -1,36 +1,40 @@
-// TFD site scripts
+/* TFD UI v2 scripts: menu drawer, year, reveals, optional tilt */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
-  initMenu();
-  parallaxHero();
-});
+(function(){
+  // Year in footer
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
 
-function initMenu(){
-  const btn = document.getElementById('menuToggle');
+  // Drawer
   const panel = document.getElementById('menuPanel');
-  const closeBtn = document.getElementById('menuClose');
   const backdrop = document.getElementById('menuBackdrop');
-  if(!btn || !panel || !backdrop) return;
-  const open = ()=>{ panel.classList.add('open'); backdrop.classList.add('open'); btn.setAttribute('aria-expanded','true'); panel.setAttribute('aria-hidden','false'); };
-  const close = ()=>{ panel.classList.remove('open'); backdrop.classList.remove('open'); btn.setAttribute('aria-expanded','false'); panel.setAttribute('aria-hidden','true'); };
-  btn.addEventListener('click', ()=> panel.classList.contains('open')? close(): open());
-  closeBtn && closeBtn.addEventListener('click', close);
-  backdrop.addEventListener('click', close);
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
-}
+  const openBtn = document.getElementById('menuToggle');
+  const closeBtn = document.getElementById('menuClose');
+  function open(){ if(panel){ panel.setAttribute('aria-hidden','false'); } }
+  function close(){ if(panel){ panel.setAttribute('aria-hidden','true'); } }
+  if(openBtn) openBtn.addEventListener('click', open);
+  if(closeBtn) closeBtn.addEventListener('click', close);
+  if(backdrop) backdrop.addEventListener('click', close);
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
 
-/* very light parallax (mouse/touch) */
-function parallaxHero(){
-  const root = document.documentElement;
-  const onMove = (x, y) => {
-    const dx = (x - window.innerWidth/2) * 0.02;
-    const dy = (y - window.innerHeight/2) * 0.02;
-    root.style.setProperty('--shiftX', `${dx}px`);
-    root.style.setProperty('--shiftY', `${dy}px`);
-  };
-  window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
-  window.addEventListener('touchmove', e => {
-    if (e.touches && e.touches[0]) onMove(e.touches[0].clientX, e.touches[0].clientY);
-  }, {passive:true});
-}
+  // Scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target);} });
+  }, { rootMargin: "0px 0px -80px 0px", threshold: .1 });
+  document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+  // Optional tilt (add class "tilt" to any card)
+  document.querySelectorAll('.tilt').forEach(card=>{
+    let rAF = null;
+    function onMove(e){
+      const b = card.getBoundingClientRect();
+      const x = (e.clientX - b.left)/b.width - .5;
+      const y = (e.clientY - b.top)/b.height - .5;
+      if(rAF) cancelAnimationFrame(rAF);
+      rAF = requestAnimationFrame(()=> card.style.transform = `perspective(800px) rotateY(${x*6}deg) rotateX(${ -y*6}deg) translateY(-2px)`);
+    }
+    function reset(){ card.style.transform=''; }
+    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mouseleave', reset);
+  });
+})();
