@@ -4,30 +4,67 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>TFD — Schlüsselfertiger Innenausbau & Trockenbau</title>
-  <link rel="stylesheet" href="/assets/css/styles.css"/>
   <link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png"/>
-
+  <link rel="preload" as="image" href="/assets/uploads/hero.jpg"/>
   <style>
+    /* ===== Design System (local to this page) ===== */
     :root{
-      --accent:#FF8A00; --ink:#eaf0f7; --mut:#a9b6c7;
-      --glass:rgba(10,14,22,.55); --stroke:rgba(255,255,255,.08);
-      --card:rgba(12,16,25,.6);
+      --bg:#0b121f;
+      --ink:#eaf0f7;
+      --mut:#a9b6c7;
+      --accent:#FF8A00;
+      --accent2:#6EA0FF;
+      --glass:rgba(12,16,25,.60);
+      --stroke:rgba(255,255,255,.10);
+      --card:#0e1626;
+      --radius:22px;
+      --radius-sm:14px;
+      --shadow:0 16px 60px rgba(0,0,0,.35);
     }
-    /* ---------- NAV keeps your existing look ---------- */
-    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(to bottom, rgba(4,7,12,.85), rgba(4,7,12,.35) 70%, transparent);border-bottom:1px solid rgba(255,255,255,.06)}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--ink);
+      -webkit-font-smoothing:antialiased; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 18px}
+    /* ===== Top Nav (keeps your IDs for drawer JS) ===== */
+    .nav{position:sticky;top:0;z-index:50;
+      background:linear-gradient(to bottom, rgba(4,7,12,.85), rgba(4,7,12,.35) 70%, transparent);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      backdrop-filter:saturate(1.1) blur(6px);
+    }
+    .bar{display:flex;align-items:center;gap:14px;height:64px}
+    .menu-btn{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(12,16,25,.5);color:var(--ink);font-weight:800}
+    .menu-btn .bars{width:16px;height:2px;background:var(--ink);box-shadow:0 6px 0 var(--ink),0 -6px 0 var(--ink)}
+    .brand{margin:0 auto;display:flex;align-items:center;gap:10px}
+    .brand img{width:32px;height:32px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
     .brand strong{letter-spacing:.2px}
+    .spacer{width:32px}
 
-    /* ---------- FULL VIDEO HERO ---------- */
-    .hero-full{position:relative;min-height:100svh;isolation:isolate}
-    .hero-full video, .hero-full img{
+    /* ===== Drawer (your structure preserved) ===== */
+    .menu-panel{position:fixed;inset:auto 0 0 auto;top:0;right:-420px;width:min(420px,100%);height:100%;
+      background:#0c1423;border-left:1px solid var(--stroke);transition:right .35s ease;z-index:70}
+    .menu-panel[aria-hidden="false"]{right:0}
+    .menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .35s;z-index:60}
+    .menu-backdrop.show{opacity:1;pointer-events:auto}
+    .menu-head{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--stroke)}
+    .menu-links{display:grid;padding:16px}
+    .menu-links a{padding:12px 14px;border:1px solid var(--stroke);border-radius:12px;background:rgba(255,255,255,.02);font-weight:800;margin-bottom:10px}
+    .menu-links a.cta{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
+    .menu-quick{display:flex;gap:10px;padding:0 16px}
+    .menu-quick a{padding:10px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(255,255,255,.02);font-weight:800}
+    .menu-quick .primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
+    .menu-footer{display:flex;gap:12px;padding:16px;color:var(--mut)}
+
+    /* ===== Fullscreen hero video (unchanged behaviour) ===== */
+    .hero-full{position:relative;min-height:100svh;isolation:isolate;overflow:hidden}
+    .hero-full video,.hero-full img{
       position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-      /* adjust framing here if needed (0% = links, 100% = rechts) */
-      object-position: 60% center;
-      filter:contrast(1.06) saturate(1.06);
-      pointer-events:none; /* kill playback bar */
+      object-position:60% center;filter:contrast(1.06) saturate(1.06);pointer-events:none;
     }
     .hero-overlay{position:absolute;inset:0;display:grid;place-items:end center;padding:18svh 16px 24px}
-    /* soft brand gradients + blueprint grid */
     .hero-overlay::before{
       content:"";position:absolute;inset:0;z-index:0;background:
         radial-gradient(140% 110% at 110% -10%, rgba(110,160,255,.30), transparent 55%),
@@ -35,95 +72,85 @@
       mix-blend-mode:soft-light;
     }
     .hero-overlay::after{
-      content:"";position:absolute;inset:0;opacity:.22;z-index:0;background:
-        repeating-linear-gradient(to right, rgba(255,255,255,.18) 0 1px, transparent 1px 28px),
-        repeating-linear-gradient(to bottom, rgba(255,255,255,.18) 0 1px, transparent 1px 28px);
+      content:"";position:absolute;inset:0;opacity:.18;z-index:0;background:
+        repeating-linear-gradient(to right, rgba(255,255,255,.2) 0 1px, transparent 1px 28px),
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.2) 0 1px, transparent 1px 28px);
     }
-    /* scroll cue */
     .scroll-cue{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px}
-    .scroll-cue .mouse{
-      width:26px;height:40px;border-radius:16px;border:2px solid rgba(234,240,247,.75);position:relative;
-      background:rgba(10,14,22,.25);backdrop-filter:blur(4px)
-    }
+    .scroll-cue .mouse{width:26px;height:40px;border-radius:16px;border:2px solid rgba(234,240,247,.75);
+      background:rgba(10,14,22,.25);backdrop-filter:blur(4px);position:relative}
     .scroll-cue .wheel{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:4px;height:8px;border-radius:2px;background:#eaf0f7;animation:wheel 1.8s infinite}
     @keyframes wheel {0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
-    .scroll-cue span{color:#eaf0f7;font-weight:800;text-shadow:0 10px 30px rgba(0,0,0,.5)}
 
-    /* ---------- INTRO CONTENT (below video) ---------- */
-    .intro{background:radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.10), transparent 60%), #0b121f;}
-    .section{max-width:1200px;margin:0 auto;padding:52px 18px}
-    .intro .card{background:var(--card);border:1px solid var(--stroke);border-radius:22px;padding:32px;backdrop-filter:blur(8px);box-shadow:0 16px 50px rgba(0,0,0,.35)}
-    .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:7px 11px;border:1px solid var(--stroke);
-      border-radius:999px;background:var(--glass);font-weight:800;color:var(--ink);margin-bottom:12px}
-    .eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
-    h1{font-size:clamp(34px,6.2vw,60px);line-height:1.05;margin:.1em 0 .3em;color:var(--ink)}
-    .lead{color:var(--mut);font-size:clamp(15px,2.4vw,18px)}
+    /* ===== Section primitives ===== */
+    section{padding:70px 0}
+    .intro{background:
+      radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.10), transparent 60%),
+      radial-gradient(120% 100% at 120% -10%, rgba(110,160,255,.12), transparent 60%);}
+    .lead{color:var(--mut)}
+    .grid{display:grid;gap:18px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:980px){.grid.cols-3,.grid.cols-2{grid-template-columns:1fr}}
 
-    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    .btn3d{position:relative;padding:12px 16px;border-radius:14px;font-weight:900}
-    .btn3d.primary{background:linear-gradient(90deg,#FF8A00,#6EA0FF);color:#0b1220;border:none;box-shadow:0 14px 38px rgba(0,212,255,.25), inset 0 0 1px rgba(255,255,255,.3)}
-    .btn3d.ghost{background:var(--glass);border:1px solid var(--stroke);color:var(--ink)}
-    .trust{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-    .pill{display:inline-flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:var(--glass);
-      border:1px solid var(--stroke);font-weight:800}
-    .pill i{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#FF8A00,#6EA0FF)}
+    .card{background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card.pad{padding:28px}
+    .badge{display:inline-flex;align-items:center;gap:10px;padding:7px 11px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:900}
+    .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
 
-    /* ---------- “Was Sie erwarten können” ---------- */
-    .split{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:center}
-    .media-card{position:relative;border-radius:18px;overflow:hidden;background:#0e1626;border:1px solid var(--stroke);
-      box-shadow:0 10px 36px rgba(0,0,0,.25);min-height:360px}
-    .media-card .title{position:absolute;top:14px;left:14px;z-index:3;font-weight:900}
-    .teaser{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.04) saturate(1.06);pointer-events:none}
-    .placeholder{position:absolute;inset:0;background:
-      radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.16), transparent 60%),
-      radial-gradient(140% 120% at 120% 10%, rgba(110,160,255,.14), transparent 60%),
-      #0f1626;}
-    .placeholder::after{content:"";position:absolute;inset:0;opacity:.25;background:
-      repeating-linear-gradient(to right, rgba(255,255,255,.2) 0 1px, transparent 1px 28px),
-      repeating-linear-gradient(to bottom, rgba(255,255,255,.2) 0 1px, transparent 1px 28px);}
-    .roof,.stud{position:absolute;border-radius:2px;background:linear-gradient(90deg,#FF8A00,#6EA0FF);height:3px;opacity:.9}
-    .roof{width:58%;left:21%;top:26%;transform:rotate(25deg);box-shadow:0 0 18px rgba(110,160,255,.25)}
-    .roof::after{content:"";position:absolute;width:100%;height:3px;left:0;top:0;transform:rotate(-50deg) translate(50%,-50%);background:inherit;border-radius:2px}
-    .stud{width:2px;height:36%;left:38%;top:31%;background:rgba(234,240,247,.65);animation:stud 12s linear infinite}
-    .stud:nth-child(odd){left:50%}
-    @keyframes stud{to{transform:translateY(6px)}}
-
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;font-weight:900;border:1px solid var(--stroke);background:rgba(255,255,255,.02)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
+    .btn.ghost{background:rgba(255,255,255,.04)}
     .kicker{color:var(--accent);font-weight:900;letter-spacing:.06em;margin-bottom:8px}
-    .h2{font-size:clamp(26px,4.4vw,44px);line-height:1.12;margin:.1em 0 .3em}
-    .bullets{display:grid;gap:10px;margin:16px 0}
-    .li{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start}
-    .dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(255,138,0,.12);border:1px solid rgba(255,138,0,.35)}
-    .dot svg{width:12px;height:12px;fill:var(--accent)}
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
-    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--stroke);background:var(--glass);font-weight:900}
-    .btn.primary{background:linear-gradient(90deg,#FF8A00,#6EA0FF);border:none;color:#0b1220}
+    h1.title{font-size:clamp(34px,6.2vw,60px);line-height:1.05;margin:.2em 0 .3em}
+    h2{font-size:clamp(26px,4.2vw,40px);line-height:1.12;margin:.2em 0 .3em}
+    h3{font-size:clamp(18px,2.4vw,22px);margin:.3em 0 .2em}
 
-    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}
-    .metric{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:16px;font-weight:800}
-    .metric small{display:block;opacity:.8;margin-top:4px}
+    /* ===== Professional blocks ===== */
+    /* — Value Pillars */
+    .pillars .card{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center}
+    .icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border:1px solid var(--stroke);display:grid;place-items:center}
+    .icon svg{width:26px;height:26px;fill:url(#g);filter:drop-shadow(0 8px 20px rgba(0,0,0,.35))}
+    /* — Process Timeline */
+    .timeline{position:relative;padding-left:22px}
+    .timeline::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+    .step{position:relative;margin:18px 0;padding:16px;border:1px solid var(--stroke);border-radius:var(--radius-sm);background:rgba(255,255,255,.03)}
+    .step::before{content:attr(data-step);position:absolute;left:-22px;top:16px;width:28px;height:28px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;font-weight:900;display:grid;place-items:center;border:1px solid rgba(255,255,255,.35)}
+    /* — Services */
+    .service{display:grid;gap:10px}
+    .service p{color:var(--mut);margin:0}
+    .service .actions{display:flex;gap:10px;flex-wrap:wrap}
+    /* — Testimonial band */
+    .quote{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid var(--stroke);border-radius:var(--radius);padding:28px;text-align:center}
+    .quote p{font-size:clamp(18px,2.6vw,22px);line-height:1.4;margin:0}
+    .quote small{display:block;color:var(--mut);margin-top:8px}
+    /* — CTA band */
+    .cta-band{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border-radius:var(--radius);padding:24px;display:grid;gap:12px;align-items:center}
+    .cta-band .row{display:flex;gap:10px;flex-wrap:wrap}
 
-    .footer{margin-top:30px;border-top:1px solid rgba(255,255,255,.06)}
-
-    @media (max-width: 980px){
-      .split{grid-template-columns:1fr}
-      .media-card{min-height:300px}
-      .hero-overlay{padding:14svh 16px 22px}
-    }
+    /* Footer */
+    .footer{border-top:1px solid rgba(255,255,255,.08);padding:32px 0;color:var(--mut)}
+    .footer a{color:var(--ink)}
+    @media (max-width:980px){.bar{height:60px}}
   </style>
 </head>
-<body class="logo-bg">
+<body>
   <!-- NAV -->
   <nav class="nav">
     <div class="container bar">
-      <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
-      <a class="brand centered" href="/index.html" aria-label="Startseite">
-        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
+      <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false">
+        <span class="bars"></span><span>Menü</span>
+      </button>
+      <a class="brand" href="/index.html" aria-label="Startseite">
+        <img src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
       </a>
       <div class="spacer"></div>
     </div>
   </nav>
 
-  <!-- MENU DRAWER (unchanged) -->
+  <!-- Drawer (IDs kept for your JS) -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
     <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">✕</button></div>
     <nav class="menu-links">
@@ -140,13 +167,12 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- FULLSCREEN VIDEO HERO -->
+  <!-- ===== Fullscreen Video Hero (unchanged) ===== -->
   <header class="hero-full" aria-label="Hero">
     <video autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/hero.jpg">
       <source src="/assets/uploads/hero.mp4" type="video/mp4"/>
       <img src="/assets/uploads/hero.jpg" alt="">
     </video>
-
     <div class="hero-overlay">
       <div class="scroll-cue" aria-hidden="true">
         <div class="mouse"><span class="wheel"></span></div>
@@ -155,72 +181,175 @@
     </div>
   </header>
 
-  <!-- INTRO CONTENT -->
-  <section class="intro section">
-    <div class="card">
-      <span class="eyebrow"><i></i> AUSBAU & AUSSENANLAGEN</span>
-      <h1>Schlüsselfertiges Planen &amp; Bauen</h1>
-      <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
-
-      <div class="cta-row">
-        <a class="btn3d primary" href="/leistungen.html">Unsere Leistungen</a>
-        <a class="btn3d ghost" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
+  <!-- ===== Intro / Value Proposition ===== -->
+  <section class="intro">
+    <div class="container">
+      <div class="card pad" style="margin-bottom:22px">
+        <span class="badge"><span class="dot"></span> AUSBAU & AUSSENANLAGEN</span>
+        <h1 class="title">Präzision im Bau. Deutschlandweit.</h1>
+        <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
+          <a class="btn primary" href="/leistungen.html">Unsere Leistungen</a>
+          <a class="btn ghost" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
+          <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
+        </div>
       </div>
 
-      <div class="trust">
-        <span class="pill"><i></i>14+ Jahre Erfahrung</span>
-        <span class="pill"><i></i>Antwort in 24h</span>
-        <span class="pill"><i></i>TÜV-nahe Standards</span>
-        <span class="pill"><i></i>Versichert</span>
+      <!-- Pillars -->
+      <div class="grid cols-3 pillars">
+        <div class="card pad">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FF8A00"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs><path d="M3 11l9-7 9 7v8a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2v-8z"/></svg>
+          </div>
+          <div>
+            <h3>Schlüsselfertig</h3>
+            <p>Ein Ansprechpartner koordiniert alle Gewerke bis zur Abnahme.</p>
+          </div>
+        </div>
+        <div class="card pad">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h10v4H4zM4 16h7v4H4z"/></svg>
+          </div>
+          <div>
+            <h3>Dokumentiert</h3>
+            <p>Digitale Doku, klare Angebote, verbindliche Zeitpläne.</p>
+          </div>
+        </div>
+        <div class="card pad">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4z"/></svg>
+          </div>
+          <div>
+            <h3>Sauber & präzise</h3>
+            <p>Fugenbündig, staubarm, millimetergenau – TÜV-nahe Standards.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- EXPECTATIONS -->
-  <section class="section">
-    <div class="split">
-      <!-- left media: use your own teaser.mp4 or a photo -->
-      <figure class="media-card" aria-label="Projektbesprechung & Bauplanung">
-        <figcaption class="title">Projektbesprechung &amp; Bauplanung</figcaption>
-        <video class="teaser" autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/teaser-1.jpg">
-          <source src="/assets/uploads/teaser.mp4" type="video/mp4"/>
-        </video>
-        <div class="placeholder" aria-hidden="true">
-          <span class="roof"></span><span class="stud"></span><span class="stud" style="left:58%"></span>
+  <!-- ===== Process Timeline ===== -->
+  <section>
+    <div class="container">
+      <div class="grid cols-2">
+        <div>
+          <span class="kicker">ABLAUF</span>
+          <h2>So läuft Ihr Projekt mit TFD</h2>
+          <div class="timeline">
+            <div class="step" data-step="1"><strong>Kontakt & Erstgespräch</strong><br><span class="lead">Telefonisch, WhatsApp oder E-Mail – wir klären Ziele & Rahmen.</span></div>
+            <div class="step" data-step="2"><strong>Vor-Ort Termin</strong><br><span class="lead">Aufmaß, Beratung, Materialvorschläge.</span></div>
+            <div class="step" data-step="3"><strong>Angebot in 24&nbsp;Stunden</strong><br><span class="lead">Transparent, verbindlich, mit Zeitplan.</span></div>
+            <div class="step" data-step="4"><strong>Ausführung</strong><br><span class="lead">Innenausbau, Trockenbau, Boden, Außenanlagen – alles aus einer Hand.</span></div>
+            <div class="step" data-step="5"><strong>Abnahme & Doku</strong><br><span class="lead">Digitale Übergabe, saubere Baustelle, zufriedenstellende Übergabe.</span></div>
+          </div>
         </div>
-      </figure>
+        <div class="card pad">
+          <h3>Direkt loslegen?</h3>
+          <p class="lead">Schicken Sie uns Fotos/Pläne – wir melden uns noch heute.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20mit%20Fotos%2FPl%C3%A4nen">E-Mail senden</a>
+            <a class="btn" href="tel:+4915770070701">Anrufen</a>
+            <a class="btn" target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
+          </div>
+          <div style="margin-top:16px;display:grid;gap:10px">
+            <div class="badge"><span class="dot"></span>14+ Jahre Erfahrung</div>
+            <div class="badge"><span class="dot"></span>Antwort in 24h</div>
+            <div class="badge"><span class="dot"></span>Versichert</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <div>
-        <div class="kicker">EIN ANSPRECHPARTNER FÜR ALLE GEWERKE</div>
-        <div class="h2">Was Sie von uns erwarten können:</div>
-        <div class="bullets">
-          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Wir gehen auf Ihre Wünsche ein — transparent vom Erstgespräch bis zur Abnahme.</div></div>
-          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Wir bauen, als wäre es unser eigenes: sauber, fugenbündig, millimetergenau.</div></div>
-          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Sie erhalten einen belastbaren Zeitplan und Budgettreue.</div></div>
-          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Ein persönlicher Ansprechpartner koordiniert alle Gewerke für Sie.</div></div>
+  <!-- ===== Services Overview ===== -->
+  <section class="intro">
+    <div class="container">
+      <span class="kicker">LEISTUNGEN</span>
+      <h2>Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</h2>
+      <div class="grid cols-2">
+        <div class="card pad service">
+          <h3>Innenausbau</h3>
+          <p>Turn-key Interiors mit sauberen Kanten, abgestimmten Details und zuverlässiger Abnahme.</p>
+          <div class="actions">
+            <a class="btn primary" href="/leistungen.html#innenausbau">Details</a>
+            <a class="btn" href="/galerie.html">Referenzen</a>
+          </div>
         </div>
-        <div class="actions">
-          <a class="btn primary" href="/galerie.html">Referenzen</a>
+        <div class="card pad service">
+          <h3>Trockenbau</h3>
+          <p>Leichtbauwände, Decken, Akustik &amp; Brandschutz — millimetergenau und staubarm.</p>
+          <div class="actions">
+            <a class="btn primary" href="/leistungen.html#trockenbau">Details</a>
+            <a class="btn" href="/galerie.html">Referenzen</a>
+          </div>
+        </div>
+        <div class="card pad service">
+          <h3>Bodenleger</h3>
+          <p>Parkett, Vinyl, Laminat — fachgerecht vorbereitet, präzise verlegt und sauber übergeben.</p>
+          <div class="actions">
+            <a class="btn primary" href="/leistungen.html#bodenleger">Details</a>
+            <a class="btn" href="/galerie.html">Referenzen</a>
+          </div>
+        </div>
+        <div class="card pad service">
+          <h3>Gartenarbeit</h3>
+          <p>Terrassen, Pflaster, Rasen, Hecken — robuste Außenflächen &amp; Pflege.</p>
+          <div class="actions">
+            <a class="btn primary" href="/leistungen.html#gartenarbeit">Details</a>
+            <a class="btn" href="/galerie.html">Referenzen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Testimonial / Credibility ===== -->
+  <section>
+    <div class="container">
+      <div class="quote">
+        <p>„Wir bauen so, als wäre es unser eigenes. Sauber, fugenbündig, termintreu – und mit einem Ansprechpartner, der alles koordiniert.“</p>
+        <small>Ahmad Almamo · Geschäftsführer, 14+ Jahre Erfahrung</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA Band ===== -->
+  <section class="intro" style="padding-top:0">
+    <div class="container">
+      <div class="cta-band">
+        <div><strong>Kostenlose Einschätzung</strong><br><span>Schicken Sie uns kurz Ihr Anliegen – Angebot in 24&nbsp;Stunden.</span></div>
+        <div class="row">
+          <a class="btn" href="tel:+4915770070701">Anrufen</a>
+          <a class="btn" target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
+          <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">E-Mail</a>
           <a class="btn" href="/kontakt.html">Kontakt</a>
         </div>
       </div>
     </div>
-
-    <div class="metrics">
-      <div class="metric">Ganz Deutschland <small>bundesweite Teams</small></div>
-      <div class="metric">Digitale Doku <small>Fotos & Pläne</small></div>
-      <div class="metric">Staubarm <small>saubere Übergaben</small></div>
-    </div>
   </section>
 
+  <!-- ===== Footer ===== -->
   <footer class="footer">
-    <div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div>
+    <div class="container" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <div>© <span id="year"></span> TFD</div>
+      <div><a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div>
+    </div>
   </footer>
 
-  <script src="/assets/js/main.js"></script>
+  <!-- Minimal JS for drawer + year -->
   <script>
     // year
     document.getElementById('year').textContent = new Date().getFullYear();
+    // simple drawer wiring (works even if your main.js is missing)
+    const panel=document.getElementById('menuPanel'),
+          backdrop=document.getElementById('menuBackdrop')||document.querySelector('.menu-backdrop'),
+          toggle=document.getElementById('menuToggle'),
+          closeBtn=document.getElementById('menuClose');
+    function open(){panel.setAttribute('aria-hidden','false');(backdrop||{}).classList?.add('show')}
+    function close(){panel.setAttribute('aria-hidden','true');(backdrop||{}).classList?.remove('show')}
+    toggle?.addEventListener('click',()=>panel.getAttribute('aria-hidden')==='true'?open():close());
+    closeBtn?.addEventListener('click',close);
+    (backdrop||document.body).addEventListener?.('click',e=>{if(e.target===backdrop) close();});
   </script>
 </body>
 </html>
