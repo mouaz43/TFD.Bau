@@ -1,25 +1,109 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TFD — Präzision im Bau</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>TFD — Schlüsselfertiger Innenausbau & Trockenbau</title>
+  <link rel="stylesheet" href="/assets/css/styles.css"/>
+  <link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png"/>
+
+  <!-- Page-scope styles (isolated, no global overrides) -->
+  <style>
+    :root{
+      --accent:#FF8A00;
+      --ink:#eaf0f7;
+      --mut:#a9b6c7;
+      --glass:rgba(10,14,22,.55);
+      --stroke:rgba(255,255,255,.08);
+      --card:rgba(12,16,25,.6);
+    }
+    /* nav stays from your global CSS; we just lighten the line */
+    .nav{border-bottom:1px solid rgba(255,255,255,.06)}
+    .brand strong{letter-spacing:.2px}
+
+    /* ===== HERO SPLIT ===== */
+    .hero-split{position:relative;min-height:84svh;display:grid;grid-template-columns:1.1fr .9fr}
+    .hero-media{position:relative;overflow:hidden}
+    .hero-media::after{content:"";position:absolute;inset:0;background:
+      radial-gradient(120% 120% at 10% -20%, rgba(255,138,0,.26), transparent 55%),
+      radial-gradient(140% 140% at 120% 10%, rgba(110,160,255,.25), transparent 55%);
+      mix-blend-mode:soft-light;pointer-events:none}
+    .hero-media video,.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.06) saturate(1.08)}
+    .hero-panel{display:flex;align-items:center;justify-content:center;padding:42px 24px}
+    .hero-card{width:min(640px,92%);background:var(--card);backdrop-filter:blur(10px);
+      border:1px solid var(--stroke);border-radius:20px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+    .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:7px 11px;border:1px solid var(--stroke);
+      border-radius:999px;background:var(--glass);font-weight:800;color:var(--ink);margin-bottom:10px}
+    .eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+    h1{font-size:clamp(36px,6.2vw,64px);line-height:1.05;margin:.1em 0 .3em;color:var(--ink)}
+    .lead{color:var(--mut);font-size:clamp(15px,2.5vw,18px)}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn3d{position:relative;padding:12px 16px;border-radius:14px;font-weight:900}
+    .btn3d.primary{background:linear-gradient(90deg,#FF8A00,#6EA0FF);color:#0b1220;border:none;
+      box-shadow:0 14px 38px rgba(0,212,255,.25), inset 0 0 1px rgba(255,255,255,.3)}
+    .btn3d.ghost{background:var(--glass);border:1px solid var(--stroke);color:var(--ink)}
+    .trust{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .pill{display:inline-flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:var(--glass);
+      border:1px solid var(--stroke);font-weight:800}
+    .pill i{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#FF8A00,#6EA0FF)}
+
+    /* ===== SECTIONS ===== */
+    .section{max-width:1200px;margin:0 auto;padding:52px 18px}
+    .split{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center}
+    .split .img{position:relative;border-radius:18px;overflow:hidden;background:#0e1626;border:1px solid var(--stroke);
+      box-shadow:0 10px 36px rgba(0,0,0,.25)}
+    .split .img img{display:block;width:100%;height:100%;object-fit:cover}
+    .kicker{color:var(--accent);font-weight:900;letter-spacing:.06em;margin-bottom:8px}
+    .h2{font-size:clamp(26px,4.4vw,44px);line-height:1.12;margin:.1em 0 .3em}
+    .bullets{display:grid;gap:10px;margin:16px 0}
+    .li{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start}
+    .dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(255,138,0,.12);border:1px solid rgba(255,138,0,.35)}
+    .dot svg{width:12px;height:12px;fill:var(--accent)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--stroke);background:var(--glass);font-weight:900}
+    .btn.primary{background:linear-gradient(90deg,#FF8A00,#6EA0FF);border:none;color:#0b1220}
+
+    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}
+    .metric{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:16px;font-weight:800}
+    .metric small{display:block;opacity:.8;margin-top:4px}
+
+    /* Footer line is kept from global; just ensure spacing */
+    .footer{margin-top:30px;border-top:1px solid rgba(255,255,255,.06)}
+
+    /* ===== Responsive ===== */
+    @media (max-width: 980px){
+      .hero-split{grid-template-columns:1fr}
+      .hero-panel{padding:28px 18px}
+      .hero-card{width:100%}
+      .split{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body class="logo-bg">
-  <!-- NAV -->
-  <nav class="nav"><div class="container bar">
-    <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
-    <a class="brand" href="/index.html" aria-label="Startseite"><img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong></a>
-    <div class="spacer"></div>
-  </div></nav>
 
-  <!-- Slide-in menu -->
+  <!-- ===== Top Nav (unchanged structure) ===== -->
+  <nav class="nav">
+    <div class="container bar">
+      <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
+      <a class="brand centered" href="/index.html" aria-label="Startseite">
+        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
+      </a>
+      <div class="spacer"></div>
+    </div>
+  </nav>
+
+  <!-- Drawer (unchanged hooks) -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
-    <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">Schließen ✕</button></div>
-    <nav class="menu-links"><a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a><a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a><a class="cta" href="/kontakt.html">Kontakt</a></nav>
+    <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">✕</button></div>
+    <nav class="menu-links">
+      <a href="/index.html">Start</a>
+      <a href="/leistungen.html">Leistungen</a>
+      <a href="/galerie.html">Galerie</a>
+      <a href="/faq.html">FAQ</a>
+      <a class="cta" href="/kontakt.html">Kontakt</a>
+    </nav>
     <div class="menu-quick">
-      <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
+      <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD">E-Mail</a>
       <a href="tel:+4915770070701">Anrufen</a>
       <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
     </div>
@@ -27,107 +111,81 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- HERO -->
-  <header class="hero">
-    <!-- Blueprint/house/ruler overlay -->
-    <svg class="hero-art" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="ha-metal" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#DDE6F3" stop-opacity=".85"/><stop offset=".6" stop-color="#9FB2C8" stop-opacity=".35"/><stop offset="1" stop-color="#5A6A7F" stop-opacity=".2"/>
-        </linearGradient>
-        <linearGradient id="ha-accent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFA25A"/><stop offset="1" stop-color="#FF6A1A"/></linearGradient>
-        <radialGradient id="ha-fade" cx="50%" cy="38%" r="72%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#000"/></radialGradient>
-        <mask id="ha-mask"><rect width="1200" height="600" fill="url(#ha-fade)"/></mask>
-      </defs>
-      <g mask="url(#ha-mask)" opacity=".9" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="600,60 870,215 870,415 600,570 330,415 330,215" fill="none" stroke="url(#ha-metal)" stroke-width="2"/>
-        <path d="M430 380 L600 240 L770 305" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
-        <path d="M430 380 V470" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
-        <path d="M430 470 H560" fill="none" stroke="url(#ha-metal)" stroke-width="8"/>
-        <g class="ruler"><rect x="680" y="295" width="54" height="168" rx="12" fill="url(#ha-accent)"/><path d="M734 295 L818 252 L818 334 L734 334 Z" fill="url(#ha-accent)"/></g>
-        <g class="dashes" stroke="url(#ha-metal)" stroke-width="2" fill="none" stroke-dasharray="10 10"><path d="M600 240 L600 120"/><path d="M600 240 L520 190"/><path d="M600 240 L680 190"/></g>
-      </g>
-    </svg>
+  <!-- ===== HERO (Video/Image Left • Card Right) ===== -->
+  <header class="hero-split">
+    <div class="hero-media" aria-hidden="true">
+      <video autoplay muted loop playsinline poster="/assets/uploads/hero.jpg">
+        <source src="/assets/uploads/hero.mp4" type="video/mp4"/>
+        <img src="/assets/uploads/hero.jpg" alt="">
+      </video>
+    </div>
 
-    <div class="container">
-      <span class="kicker"><span class="dot"></span> Ausbau & Außenanlagen</span>
-      <h1 class="h1-alt">Präzision im Bau. <span class="nowrap">Deutschlandweit.</span></h1>
-      <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <span class="shine">24&nbsp;Stunden</span>.</p>
-      <div class="badges">
-        <span class="badge"><span class="dot"></span>TÜV-nahe Standards</span>
-        <span class="badge"><span class="dot"></span>Versichert</span>
-        <span class="badge"><span class="dot"></span>Termintreu</span>
-        <span class="badge"><span class="dot"></span>Ganz Deutschland</span>
+    <div class="hero-panel">
+      <div class="hero-card">
+        <span class="eyebrow"><i></i> AUSBAU & AUSSENANLAGEN</span>
+        <h1>Schlüsselfertiges Planen &amp; Bauen</h1>
+        <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
+
+        <div class="cta-row">
+          <a class="btn3d primary" href="/leistungen.html">Unsere Leistungen</a>
+          <a class="btn3d ghost" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
+        </div>
+
+        <div class="trust">
+          <span class="pill"><i></i>14+ Jahre Erfahrung</span>
+          <span class="pill"><i></i>Antwort in 24h</span>
+          <span class="pill"><i></i>TÜV-nahe Standards</span>
+          <span class="pill"><i></i>Versichert</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <!-- Quick actions instead of full Leistungen grid -->
-    <section class="section">
-      <div class="grid quick">
-        <div class="card">
-          <div class="title">Schnelles Angebot</div>
-          <div class="desc">Antwort innerhalb von 24&nbsp;Stunden — mit klaren Preisen.</div>
-          <div class="controls">
-            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%0AOrt%3A%20%0AFl%C3%A4che%3A%20%0ATermin%3A%20%0ABeschreibung%3A%20">E-Mail</a>
-            <a class="btn" href="tel:+4915770070701">Anrufen</a>
-            <a class="btn" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
+  <!-- ===== EXPECTATIONS SECTION (like your reference) ===== -->
+  <section class="section">
+    <div class="split">
+      <div class="img">
+        <img src="/assets/uploads/teaser-1.jpg" alt="Projektbesprechung & Bauplanung">
+      </div>
+      <div>
+        <div class="kicker">EIN ANSPRECHPARTNER FÜR ALLE GEWERKE</div>
+        <div class="h2">Was Sie von uns erwarten können:</div>
+        <div class="bullets">
+          <div class="li">
+            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
+            <div>Wir gehen auf Ihre Wünsche ein — transparent vom Erstgespräch bis zur Abnahme.</div>
+          </div>
+          <div class="li">
+            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
+            <div>Wir bauen, als wäre es unser eigenes: sauber, fugenbündig, millimetergenau.</div>
+          </div>
+          <div class="li">
+            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
+            <div>Sie erhalten einen belastbaren Zeitplan und Budgettreue.</div>
+          </div>
+          <div class="li">
+            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
+            <div>Ein persönlicher Ansprechpartner koordiniert alle Gewerke für Sie.</div>
           </div>
         </div>
-        <div class="card">
-          <div class="title">Kostenloses Aufmaß</div>
-          <div class="desc">Wir kommen vorbei, messen auf und beraten vor Ort.</div>
-          <div class="controls">
-            <a class="btn primary" href="/kontakt.html">Termin anfragen</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="title">Transparente Abnahme</div>
-          <div class="desc">Dokumentation mit Fotos & Checkliste – sauber übergeben.</div>
-          <div class="controls">
-            <a class="btn" href="/galerie.html">Galerie ansehen</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Process steps -->
-    <section class="section">
-      <div class="row"><h2>Ablauf</h2><span class="muted">So arbeiten wir – schnell, sauber, verlässlich.</span></div>
-      <div class="grid steps">
-        <div class="card step"><div class="num">1</div><h3>Aufmaß & Beratung</h3><p>Vor Ort oder per Video – wir klären Details und Material.</p></div>
-        <div class="card step"><div class="num">2</div><h3>Angebot in 24 h</h3><p>Fixpreis mit Terminplan und klarer Leistungsbeschreibung.</p></div>
-        <div class="card step"><div class="num">3</div><h3>Ausführung</h3><p>Staubarm, termintreu, mit sauberer Baustelle jeden Abend.</p></div>
-        <div class="card step"><div class="num">4</div><h3>Abnahme & Doku</h3><p>Checkliste, Fotos, Pflegehinweise – alles transparent.</p></div>
-      </div>
-    </section>
-
-    <!-- USPs -->
-    <section class="section">
-      <div class="row"><h2>Warum TFD?</h2><span class="muted">Handwerk mit System.</span></div>
-      <div class="grid usps">
-        <div class="card usp"><span class="icon">✓</span><div><strong>Versichert & dokumentiert</strong><p>Jedes Projekt mit Fotoprotokoll und Gewährleistung.</p></div></div>
-        <div class="card usp"><span class="icon">★</span><div><strong>Premium-Finish</strong><p>Saubere Kanten, bündige Fugen, millimetergenau.</p></div></div>
-        <div class="card usp"><span class="icon">⏱</span><div><strong>Termintreu</strong><p>Verbindliche Planung – wir halten Deadlines.</p></div></div>
-        <div class="card usp"><span class="icon">🌍</span><div><strong>Ganz Deutschland</strong><p>Teams bundesweit für kleine und große Projekte.</p></div></div>
-      </div>
-    </section>
-
-    <!-- CTA row -->
-    <section class="section">
-      <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
-        <div><strong>Bereit?</strong> <span class="muted">Leistungen ansehen oder Beispiele in der Galerie.</span></div>
-        <div class="controls">
-          <a class="btn primary" href="/leistungen.html">Alle Leistungen</a>
-          <a class="btn" href="/galerie.html">Galerie</a>
+        <div class="actions">
+          <a class="btn primary" href="/galerie.html">Referenzen</a>
           <a class="btn" href="/kontakt.html">Kontakt</a>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
+    <div class="metrics">
+      <div class="metric">Ganz Deutschland <small>bundesweite Teams</small></div>
+      <div class="metric">Digitale Doku <small>Fotos & Pläne</small></div>
+      <div class="metric">Staubarm <small>saubere Übergaben</small></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div>
+  </footer>
+
   <script src="/assets/js/main.js"></script>
 </body>
 </html>
