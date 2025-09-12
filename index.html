@@ -7,28 +7,30 @@
   <link rel="stylesheet" href="/assets/css/styles.css"/>
   <link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png"/>
 
-  <!-- Page-scope styles (isolated, no global overrides) -->
   <style>
     :root{
-      --accent:#FF8A00;
-      --ink:#eaf0f7;
-      --mut:#a9b6c7;
-      --glass:rgba(10,14,22,.55);
-      --stroke:rgba(255,255,255,.08);
+      --accent:#FF8A00; --ink:#eaf0f7; --mut:#a9b6c7;
+      --glass:rgba(10,14,22,.55); --stroke:rgba(255,255,255,.08);
       --card:rgba(12,16,25,.6);
     }
-    /* nav stays from your global CSS; we just lighten the line */
     .nav{border-bottom:1px solid rgba(255,255,255,.06)}
     .brand strong{letter-spacing:.2px}
 
     /* ===== HERO SPLIT ===== */
     .hero-split{position:relative;min-height:84svh;display:grid;grid-template-columns:1.1fr .9fr}
-    .hero-media{position:relative;overflow:hidden}
+    .hero-media{position:relative;overflow:hidden; /* tweak focus here */ --hero-x:62%;}
     .hero-media::after{content:"";position:absolute;inset:0;background:
       radial-gradient(120% 120% at 10% -20%, rgba(255,138,0,.26), transparent 55%),
       radial-gradient(140% 140% at 120% 10%, rgba(110,160,255,.25), transparent 55%);
       mix-blend-mode:soft-light;pointer-events:none}
-    .hero-media video,.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.06) saturate(1.08)}
+    .hero-media video,.hero-media img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      /* move framing to the right via object-position */
+      object-position: var(--hero-x) center;
+      filter:contrast(1.06) saturate(1.08);
+      /* kill click/hover so Safari won’t show playback UI */
+      pointer-events:none;
+    }
     .hero-panel{display:flex;align-items:center;justify-content:center;padding:42px 24px}
     .hero-card{width:min(640px,92%);background:var(--card);backdrop-filter:blur(10px);
       border:1px solid var(--stroke);border-radius:20px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
@@ -50,9 +52,30 @@
     /* ===== SECTIONS ===== */
     .section{max-width:1200px;margin:0 auto;padding:52px 18px}
     .split{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center}
-    .split .img{position:relative;border-radius:18px;overflow:hidden;background:#0e1626;border:1px solid var(--stroke);
-      box-shadow:0 10px 36px rgba(0,0,0,.25)}
-    .split .img img{display:block;width:100%;height:100%;object-fit:cover}
+
+    /* Left media card (slideshow + optional video) */
+    .media-card{position:relative;border-radius:18px;overflow:hidden;background:#0e1626;border:1px solid var(--stroke);
+      box-shadow:0 10px 36px rgba(0,0,0,.25);min-height:360px}
+    .media-card .title{position:absolute;top:14px;left:14px;z-index:3;font-weight:900}
+    .media-card .frame{position:absolute;inset:0}
+    .slide{position:absolute;inset:0;background:#101a2a center/cover no-repeat;transform-origin:center;}
+    .slide.animate{animation:ken 8s ease-in-out forwards}
+    @keyframes ken{0%{transform:scale(1)}100%{transform:scale(1.08)}}
+    .teaser-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;filter:contrast(1.04) saturate(1.06);pointer-events:none}
+    .placeholder{position:absolute;inset:0;background:
+      radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.18), transparent 60%),
+      radial-gradient(140% 120% at 120% 10%, rgba(110,160,255,.16), transparent 60%),
+      #0f1626;}
+    .placeholder::after{content:"";position:absolute;inset:0;opacity:.25;background:
+      repeating-linear-gradient(to right, rgba(255,255,255,.2) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(to bottom, rgba(255,255,255,.2) 0 1px, transparent 1px 28px);}
+    .roof,.stud{position:absolute;border-radius:2px;background:linear-gradient(90deg,#FF8A00,#6EA0FF);height:3px;opacity:.9}
+    .roof{width:58%;left:21%;top:26%;transform:rotate(25deg);box-shadow:0 0 18px rgba(110,160,255,.25)}
+    .roof::after{content:"";position:absolute;width:100%;height:3px;left:0;top:0;transform:rotate(-50deg) translate(50%,-50%);background:inherit;border-radius:2px}
+    .stud{width:2px;height:36%;left:38%;top:31%;background:rgba(234,240,247,.65);animation:stud 12s linear infinite}
+    .stud:nth-child(odd){left:50%}
+    @keyframes stud{to{transform:translateY(6px)}}
+
     .kicker{color:var(--accent);font-weight:900;letter-spacing:.06em;margin-bottom:8px}
     .h2{font-size:clamp(26px,4.4vw,44px);line-height:1.12;margin:.1em 0 .3em}
     .bullets{display:grid;gap:10px;margin:16px 0}
@@ -67,21 +90,21 @@
     .metric{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:16px;font-weight:800}
     .metric small{display:block;opacity:.8;margin-top:4px}
 
-    /* Footer line is kept from global; just ensure spacing */
     .footer{margin-top:30px;border-top:1px solid rgba(255,255,255,.06)}
 
-    /* ===== Responsive ===== */
-    @media (max-width: 980px){
+    @media (max-width:980px){
       .hero-split{grid-template-columns:1fr}
       .hero-panel{padding:28px 18px}
       .hero-card{width:100%}
       .split{grid-template-columns:1fr}
+      .media-card{min-height:300px}
+      /* center focus on small screens */
+      .hero-media{--hero-x:50%;}
     }
   </style>
 </head>
 <body class="logo-bg">
-
-  <!-- ===== Top Nav (unchanged structure) ===== -->
+  <!-- NAV -->
   <nav class="nav">
     <div class="container bar">
       <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
@@ -92,14 +115,12 @@
     </div>
   </nav>
 
-  <!-- Drawer (unchanged hooks) -->
+  <!-- DRAWER -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
     <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">✕</button></div>
     <nav class="menu-links">
-      <a href="/index.html">Start</a>
-      <a href="/leistungen.html">Leistungen</a>
-      <a href="/galerie.html">Galerie</a>
-      <a href="/faq.html">FAQ</a>
+      <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
+      <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
       <a class="cta" href="/kontakt.html">Kontakt</a>
     </nav>
     <div class="menu-quick">
@@ -111,26 +132,23 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- ===== HERO (Video/Image Left • Card Right) ===== -->
+  <!-- HERO -->
   <header class="hero-split">
-    <div class="hero-media" aria-hidden="true">
-      <video autoplay muted loop playsinline poster="/assets/uploads/hero.jpg">
+    <div class="hero-media" aria-hidden="true" style="--hero-x:62%;">
+      <video autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/hero.jpg">
         <source src="/assets/uploads/hero.mp4" type="video/mp4"/>
         <img src="/assets/uploads/hero.jpg" alt="">
       </video>
     </div>
-
     <div class="hero-panel">
       <div class="hero-card">
         <span class="eyebrow"><i></i> AUSBAU & AUSSENANLAGEN</span>
         <h1>Schlüsselfertiges Planen &amp; Bauen</h1>
         <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
-
         <div class="cta-row">
           <a class="btn3d primary" href="/leistungen.html">Unsere Leistungen</a>
           <a class="btn3d ghost" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
         </div>
-
         <div class="trust">
           <span class="pill"><i></i>14+ Jahre Erfahrung</span>
           <span class="pill"><i></i>Antwort in 24h</span>
@@ -141,32 +159,36 @@
     </div>
   </header>
 
-  <!-- ===== EXPECTATIONS SECTION (like your reference) ===== -->
+  <!-- EXPECTATIONS / MEDIA + TEXT -->
   <section class="section">
     <div class="split">
-      <div class="img">
-        <img src="/assets/uploads/teaser-1.jpg" alt="Projektbesprechung & Bauplanung">
-      </div>
+      <figure class="media-card" aria-label="Projektbesprechung & Bauplanung">
+        <figcaption class="title">Projektbesprechung &amp; Bauplanung</figcaption>
+
+        <!-- Optional teaser video; hidden controls/pointers -->
+        <video id="teaserVideo" class="teaser-video" autoplay muted loop playsinline preload="metadata"
+               poster="/assets/uploads/teaser-1.jpg"
+               oncanplay="this.style.display='block'; document.getElementById('teaserSlides').style.display='none'">
+          <source src="/assets/uploads/teaser.mp4" type="video/mp4"/>
+        </video>
+
+        <!-- Slideshow fallback + placeholder -->
+        <div id="teaserSlides" class="frame">
+          <div id="teaserSlide" class="slide"></div>
+          <div class="placeholder" aria-hidden="true">
+            <span class="roof"></span><span class="stud"></span><span class="stud" style="left:58%"></span>
+          </div>
+        </div>
+      </figure>
+
       <div>
         <div class="kicker">EIN ANSPRECHPARTNER FÜR ALLE GEWERKE</div>
         <div class="h2">Was Sie von uns erwarten können:</div>
         <div class="bullets">
-          <div class="li">
-            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
-            <div>Wir gehen auf Ihre Wünsche ein — transparent vom Erstgespräch bis zur Abnahme.</div>
-          </div>
-          <div class="li">
-            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
-            <div>Wir bauen, als wäre es unser eigenes: sauber, fugenbündig, millimetergenau.</div>
-          </div>
-          <div class="li">
-            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
-            <div>Sie erhalten einen belastbaren Zeitplan und Budgettreue.</div>
-          </div>
-          <div class="li">
-            <span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span>
-            <div>Ein persönlicher Ansprechpartner koordiniert alle Gewerke für Sie.</div>
-          </div>
+          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Wir gehen auf Ihre Wünsche ein — transparent vom Erstgespräch bis zur Abnahme.</div></div>
+          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Wir bauen, als wäre es unser eigenes: sauber, fugenbündig, millimetergenau.</div></div>
+          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Sie erhalten einen belastbaren Zeitplan und Budgettreue.</div></div>
+          <div class="li"><span class="dot"><svg viewBox="0 0 20 20"><path d="M9 3h2v14H9zM3 9h14v2H3z"/></svg></span><div>Ein persönlicher Ansprechpartner koordiniert alle Gewerke für Sie.</div></div>
         </div>
         <div class="actions">
           <a class="btn primary" href="/galerie.html">Referenzen</a>
@@ -187,5 +209,31 @@
   </footer>
 
   <script src="/assets/js/main.js"></script>
+  <script>
+  // slideshow fallback
+  (function(){
+    const slide = document.getElementById('teaserSlide');
+    if(!slide) return;
+    const sources = ['/assets/uploads/teaser-1.jpg','/assets/uploads/teaser-2.jpg','/assets/uploads/teaser-3.jpg'];
+    const loaded = []; let i = 0, pending = sources.length;
+    sources.forEach(src=>{
+      const img = new Image();
+      img.onload = ()=>{loaded.push(src); if(--pending===0) start();};
+      img.onerror = ()=>{if(--pending===0) start();};
+      img.src = src;
+    });
+    function start(){
+      if(loaded.length===0) return;
+      document.querySelector('.placeholder')?.remove();
+      document.getElementById('teaserSlides').style.display='block';
+      show(); setInterval(show, 5000);
+    }
+    function show(){
+      slide.classList.remove('animate'); void slide.offsetWidth;
+      slide.style.backgroundImage = `url('${loaded[i]}')`;
+      slide.classList.add('animate'); i=(i+1)%loaded.length;
+    }
+  })();
+  </script>
 </body>
 </html>
