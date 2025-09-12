@@ -13,58 +13,70 @@
       --glass:rgba(10,14,22,.55); --stroke:rgba(255,255,255,.08);
       --card:rgba(12,16,25,.6);
     }
-    .nav{border-bottom:1px solid rgba(255,255,255,.06)}
+    /* ---------- NAV keeps your existing look ---------- */
+    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(to bottom, rgba(4,7,12,.85), rgba(4,7,12,.35) 70%, transparent);border-bottom:1px solid rgba(255,255,255,.06)}
     .brand strong{letter-spacing:.2px}
 
-    /* ===== HERO SPLIT ===== */
-    .hero-split{position:relative;min-height:84svh;display:grid;grid-template-columns:1.1fr .9fr}
-    .hero-media{position:relative;overflow:hidden; /* tweak focus here */ --hero-x:62%;}
-    .hero-media::after{content:"";position:absolute;inset:0;background:
-      radial-gradient(120% 120% at 10% -20%, rgba(255,138,0,.26), transparent 55%),
-      radial-gradient(140% 140% at 120% 10%, rgba(110,160,255,.25), transparent 55%);
-      mix-blend-mode:soft-light;pointer-events:none}
-    .hero-media video,.hero-media img{
+    /* ---------- FULL VIDEO HERO ---------- */
+    .hero-full{position:relative;min-height:100svh;isolation:isolate}
+    .hero-full video, .hero-full img{
       position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-      /* move framing to the right via object-position */
-      object-position: var(--hero-x) center;
-      filter:contrast(1.06) saturate(1.08);
-      /* kill click/hover so Safari won’t show playback UI */
-      pointer-events:none;
+      /* adjust framing here if needed (0% = links, 100% = rechts) */
+      object-position: 60% center;
+      filter:contrast(1.06) saturate(1.06);
+      pointer-events:none; /* kill playback bar */
     }
-    .hero-panel{display:flex;align-items:center;justify-content:center;padding:42px 24px}
-    .hero-card{width:min(640px,92%);background:var(--card);backdrop-filter:blur(10px);
-      border:1px solid var(--stroke);border-radius:20px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+    .hero-overlay{position:absolute;inset:0;display:grid;place-items:end center;padding:18svh 16px 24px}
+    /* soft brand gradients + blueprint grid */
+    .hero-overlay::before{
+      content:"";position:absolute;inset:0;z-index:0;background:
+        radial-gradient(140% 110% at 110% -10%, rgba(110,160,255,.30), transparent 55%),
+        radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.28), transparent 60%);
+      mix-blend-mode:soft-light;
+    }
+    .hero-overlay::after{
+      content:"";position:absolute;inset:0;opacity:.22;z-index:0;background:
+        repeating-linear-gradient(to right, rgba(255,255,255,.18) 0 1px, transparent 1px 28px),
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.18) 0 1px, transparent 1px 28px);
+    }
+    /* scroll cue */
+    .scroll-cue{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .scroll-cue .mouse{
+      width:26px;height:40px;border-radius:16px;border:2px solid rgba(234,240,247,.75);position:relative;
+      background:rgba(10,14,22,.25);backdrop-filter:blur(4px)
+    }
+    .scroll-cue .wheel{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:4px;height:8px;border-radius:2px;background:#eaf0f7;animation:wheel 1.8s infinite}
+    @keyframes wheel {0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
+    .scroll-cue span{color:#eaf0f7;font-weight:800;text-shadow:0 10px 30px rgba(0,0,0,.5)}
+
+    /* ---------- INTRO CONTENT (below video) ---------- */
+    .intro{background:radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.10), transparent 60%), #0b121f;}
+    .section{max-width:1200px;margin:0 auto;padding:52px 18px}
+    .intro .card{background:var(--card);border:1px solid var(--stroke);border-radius:22px;padding:32px;backdrop-filter:blur(8px);box-shadow:0 16px 50px rgba(0,0,0,.35)}
     .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:7px 11px;border:1px solid var(--stroke);
-      border-radius:999px;background:var(--glass);font-weight:800;color:var(--ink);margin-bottom:10px}
+      border-radius:999px;background:var(--glass);font-weight:800;color:var(--ink);margin-bottom:12px}
     .eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
-    h1{font-size:clamp(36px,6.2vw,64px);line-height:1.05;margin:.1em 0 .3em;color:var(--ink)}
-    .lead{color:var(--mut);font-size:clamp(15px,2.5vw,18px)}
+    h1{font-size:clamp(34px,6.2vw,60px);line-height:1.05;margin:.1em 0 .3em;color:var(--ink)}
+    .lead{color:var(--mut);font-size:clamp(15px,2.4vw,18px)}
+
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
     .btn3d{position:relative;padding:12px 16px;border-radius:14px;font-weight:900}
-    .btn3d.primary{background:linear-gradient(90deg,#FF8A00,#6EA0FF);color:#0b1220;border:none;
-      box-shadow:0 14px 38px rgba(0,212,255,.25), inset 0 0 1px rgba(255,255,255,.3)}
+    .btn3d.primary{background:linear-gradient(90deg,#FF8A00,#6EA0FF);color:#0b1220;border:none;box-shadow:0 14px 38px rgba(0,212,255,.25), inset 0 0 1px rgba(255,255,255,.3)}
     .btn3d.ghost{background:var(--glass);border:1px solid var(--stroke);color:var(--ink)}
     .trust{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
     .pill{display:inline-flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:var(--glass);
       border:1px solid var(--stroke);font-weight:800}
     .pill i{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#FF8A00,#6EA0FF)}
 
-    /* ===== SECTIONS ===== */
-    .section{max-width:1200px;margin:0 auto;padding:52px 18px}
-    .split{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center}
-
-    /* Left media card (slideshow + optional video) */
+    /* ---------- “Was Sie erwarten können” ---------- */
+    .split{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:center}
     .media-card{position:relative;border-radius:18px;overflow:hidden;background:#0e1626;border:1px solid var(--stroke);
       box-shadow:0 10px 36px rgba(0,0,0,.25);min-height:360px}
     .media-card .title{position:absolute;top:14px;left:14px;z-index:3;font-weight:900}
-    .media-card .frame{position:absolute;inset:0}
-    .slide{position:absolute;inset:0;background:#101a2a center/cover no-repeat;transform-origin:center;}
-    .slide.animate{animation:ken 8s ease-in-out forwards}
-    @keyframes ken{0%{transform:scale(1)}100%{transform:scale(1.08)}}
-    .teaser-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;filter:contrast(1.04) saturate(1.06);pointer-events:none}
+    .teaser{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.04) saturate(1.06);pointer-events:none}
     .placeholder{position:absolute;inset:0;background:
-      radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.18), transparent 60%),
-      radial-gradient(140% 120% at 120% 10%, rgba(110,160,255,.16), transparent 60%),
+      radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.16), transparent 60%),
+      radial-gradient(140% 120% at 120% 10%, rgba(110,160,255,.14), transparent 60%),
       #0f1626;}
     .placeholder::after{content:"";position:absolute;inset:0;opacity:.25;background:
       repeating-linear-gradient(to right, rgba(255,255,255,.2) 0 1px, transparent 1px 28px),
@@ -92,14 +104,10 @@
 
     .footer{margin-top:30px;border-top:1px solid rgba(255,255,255,.06)}
 
-    @media (max-width:980px){
-      .hero-split{grid-template-columns:1fr}
-      .hero-panel{padding:28px 18px}
-      .hero-card{width:100%}
+    @media (max-width: 980px){
       .split{grid-template-columns:1fr}
       .media-card{min-height:300px}
-      /* center focus on small screens */
-      .hero-media{--hero-x:50%;}
+      .hero-overlay{padding:14svh 16px 22px}
     }
   </style>
 </head>
@@ -115,7 +123,7 @@
     </div>
   </nav>
 
-  <!-- DRAWER -->
+  <!-- MENU DRAWER (unchanged) -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
     <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">✕</button></div>
     <nav class="menu-links">
@@ -132,52 +140,53 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- HERO -->
-  <header class="hero-split">
-    <div class="hero-media" aria-hidden="true" style="--hero-x:62%;">
-      <video autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/hero.jpg">
-        <source src="/assets/uploads/hero.mp4" type="video/mp4"/>
-        <img src="/assets/uploads/hero.jpg" alt="">
-      </video>
-    </div>
-    <div class="hero-panel">
-      <div class="hero-card">
-        <span class="eyebrow"><i></i> AUSBAU & AUSSENANLAGEN</span>
-        <h1>Schlüsselfertiges Planen &amp; Bauen</h1>
-        <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
-        <div class="cta-row">
-          <a class="btn3d primary" href="/leistungen.html">Unsere Leistungen</a>
-          <a class="btn3d ghost" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
-        </div>
-        <div class="trust">
-          <span class="pill"><i></i>14+ Jahre Erfahrung</span>
-          <span class="pill"><i></i>Antwort in 24h</span>
-          <span class="pill"><i></i>TÜV-nahe Standards</span>
-          <span class="pill"><i></i>Versichert</span>
-        </div>
+  <!-- FULLSCREEN VIDEO HERO -->
+  <header class="hero-full" aria-label="Hero">
+    <video autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/hero.jpg">
+      <source src="/assets/uploads/hero.mp4" type="video/mp4"/>
+      <img src="/assets/uploads/hero.jpg" alt="">
+    </video>
+
+    <div class="hero-overlay">
+      <div class="scroll-cue" aria-hidden="true">
+        <div class="mouse"><span class="wheel"></span></div>
+        <span>Scroll</span>
       </div>
     </div>
   </header>
 
-  <!-- EXPECTATIONS / MEDIA + TEXT -->
+  <!-- INTRO CONTENT -->
+  <section class="intro section">
+    <div class="card">
+      <span class="eyebrow"><i></i> AUSBAU & AUSSENANLAGEN</span>
+      <h1>Schlüsselfertiges Planen &amp; Bauen</h1>
+      <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
+
+      <div class="cta-row">
+        <a class="btn3d primary" href="/leistungen.html">Unsere Leistungen</a>
+        <a class="btn3d ghost" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
+      </div>
+
+      <div class="trust">
+        <span class="pill"><i></i>14+ Jahre Erfahrung</span>
+        <span class="pill"><i></i>Antwort in 24h</span>
+        <span class="pill"><i></i>TÜV-nahe Standards</span>
+        <span class="pill"><i></i>Versichert</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPECTATIONS -->
   <section class="section">
     <div class="split">
+      <!-- left media: use your own teaser.mp4 or a photo -->
       <figure class="media-card" aria-label="Projektbesprechung & Bauplanung">
         <figcaption class="title">Projektbesprechung &amp; Bauplanung</figcaption>
-
-        <!-- Optional teaser video; hidden controls/pointers -->
-        <video id="teaserVideo" class="teaser-video" autoplay muted loop playsinline preload="metadata"
-               poster="/assets/uploads/teaser-1.jpg"
-               oncanplay="this.style.display='block'; document.getElementById('teaserSlides').style.display='none'">
+        <video class="teaser" autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/teaser-1.jpg">
           <source src="/assets/uploads/teaser.mp4" type="video/mp4"/>
         </video>
-
-        <!-- Slideshow fallback + placeholder -->
-        <div id="teaserSlides" class="frame">
-          <div id="teaserSlide" class="slide"></div>
-          <div class="placeholder" aria-hidden="true">
-            <span class="roof"></span><span class="stud"></span><span class="stud" style="left:58%"></span>
-          </div>
+        <div class="placeholder" aria-hidden="true">
+          <span class="roof"></span><span class="stud"></span><span class="stud" style="left:58%"></span>
         </div>
       </figure>
 
@@ -210,30 +219,8 @@
 
   <script src="/assets/js/main.js"></script>
   <script>
-  // slideshow fallback
-  (function(){
-    const slide = document.getElementById('teaserSlide');
-    if(!slide) return;
-    const sources = ['/assets/uploads/teaser-1.jpg','/assets/uploads/teaser-2.jpg','/assets/uploads/teaser-3.jpg'];
-    const loaded = []; let i = 0, pending = sources.length;
-    sources.forEach(src=>{
-      const img = new Image();
-      img.onload = ()=>{loaded.push(src); if(--pending===0) start();};
-      img.onerror = ()=>{if(--pending===0) start();};
-      img.src = src;
-    });
-    function start(){
-      if(loaded.length===0) return;
-      document.querySelector('.placeholder')?.remove();
-      document.getElementById('teaserSlides').style.display='block';
-      show(); setInterval(show, 5000);
-    }
-    function show(){
-      slide.classList.remove('animate'); void slide.offsetWidth;
-      slide.style.backgroundImage = `url('${loaded[i]}')`;
-      slide.classList.add('animate'); i=(i+1)%loaded.length;
-    }
-  })();
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
