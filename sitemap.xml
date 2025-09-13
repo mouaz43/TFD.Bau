@@ -1,6 +1,9 @@
-.
-├── index.html
-├── style.css
-├── script.js
-├── sitemap.xml   ✅ here
-└── robots.txt    ✅ optional, here too
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.tfd-bau.de/</loc></url>
+  <url><loc>https://www.tfd-bau.de/leistungen.html</loc></url>
+  <url><loc>https://www.tfd-bau.de/galerie.html</loc></url>
+  <url><loc>https://www.tfd-bau.de/anfrage.html</loc></url>
+  <url><loc>https://www.tfd-bau.de/faq.html</loc></url>
+  <url><loc>https://www.tfd-bau.de/kontakt.html</loc></url>
+</urlset>
