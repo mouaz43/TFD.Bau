@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TFD — Innenausbau & Trockenbau</title>
   <link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png"/>
+  <meta name="description" content="Innenausbau, Trockenbau, Bodenleger, Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in 24 Stunden. Deutschlandweit."/>
   <style>
     :root{
-      --bg:#0b121f; --ink:#eef3fa; --mut:#a7b6c8;
-      --glass:rgba(12,16,25,.60); --stroke:rgba(255,255,255,.10);
-      --accent:#ff8a00; --accent2:#6ea0ff; --radius:22px; --rsm:14px;
-      --shadow:0 16px 60px rgba(0,0,0,.35);
+      --bg:#0b121f; --ink:#eef3fa; --mut:#a8b4c7;
+      --stroke:rgba(255,255,255,.10);
+      --glass:rgba(16,24,40,.55);
+      --glass-deep:rgba(12,18,31,.72);
+      --accent:#ff8a00; --accent2:#6ea0ff;
+      --radius:22px; --rsm:14px;
+      --shadow:0 12px 60px rgba(0,0,0,.35);
+      --ring:conic-gradient(from 120deg at 50% 50%, rgba(255,138,0,.9), rgba(110,160,255,.9), rgba(255,138,0,.9));
     }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;background:#0b121f;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
     a{color:inherit;text-decoration:none}
     .container{max-width:1200px;margin:0 auto;padding:0 18px}
-    /* NAV (IDs kept for your drawer JS) */
-    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(to bottom,rgba(4,7,12,.85),rgba(4,7,12,.35) 70%,transparent);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:saturate(1.05) blur(6px)}
+
+    /* ---------- NAV ---------- */
+    .nav{position:sticky;top:0;z-index:80;background:linear-gradient(to bottom,rgba(8,12,19,.85),rgba(8,12,19,.45) 70%,transparent);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:saturate(1.05) blur(6px)}
     .bar{display:flex;align-items:center;gap:14px;height:64px}
-    .menu-btn{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(12,16,25,.5);font-weight:800}
+    .menu-btn{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(255,255,255,.02);font-weight:800}
     .menu-btn .bars{width:16px;height:2px;background:var(--ink);box-shadow:0 6px 0 var(--ink),0 -6px 0 var(--ink)}
     .brand{margin:0 auto;display:flex;align-items:center;gap:10px}
     .brand img{width:32px;height:32px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
     .spacer{width:32px}
-    .menu-panel{position:fixed;top:0;right:-420px;width:min(420px,100%);height:100%;background:#0c1423;border-left:1px solid var(--stroke);transition:right .35s;z-index:70}
+
+    /* drawer */
+    .menu-panel{position:fixed;top:0;right:-420px;width:min(420px,100%);height:100%;background:#0c1423;border-left:1px solid var(--stroke);transition:right .35s;z-index:90}
     .menu-panel[aria-hidden="false"]{right:0}
-    .menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .35s;z-index:60}
+    .menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .35s;z-index:85}
     .menu-backdrop.show{opacity:1;pointer-events:auto}
     .menu-head{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--stroke)}
     .menu-links{display:grid;padding:16px}
@@ -36,34 +45,87 @@
     .menu-quick a{padding:10px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(255,255,255,.02);font-weight:800}
     .menu-quick .primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
     .menu-footer{display:flex;gap:12px;padding:16px;color:var(--mut)}
-    /* FULLSCREEN VIDEO (unchanged) */
+
+    /* ---------- HERO VIDEO (unchanged src) ---------- */
     .hero{position:relative;min-height:100svh;isolation:isolate;overflow:hidden}
-    .hero video,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center;filter:contrast(1.06) saturate(1.06);pointer-events:none}
-    .hero .overlay{position:absolute;inset:auto 0 0 0;height:110px;background:linear-gradient(to top,rgba(11,18,31,0.85),rgba(11,18,31,0));z-index:1}
-    /* SECTION PRIMS */
-    section{padding:60px 0}
+    .hero video,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center;filter:contrast(1.05) saturate(1.05);pointer-events:none}
+    /* dim at top and bottom */
+    .hero::before{content:"";position:absolute;inset:0;background:
+      radial-gradient(1200px 500px at 20% 10%, rgba(110,160,255,.12), transparent 60%),
+      radial-gradient(900px 500px at 90% 80%, rgba(255,138,0,.10), transparent 60%);}
+    .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(to top,rgba(11,18,31,.95),rgba(11,18,31,0));z-index:1}
+
+    /* floating content over hero */
+    .hero-deck{position:relative;z-index:2;margin-top:min(20vh,160px)}
+    .hero-card{
+      position:relative;max-width:820px;margin-left:auto;margin-right:auto;
+      background:var(--glass-deep);border-radius:26px;padding:28px 26px;border:1px solid var(--stroke);
+      box-shadow:var(--shadow);backdrop-filter:saturate(1.1) blur(10px);
+    }
+    /* gradient ring border */
+    .hero-card::before{
+      content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+      background:var(--ring);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;mask-composite:exclude;opacity:.35;filter:blur(.2px);
+    }
+    .kicker{color:#b9c6ff;letter-spacing:.14em;font-weight:900;font-size:12px;margin-bottom:8px;text-transform:uppercase}
+    .title{font-size:clamp(36px,6.2vw,64px);line-height:1.03;margin:.1em 0 .35em}
+    .lead{color:var(--mut);font-size:clamp(16px,2.4vw,18px)}
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.04);font-weight:800}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;font-weight:900;border:1px solid var(--stroke);background:rgba(255,255,255,.03);transition:.2s transform, .2s box-shadow}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
+
+    /* ---------- SECTIONS ---------- */
+    section{padding:64px 0}
     .grid{display:grid;gap:18px}
     .grid.cols-3{grid-template-columns:repeat(3,1fr)}
     .grid.cols-2{grid-template-columns:repeat(2,1fr)}
     @media (max-width:980px){.grid.cols-3,.grid.cols-2{grid-template-columns:1fr}}
-    .card{background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .pad{padding:26px}
-    .title{font-size:clamp(34px,6.2vw,56px);line-height:1.05;margin:.1em 0 .25em}
-    .mut{color:var(--mut)}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;font-weight:900;border:1px solid var(--stroke);background:rgba(255,255,255,.02)}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
-    .chips{display:flex;gap:10px;flex-wrap:wrap}
-    .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:800}
-    .kicker{color:var(--accent);font-weight:900;letter-spacing:.06em;margin-bottom:8px}
-    /* MINIMAL SECTIONS */
-    .value .item{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
+    .card{background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:saturate(1.05) blur(8px)}
+    .pad{padding:24px}
+
+    /* stat chips band */
+    .band{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .stat{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:800}
+    .dot{width:10px;height:10px;border-radius:999px;background:radial-gradient(circle at 30% 30%,#fff, #6ea0ff 40%, #274b9a 70%);box-shadow:0 0 16px rgba(110,160,255,.6)}
+    @media (max-width:900px){.band{grid-template-columns:1fr 1fr}}
+
+    /* services */
+    .svc{position:relative;overflow:hidden}
+    .svc .hdr{display:flex;align-items:center;gap:12px;margin-bottom:6px}
     .ico{width:44px;height:44px;border-radius:12px;border:1px solid var(--stroke);display:grid;place-items:center;background:rgba(255,255,255,.03)}
     .ico svg{width:22px;height:22px;fill:#eaf0f7}
-    .service p{margin:.25rem 0 0;color:var(--mut)}
-    .timeline{display:grid;gap:12px}
-    .step{padding:14px;border-radius:14px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:700}
+    .svc p{margin:.25rem 0 0;color:var(--mut)}
+    .svc .topline{position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:.6}
+
+    /* timeline */
+    .timeline{position:relative}
+    .timeline::before{content:"";position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(var(--accent),var(--accent2));opacity:.55}
+    .step{position:relative;margin-left:48px;margin-bottom:14px;padding:14px 16px;border-radius:14px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:800}
+    .step::before{content:"";position:absolute;left:-38px;top:14px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff, #ff8a00 40%, #7a3f00 70%);box-shadow:0 0 18px rgba(255,138,0,.5)}
+
+    /* cta band */
     .cta{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid var(--stroke);border-radius:var(--radius);padding:22px}
+    .mut{color:var(--mut)}
+
+    /* footer */
     .footer{border-top:1px solid rgba(255,255,255,.08);padding:30px 0;color:var(--mut)}
+
+    /* ---------- Animations ---------- */
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .45s ease, transform .45s ease}
+    .reveal.in{opacity:1;transform:none}
+    /* soft moving grid overlay for sections */
+    .section-bg{position:absolute;inset:0;background-image:
+      linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size:44px 44px;mask-image:radial-gradient(100% 70% at 50% 40%, #000 65%, transparent);}
+    .section-bg .glow{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(100px);opacity:.12;background:
+      radial-gradient(closest-side at 50% 50%, #6ea0ff, transparent 60%);}
+    @keyframes drift{from{transform:translate(-10%, -6%)}to{transform:translate(10%, 6%)}}
+    .section-bg .glow{animation:drift 14s ease-in-out infinite alternate}
   </style>
 </head>
 <body>
@@ -97,101 +159,96 @@
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- HERO VIDEO (unchanged) -->
+  <!-- HERO (video unchanged) -->
   <header class="hero" aria-label="Hero">
     <video autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/hero.jpg">
       <source src="/assets/uploads/hero.mp4" type="video/mp4"/>
       <img src="/assets/uploads/hero.jpg" alt="">
     </video>
-    <div class="overlay"></div>
-  </header>
-
-  <!-- ===== Compact Intro ===== -->
-  <section>
-    <div class="container">
-      <div class="card pad">
-        <span class="kicker">SCHLÜSSELFERTIG</span>
-        <h1 class="title">Präzision im Bau. Deutschlandweit.</h1>
-        <p class="mut">Innenausbau · Trockenbau · Boden · Außenanlagen — Angebot in <strong>24&nbsp;Stunden</strong>.</p>
-        <div class="chips" style="margin-top:12px">
+    <div class="container hero-deck">
+      <div class="hero-card reveal">
+        <div class="kicker">Schlüsselfertig · Deutschlandweit</div>
+        <h1 class="title">Präzision im Bau.</h1>
+        <p class="lead">Innenausbau · Trockenbau · Boden · Außenanlagen — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
+        <div class="chips">
           <span class="chip">14+ Jahre</span>
           <span class="chip">TÜV-nahe Standards</span>
-          <span class="chip">Staubarm</span>
-          <span class="chip">Dokumentiert</span>
+          <span class="chip">Digitale Doku</span>
+          <span class="chip">Versichert</span>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <div class="cta-row">
           <a class="btn primary" href="/leistungen.html">Unsere Leistungen</a>
-          <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
           <a class="btn" href="/galerie.html">Vorher/Nachher</a>
+          <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
         </div>
       </div>
     </div>
-  </section>
+  </header>
 
-  <!-- ===== Why TFD (super short) ===== -->
+  <!-- STATS BAND -->
   <section>
-    <div class="container grid cols-3 value">
-      <div class="card pad item">
-        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v8a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2v-8z"/></svg></div>
-        <div><strong>Ein Ansprechpartner</strong><div class="mut">Alles aus einer Hand bis Abnahme.</div></div>
-      </div>
-      <div class="card pad item">
-        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h10v4H4zM4 16h7v4H4z"/></svg></div>
-        <div><strong>Klare Angebote</strong><div class="mut">Plan, Preis, Termin – transparent.</div></div>
-      </div>
-      <div class="card pad item">
-        <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4z"/></svg></div>
-        <div><strong>Präzise & sauber</strong><div class="mut">Fugenbündig, staubarm, millimetergenau.</div></div>
-      </div>
+    <div class="container band reveal">
+      <div class="stat"><span class="dot"></span> Antwort i.d.R. in 24h</div>
+      <div class="stat"><span class="dot"></span> Termin- & Budgettreue</div>
+      <div class="stat"><span class="dot"></span> Staubarm · sauber</div>
+      <div class="stat"><span class="dot"></span> Deutschlandweit</div>
     </div>
   </section>
 
-  <!-- ===== Services (one-liners) ===== -->
-  <section>
+  <!-- SERVICES -->
+  <section style="position:relative">
+    <div class="section-bg" aria-hidden="true"><div class="glow"></div></div>
     <div class="container">
-      <h2 style="margin:.2em 0 .6em">Leistungen</h2>
+      <h2 class="reveal" style="margin:.2em 0 .6em">Leistungen</h2>
       <div class="grid cols-2">
-        <div class="card pad service">
-          <strong>Innenausbau</strong>
-          <p>Turn-key Interiors mit sauberen Kanten.</p>
-          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn primary" href="/leistungen.html#innenausbau">Details</a>
-            <a class="btn" href="/galerie.html">Referenzen</a>
+        <article class="card pad svc reveal" id="innenausbau">
+          <div class="topline"></div>
+          <div class="hdr">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v8a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2v-8z"/></svg></div>
+            <strong>Innenausbau</strong>
           </div>
-        </div>
-        <div class="card pad service">
-          <strong>Trockenbau</strong>
-          <p>Wände, Decken, Akustik & Brandschutz.</p>
-          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn primary" href="/leistungen.html#trockenbau">Details</a>
-            <a class="btn" href="/galerie.html">Referenzen</a>
+          <p>Turn-key Interiors mit sauberen Kanten und zuverlässiger Abnahme.</p>
+          <div class="cta-row"><a class="btn primary" href="/leistungen.html#innenausbau">Details</a><a class="btn" href="/galerie.html">Referenzen</a></div>
+        </article>
+
+        <article class="card pad svc reveal" id="trockenbau">
+          <div class="topline"></div>
+          <div class="hdr">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h10v4H4zM4 16h7v4H4z"/></svg></div>
+            <strong>Trockenbau</strong>
           </div>
-        </div>
-        <div class="card pad service">
-          <strong>Bodenleger</strong>
-          <p>Parkett, Vinyl, Laminat – fachgerecht verlegt.</p>
-          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn primary" href="/leistungen.html#bodenleger">Details</a>
-            <a class="btn" href="/galerie.html">Referenzen</a>
+          <p>Wände, Decken, Akustik & Brandschutz — millimetergenau, staubarm realisiert.</p>
+          <div class="cta-row"><a class="btn primary" href="/leistungen.html#trockenbau">Details</a><a class="btn" href="/galerie.html">Referenzen</a></div>
+        </article>
+
+        <article class="card pad svc reveal" id="bodenleger">
+          <div class="topline"></div>
+          <div class="hdr">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5V8z"/></svg></div>
+            <strong>Bodenleger</strong>
           </div>
-        </div>
-        <div class="card pad service">
-          <strong>Gartenarbeit</strong>
-          <p>Terrassen, Pflaster, Rasen, Hecken.</p>
-          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn primary" href="/leistungen.html#gartenarbeit">Details</a>
-            <a class="btn" href="/galerie.html">Referenzen</a>
+          <p>Parkett, Vinyl, Laminat — fachgerecht vorbereitet, präzise verlegt.</p>
+          <div class="cta-row"><a class="btn primary" href="/leistungen.html#bodenleger">Details</a><a class="btn" href="/galerie.html">Referenzen</a></div>
+        </article>
+
+        <article class="card pad svc reveal" id="gartenarbeit">
+          <div class="topline"></div>
+          <div class="hdr">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/></svg></div>
+            <strong>Außenanlagen</strong>
           </div>
-        </div>
+          <p>Terrassen, Pflaster, Rasen, Hecken — robuste Außenflächen & Pflege.</p>
+          <div class="cta-row"><a class="btn primary" href="/leistungen.html#gartenarbeit">Details</a><a class="btn" href="/galerie.html">Referenzen</a></div>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- ===== Ultra-short Process ===== -->
+  <!-- TIMELINE -->
   <section>
     <div class="container">
-      <h2 style="margin:.2em 0 .6em">Ablauf</h2>
-      <div class="grid cols-2 timeline">
+      <h2 class="reveal" style="margin:.2em 0 .6em">Ablauf</h2>
+      <div class="timeline reveal">
         <div class="step">1 · Kontakt & Fotos senden</div>
         <div class="step">2 · Vor-Ort Termin & Aufmaß</div>
         <div class="step">3 · Angebot in 24h</div>
@@ -200,17 +257,15 @@
     </div>
   </section>
 
-  <!-- ===== CTA band ===== -->
+  <!-- CTA -->
   <section>
     <div class="container">
-      <div class="cta">
-        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
-          <div><strong>Kostenlose Einschätzung</strong><div class="mut">Antwort noch heute – Angebot in 24&nbsp;Stunden.</div></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn" href="tel:+4915770070701">Anrufen</a>
-            <a class="btn" target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
-            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">E-Mail</a>
-          </div>
+      <div class="cta reveal" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+        <div><strong>Kostenlose Einschätzung</strong><div class="mut">Antwort noch heute — Angebot in 24&nbsp;Stunden.</div></div>
+        <div class="cta-row" style="margin:0">
+          <a class="btn" href="tel:+4915770070701">Anrufen</a>
+          <a class="btn" target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
+          <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">E-Mail</a>
         </div>
       </div>
     </div>
@@ -226,15 +281,24 @@
 
   <script>
     // year
-    document.getElementById('y').textContent=new Date().getFullYear();
+    document.getElementById('y').textContent = new Date().getFullYear();
+
     // drawer
-    const p=document.getElementById('menuPanel'), b=document.getElementById('menuBackdrop')||document.querySelector('.menu-backdrop'),
-          t=document.getElementById('menuToggle'), c=document.getElementById('menuClose');
+    const p=document.getElementById('menuPanel'),
+          b=document.getElementById('menuBackdrop')||document.querySelector('.menu-backdrop'),
+          t=document.getElementById('menuToggle'),
+          c=document.getElementById('menuClose');
     function open(){p.setAttribute('aria-hidden','false');b?.classList.add('show')}
     function close(){p.setAttribute('aria-hidden','true');b?.classList.remove('show')}
     t?.addEventListener('click',()=>p.getAttribute('aria-hidden')==='true'?open():close());
     c?.addEventListener('click',close);
     (b||document.body).addEventListener?.('click',e=>{if(e.target===b) close();});
+
+    // scroll reveal
+    const io=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}
+    }),{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   </script>
 </body>
 </html>
