@@ -1,0 +1,90 @@
+/* ===== Services page only ===== */
+:root {
+  --bg: #090d12;
+  --panel: rgba(17, 22, 29, 0.72);
+  --panel-strong: rgba(17, 22, 29, 0.88);
+  --stroke: rgba(255,255,255,.08);
+  --muted: #b9c6d6;
+  --text: #e9f0f7;
+  --chip: rgba(255,255,255,.06);
+  --fact: rgba(255,255,255,.08);
+  --brand1: #ff6a3d;
+  --brand2: #3a66ff;
+}
+
+.wrap { max-width: 1160px; margin-inline: auto; padding-inline: 20px; }
+
+.h2 { font-size: clamp(28px, 3.4vw, 44px); line-height: 1.1; margin: 8px 0 10px; color: var(--text); }
+.muted { color: var(--muted); margin: 6px 0 16px; }
+
+.chip-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+.chip { background: var(--chip); border:1px solid var(--stroke); color:var(--muted); padding:8px 12px; border-radius:999px; font-size:14px }
+.chip.dot::before{content:"•"; color:var(--brand2); margin-right:8px}
+
+/* ---------- HERO with intro video ---------- */
+.intro-hero { position: relative; }
+.intro-hero__frame { position: relative; width:100%; aspect-ratio: 16/7; background: #0b1118; overflow: hidden; }
+@media (max-width: 860px){ .intro-hero__frame{ aspect-ratio: 16/9; } }
+
+.intro-video, .service-video {
+  width:100%; height:100%; object-fit: cover; display:block; background:#0b1118;
+}
+
+.intro-hero__gradient {
+  position:absolute; inset:0;
+  background: radial-gradient(60% 80% at 60% 20%, rgba(58,102,255,.22), transparent 60%),
+              linear-gradient(180deg, rgba(9,13,18,0) 0%, rgba(9,13,18,.65) 85%);
+  pointer-events:none;
+}
+
+/* ---------- Services grid ---------- */
+.services-grid { display:grid; gap:22px; margin: 22px 0 60px; }
+.service-card {
+  display:grid; grid-template-columns: 1.15fr 1.35fr; gap:0;
+  background: linear-gradient(180deg, var(--panel), var(--panel-strong));
+  border:1px solid var(--stroke); border-radius:18px; overflow:hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+.service-card .media { position: relative; min-height: 260px; background:#0b1118; }
+.service-card .content { padding:22px; display:flex; flex-direction:column; gap:14px }
+
+.service-title { font-size: clamp(22px, 2.2vw, 30px); color:var(--text); margin:0 }
+.service-sub { color:var(--muted); margin:2px 0 8px }
+
+.ticks { margin:0; padding-left:0; list-style:none; display:grid; gap:8px }
+.ticks li { color:var(--text); font-size:15px; line-height:1.5; position:relative; padding-left:22px }
+.ticks li::before{ content:"✓"; position:absolute; left:0; top:0; color:#38d686 }
+
+.facts { display:flex; flex-wrap:wrap; gap:10px; margin-top:2px }
+.fact { background: var(--fact); border:1px solid var(--stroke); color:var(--muted);
+  padding:8px 12px; border-radius:10px; font-size:13px }
+
+.actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:4px }
+
+.btn { border:0; color:white; text-decoration:none; font-weight:600; padding:10px 14px; border-radius:12px;
+  background: linear-gradient(90deg, var(--brand1), var(--brand2));
+  box-shadow: 0 6px 16px rgba(58,102,255,.25);
+}
+.btn:hover { filter: brightness(1.05) }
+.btn.ghost { background:transparent; border:1px solid var(--stroke); color:var(--text); box-shadow:none }
+.btn.ghost:hover { background:rgba(255,255,255,.04) }
+
+/* Mobile */
+@media (max-width: 980px){
+  .service-card { grid-template-columns: 1fr; }
+  .service-card .media { min-height: 200px; }
+}
+
+/* Keep header/footer look from the site, just minor safety */
+.site-header, .site-footer { background:#0b0f14 }
+.site-header .wrap, .site-footer .wrap { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 20px }
+.site-header a, .site-footer a { color:var(--muted); text-decoration:none }
+.site-header .brand { display:flex; align-items:center; gap:10px; color:var(--text); font-weight:700 }
+.site-header .site-menu { display:flex; gap:16px; align-items:center }
+.site-header .cta { background: linear-gradient(90deg, var(--brand1), var(--brand2)); color:white; padding:8px 12px; border-radius:10px }
+
+.menu-toggle { display:none }
+@media (max-width:800px){
+  .site-header .site-menu { display:none }
+  .menu-toggle { display:inline-flex; align-items:center; gap:8px; color:var(--text); background:#131922; border:1px solid var(--stroke); padding:8px 12px; border-radius:10px }
+}
