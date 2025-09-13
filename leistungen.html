@@ -1,96 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Leistungen — TFD</title>
 
-  <!-- Base styles of your site -->
+  <!-- Your base styles (already in the repo) -->
   <link rel="stylesheet" href="/assets/css/styles.css" />
-
-  <!-- Services page styles (hero video + service cards) -->
+  <!-- Services page styles (we added earlier) -->
   <link rel="stylesheet" href="/assets/css/services.css" />
 
-  <meta name="theme-color" content="#0b0f14" />
+  <style>
+    /* ensure logo shows nicely even if base CSS differs */
+    .site-header .brand img{width:34px;height:34px;border-radius:10px;display:block}
+    .site-header .brand span{font-weight:800;font-size:18px;letter-spacing:.3px}
+  </style>
 </head>
 <body>
-  <!-- ===== Header / Nav (kept minimal to avoid breaking global styling) ===== -->
+
+  <!-- ===== Header with LOGO restored ===== -->
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="/index.html" aria-label="Startseite">
-        <img src="/assets/img/logo-3d.png" alt="TFD" height="32" />
+      <a class="brand" href="/">
+        <!-- Make sure this file exists: /assets/img/logo-3d.png -->
+        <img src="/assets/img/logo-3d.png" alt="TFD Logo" />
         <span>TFD</span>
       </a>
 
-      <button class="menu-toggle" aria-expanded="false" aria-controls="site-menu">Menü</button>
-      <nav id="site-menu" class="site-menu" aria-label="Hauptmenü">
-        <a href="/index.html">Start</a>
-        <a class="active" href="/leistungen.html">Leistungen</a>
-        <a href="/gallery.html">Galerie</a>
+      <nav class="site-menu">
+        <a href="/">Start</a>
+        <a href="/leistungen.html" aria-current="page">Leistungen</a>
+        <a href="/galerie.html">Galerie</a>
         <a href="/faq.html">FAQ</a>
-        <a class="cta" href="/kontakt.html">Kontakt</a>
+        <a class="cta" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20TFD&body=Hallo%20TFD,%0D%0A%0D%0Aich%20habe%20eine%20Anfrage%20zu%20...">Kontakt</a>
       </nav>
+
+      <button class="menu-toggle" aria-label="Menü öffnen">☰ Menü</button>
     </div>
   </header>
 
-  <main id="main-content">
-    <!-- ===== Intro Hero Video (clean, no text overlay) ===== -->
+  <main>
+
+    <!-- (Optional) short intro video at the top of the services page -->
     <section class="intro-hero" aria-label="Einleitungsvideo">
       <div class="intro-hero__frame">
-        <video
-          class="intro-video"
-          playsinline
-          muted
-          loop
-          autoplay
-          preload="none"
-          data-src="/assets/uploads/services/intro.mp4"
-          poster="/assets/uploads/services/intro.jpg"
-        ></video>
+        <video class="intro-video" playsinline muted loop autoplay preload="none"
+               data-src="/assets/uploads/services/intro.mp4"
+               poster="/assets/uploads/services/intro.jpg"></video>
         <div class="intro-hero__gradient" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- ===== Page heading / quick tags ===== -->
-    <section class="section wrap">
-      <header class="section-head">
-        <h1 class="h2">Leistungen</h1>
-        <p class="muted">
-          Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — bundesweit, termintreu, sauber.
-        </p>
-        <div class="chip-row">
-          <span class="chip dot">TÜV-nahe Standards</span>
-          <span class="chip dot">Versichert</span>
-          <span class="chip dot">Digitale Doku</span>
-          <span class="chip dot">Ganz Deutschland</span>
-        </div>
-      </header>
+    <section class="wrap" style="margin-top:22px">
+      <h1 class="h2">Leistungen</h1>
+      <p class="muted">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — bundesweit, termintreu, sauber.</p>
+      <div class="chip-row">
+        <span class="chip dot">TÜV-nahe Standards</span>
+        <span class="chip dot">Versichert</span>
+        <span class="chip dot">Digitale Doku</span>
+        <span class="chip dot">Ganz Deutschland</span>
+      </div>
     </section>
 
-    <!-- ===== Services grid (video cards) ===== -->
-    <section class="wrap services-grid" aria-label="Servicebereiche">
+    <!-- ===== Services Grid (videos) ===== -->
+    <section class="wrap services-grid">
 
       <!-- Innenausbau -->
-      <article class="service-card" id="innenausbau" aria-labelledby="svc-innenausbau-title">
+      <article class="service-card" id="innenausbau">
         <div class="media">
-          <video
-            class="service-video"
-            playsinline
-            muted
-            loop
-            preload="none"
-            data-src="/assets/uploads/services/innenausbau.mp4"
-            poster="/assets/uploads/services/innenausbau.jpg"
-          ></video>
+          <video class="service-video" playsinline muted loop preload="none"
+                 data-src="/assets/uploads/services/innenausbau.mp4"
+                 poster="/assets/uploads/services/innenausbau.jpg"></video>
         </div>
         <div class="content">
-          <h2 class="service-title" id="svc-innenausbau-title">Innenausbau</h2>
+          <h2 class="service-title">Innenausbau</h2>
           <p class="service-sub">Turn-key Interiors mit sauberen Kanten, abgestimmten Details und verlässlicher Abnahme.</p>
 
           <ul class="ticks">
-            <li><strong>Saubere Flächen:</strong> Spachteln, Schleifen, Grundieren – abnahmefähig.</li>
-            <li><strong>Details:</strong> Schattenfugen, Sockelleisten, Silikonfugen auf Linie.</li>
-            <li><strong>Dokumentation:</strong> Foto-Doku & Übergabeprotokoll digital.</li>
+            <li>Saubere Flächen: Spachteln, Schleifen, Grundieren – abnahmefähig.</li>
+            <li>Details: Schattenfugen, Sockelleisten, Silikonfugen auf Linie.</li>
+            <li>Dokumentation: Foto-Doku & Übergabeprotokoll digital.</li>
           </ul>
 
           <div class="facts">
@@ -100,102 +89,84 @@
           </div>
 
           <div class="actions">
-            <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20Innenausbau%20TFD">E-Mail</a>
+            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
+            <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Innenausbau%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
-            <a class="btn ghost" href="/gallery.html#innenausbau">Vorher/Nachher ansehen</a>
+            <a class="btn ghost" href="https://wa.me/4915770070701" target="_blank" rel="noopener">WhatsApp</a>
           </div>
         </div>
       </article>
 
       <!-- Trockenbau -->
-      <article class="service-card" id="trockenbau" aria-labelledby="svc-trockenbau-title">
+      <article class="service-card" id="trockenbau">
         <div class="media">
-          <video
-            class="service-video"
-            playsinline
-            muted
-            loop
-            preload="none"
-            data-src="/assets/uploads/services/trockenbau.mp4"
-            poster="/assets/uploads/services/trockenbau.jpg"
-          ></video>
+          <video class="service-video" playsinline muted loop preload="none"
+                 data-src="/assets/uploads/services/trockenbau.mp4"
+                 poster="/assets/uploads/services/trockenbau.jpg"></video>
         </div>
         <div class="content">
-          <h2 class="service-title" id="svc-trockenbau-title">Trockenbau</h2>
-          <p class="service-sub">Leichtbauwände, Decken, Akustik & Brandschutz – millimetergenau und staubarm realisiert.</p>
+          <h2 class="service-title">Trockenbau</h2>
+          <p class="service-sub">Leichtbauwände, Decken, Akustik & Brandschutz — millimetergenau und staubarm.</p>
 
           <ul class="ticks">
             <li>Messgenaue Profile, sauber geschraubt und verspachtelt.</li>
-            <li>Akustikdecken, Revisionsklappen, Brandschutz F90/F30.</li>
-            <li>Problemlose Integration von Licht, Lüftung & Technik.</li>
+            <li>Akustikdecken, Abkofferungen, Revisionsklappen.</li>
+            <li>F90/Brandschutz nach Vorgabe.</li>
           </ul>
 
           <div class="facts">
-            <span class="fact">3–8 Tage</span>
+            <span class="fact">3–12 Tage</span>
             <span class="fact">Akustik/Brandschutz</span>
-            <span class="fact">Gewährleistung</span>
           </div>
 
           <div class="actions">
-            <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20Trockenbau%20TFD">E-Mail</a>
+            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
+            <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Trockenbau%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
-            <a class="btn ghost" href="/gallery.html#trockenbau">Vorher/Nachher ansehen</a>
           </div>
         </div>
       </article>
 
       <!-- Bodenleger -->
-      <article class="service-card" id="bodenleger" aria-labelledby="svc-bodenleger-title">
+      <article class="service-card" id="bodenleger">
         <div class="media">
-          <video
-            class="service-video"
-            playsinline
-            muted
-            loop
-            preload="none"
-            data-src="/assets/uploads/services/bodenleger.mp4"
-            poster="/assets/uploads/services/bodenleger.jpg"
-          ></video>
+          <video class="service-video" playsinline muted loop preload="none"
+                 data-src="/assets/uploads/services/bodenleger.mp4"
+                 poster="/assets/uploads/services/bodenleger.jpg"></video>
         </div>
         <div class="content">
-          <h2 class="service-title" id="svc-bodenleger-title">Bodenleger</h2>
+          <h2 class="service-title">Bodenleger</h2>
           <p class="service-sub">Parkett, Vinyl, Laminat – fachgerecht vorbereitet, präzise verlegt und sauber übergeben.</p>
 
           <ul class="ticks">
-            <li>Untergrundprüfung, Spachtel & Ausgleich – eben & fest.</li>
+            <li>Untergrundprüfung, Spachtel & Ausgleich.</li>
             <li>Verlegung im Verband, Fluchten stimmen.</li>
-            <li>Saubere Sockel, Übergänge & Dehnfugen.</li>
+            <li>Sockel, Übergänge & Dehnfugen sauber.</li>
           </ul>
 
           <div class="facts">
             <span class="fact">20–120 m²</span>
-            <span class="fact">Klebe/Click</span>
+            <span class="fact">Klebe/Click je System</span>
             <span class="fact">Pflegehinweise inkl.</span>
           </div>
 
           <div class="actions">
-            <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20Bodenleger%20TFD">E-Mail</a>
+            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
+            <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Bodenleger%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
-            <a class="btn ghost" href="/gallery.html#bodenleger">Vorher/Nachher ansehen</a>
           </div>
         </div>
       </article>
 
       <!-- Gartenarbeit -->
-      <article class="service-card" id="gartenarbeit" aria-labelledby="svc-gartenarbeit-title">
+      <article class="service-card" id="gartenarbeit">
         <div class="media">
-          <video
-            class="service-video"
-            playsinline
-            muted
-            loop
-            preload="none"
-            data-src="/assets/uploads/services/gartenarbeit.mp4"
-            poster="/assets/uploads/services/gartenarbeit.jpg"
-          ></video>
+          <video class="service-video" playsinline muted loop preload="none"
+                 data-src="/assets/uploads/services/gartenarbeit.mp4"
+                 poster="/assets/uploads/services/gartenarbeit.jpg"></video>
         </div>
         <div class="content">
-          <h2 class="service-title" id="svc-gartenarbeit-title">Gartenarbeit</h2>
+          <h2 class="service-title">Gartenarbeit</h2>
           <p class="service-sub">Terrassen, Pflaster, Rasen, Hecken — robuste Außenflächen & Pflege.</p>
 
           <ul class="ticks">
@@ -206,14 +177,13 @@
 
           <div class="facts">
             <span class="fact">Außenanlagen</span>
-            <span class="fact">Entsorgung inkl.</span>
-            <span class="fact">Bundesweit</span>
+            <span class="fact">Pflege & Wartung</span>
           </div>
 
           <div class="actions">
-            <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20Gartenarbeit%20TFD">E-Mail</a>
+            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
+            <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Gartenarbeit%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
-            <a class="btn ghost" href="/gallery.html#gartenarbeit">Vorher/Nachher ansehen</a>
           </div>
         </div>
       </article>
@@ -221,14 +191,18 @@
     </section>
   </main>
 
-  <!-- ===== Footer ===== -->
   <footer class="site-footer">
     <div class="wrap">
-      <p>© 2025 TFD · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a></p>
+      <span>© 2025 TFD</span>
+      <span>
+        <a href="/impressum.html">Impressum</a> ·
+        <a href="/datenschutz.html">Datenschutz</a> ·
+        <a href="mailto:Almamo@tfd-bau.de">Almamo@tfd-bau.de</a>
+      </span>
     </div>
   </footer>
 
-  <!-- Page script (lazy-load videos etc.) -->
+  <!-- Services page logic (lazy load videos etc.) -->
   <script src="/assets/js/services.js" defer></script>
 </body>
 </html>
