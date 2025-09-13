@@ -3,49 +3,28 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>TFD — Schlüsselfertiger Innenausbau & Trockenbau</title>
+  <title>TFD — Innenausbau & Trockenbau</title>
   <link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png"/>
-  <link rel="preload" as="image" href="/assets/uploads/hero.jpg"/>
   <style>
-    /* ===== Design System (local to this page) ===== */
     :root{
-      --bg:#0b121f;
-      --ink:#eaf0f7;
-      --mut:#a9b6c7;
-      --accent:#FF8A00;
-      --accent2:#6EA0FF;
-      --glass:rgba(12,16,25,.60);
-      --stroke:rgba(255,255,255,.10);
-      --card:#0e1626;
-      --radius:22px;
-      --radius-sm:14px;
+      --bg:#0b121f; --ink:#eef3fa; --mut:#a7b6c8;
+      --glass:rgba(12,16,25,.60); --stroke:rgba(255,255,255,.10);
+      --accent:#ff8a00; --accent2:#6ea0ff; --radius:22px; --rsm:14px;
       --shadow:0 16px 60px rgba(0,0,0,.35);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;background:var(--bg);color:var(--ink);
-      -webkit-font-smoothing:antialiased; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:#0b121f;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
     a{color:inherit;text-decoration:none}
     .container{max-width:1200px;margin:0 auto;padding:0 18px}
-    /* ===== Top Nav (keeps your IDs for drawer JS) ===== */
-    .nav{position:sticky;top:0;z-index:50;
-      background:linear-gradient(to bottom, rgba(4,7,12,.85), rgba(4,7,12,.35) 70%, transparent);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      backdrop-filter:saturate(1.1) blur(6px);
-    }
+    /* NAV (IDs kept for your drawer JS) */
+    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(to bottom,rgba(4,7,12,.85),rgba(4,7,12,.35) 70%,transparent);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:saturate(1.05) blur(6px)}
     .bar{display:flex;align-items:center;gap:14px;height:64px}
-    .menu-btn{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(12,16,25,.5);color:var(--ink);font-weight:800}
+    .menu-btn{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(12,16,25,.5);font-weight:800}
     .menu-btn .bars{width:16px;height:2px;background:var(--ink);box-shadow:0 6px 0 var(--ink),0 -6px 0 var(--ink)}
     .brand{margin:0 auto;display:flex;align-items:center;gap:10px}
-    .brand img{width:32px;height:32px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
-    .brand strong{letter-spacing:.2px}
+    .brand img{width:32px;height:32px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
     .spacer{width:32px}
-
-    /* ===== Drawer (your structure preserved) ===== */
-    .menu-panel{position:fixed;inset:auto 0 0 auto;top:0;right:-420px;width:min(420px,100%);height:100%;
-      background:#0c1423;border-left:1px solid var(--stroke);transition:right .35s ease;z-index:70}
+    .menu-panel{position:fixed;top:0;right:-420px;width:min(420px,100%);height:100%;background:#0c1423;border-left:1px solid var(--stroke);transition:right .35s;z-index:70}
     .menu-panel[aria-hidden="false"]{right:0}
     .menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .35s;z-index:60}
     .menu-backdrop.show{opacity:1;pointer-events:auto}
@@ -57,83 +36,34 @@
     .menu-quick a{padding:10px 12px;border-radius:12px;border:1px solid var(--stroke);background:rgba(255,255,255,.02);font-weight:800}
     .menu-quick .primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
     .menu-footer{display:flex;gap:12px;padding:16px;color:var(--mut)}
-
-    /* ===== Fullscreen hero video (unchanged behaviour) ===== */
-    .hero-full{position:relative;min-height:100svh;isolation:isolate;overflow:hidden}
-    .hero-full video,.hero-full img{
-      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-      object-position:60% center;filter:contrast(1.06) saturate(1.06);pointer-events:none;
-    }
-    .hero-overlay{position:absolute;inset:0;display:grid;place-items:end center;padding:18svh 16px 24px}
-    .hero-overlay::before{
-      content:"";position:absolute;inset:0;z-index:0;background:
-        radial-gradient(140% 110% at 110% -10%, rgba(110,160,255,.30), transparent 55%),
-        radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.28), transparent 60%);
-      mix-blend-mode:soft-light;
-    }
-    .hero-overlay::after{
-      content:"";position:absolute;inset:0;opacity:.18;z-index:0;background:
-        repeating-linear-gradient(to right, rgba(255,255,255,.2) 0 1px, transparent 1px 28px),
-        repeating-linear-gradient(to bottom, rgba(255,255,255,.2) 0 1px, transparent 1px 28px);
-    }
-    .scroll-cue{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px}
-    .scroll-cue .mouse{width:26px;height:40px;border-radius:16px;border:2px solid rgba(234,240,247,.75);
-      background:rgba(10,14,22,.25);backdrop-filter:blur(4px);position:relative}
-    .scroll-cue .wheel{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:4px;height:8px;border-radius:2px;background:#eaf0f7;animation:wheel 1.8s infinite}
-    @keyframes wheel {0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
-
-    /* ===== Section primitives ===== */
-    section{padding:70px 0}
-    .intro{background:
-      radial-gradient(120% 120% at -10% -10%, rgba(255,138,0,.10), transparent 60%),
-      radial-gradient(120% 100% at 120% -10%, rgba(110,160,255,.12), transparent 60%);}
-    .lead{color:var(--mut)}
+    /* FULLSCREEN VIDEO (unchanged) */
+    .hero{position:relative;min-height:100svh;isolation:isolate;overflow:hidden}
+    .hero video,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center;filter:contrast(1.06) saturate(1.06);pointer-events:none}
+    .hero .overlay{position:absolute;inset:auto 0 0 0;height:110px;background:linear-gradient(to top,rgba(11,18,31,0.85),rgba(11,18,31,0));z-index:1}
+    /* SECTION PRIMS */
+    section{padding:60px 0}
     .grid{display:grid;gap:18px}
     .grid.cols-3{grid-template-columns:repeat(3,1fr)}
     .grid.cols-2{grid-template-columns:repeat(2,1fr)}
     @media (max-width:980px){.grid.cols-3,.grid.cols-2{grid-template-columns:1fr}}
-
     .card{background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .card.pad{padding:28px}
-    .badge{display:inline-flex;align-items:center;gap:10px;padding:7px 11px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:900}
-    .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-
+    .pad{padding:26px}
+    .title{font-size:clamp(34px,6.2vw,56px);line-height:1.05;margin:.1em 0 .25em}
+    .mut{color:var(--mut)}
     .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;font-weight:900;border:1px solid var(--stroke);background:rgba(255,255,255,.02)}
     .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border:none}
-    .btn.ghost{background:rgba(255,255,255,.04)}
+    .chips{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:800}
     .kicker{color:var(--accent);font-weight:900;letter-spacing:.06em;margin-bottom:8px}
-    h1.title{font-size:clamp(34px,6.2vw,60px);line-height:1.05;margin:.2em 0 .3em}
-    h2{font-size:clamp(26px,4.2vw,40px);line-height:1.12;margin:.2em 0 .3em}
-    h3{font-size:clamp(18px,2.4vw,22px);margin:.3em 0 .2em}
-
-    /* ===== Professional blocks ===== */
-    /* — Value Pillars */
-    .pillars .card{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center}
-    .icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-      border:1px solid var(--stroke);display:grid;place-items:center}
-    .icon svg{width:26px;height:26px;fill:url(#g);filter:drop-shadow(0 8px 20px rgba(0,0,0,.35))}
-    /* — Process Timeline */
-    .timeline{position:relative;padding-left:22px}
-    .timeline::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2))}
-    .step{position:relative;margin:18px 0;padding:16px;border:1px solid var(--stroke);border-radius:var(--radius-sm);background:rgba(255,255,255,.03)}
-    .step::before{content:attr(data-step);position:absolute;left:-22px;top:16px;width:28px;height:28px;border-radius:50%;
-      background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;font-weight:900;display:grid;place-items:center;border:1px solid rgba(255,255,255,.35)}
-    /* — Services */
-    .service{display:grid;gap:10px}
-    .service p{color:var(--mut);margin:0}
-    .service .actions{display:flex;gap:10px;flex-wrap:wrap}
-    /* — Testimonial band */
-    .quote{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid var(--stroke);border-radius:var(--radius);padding:28px;text-align:center}
-    .quote p{font-size:clamp(18px,2.6vw,22px);line-height:1.4;margin:0}
-    .quote small{display:block;color:var(--mut);margin-top:8px}
-    /* — CTA band */
-    .cta-band{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b121f;border-radius:var(--radius);padding:24px;display:grid;gap:12px;align-items:center}
-    .cta-band .row{display:flex;gap:10px;flex-wrap:wrap}
-
-    /* Footer */
-    .footer{border-top:1px solid rgba(255,255,255,.08);padding:32px 0;color:var(--mut)}
-    .footer a{color:var(--ink)}
-    @media (max-width:980px){.bar{height:60px}}
+    /* MINIMAL SECTIONS */
+    .value .item{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
+    .ico{width:44px;height:44px;border-radius:12px;border:1px solid var(--stroke);display:grid;place-items:center;background:rgba(255,255,255,.03)}
+    .ico svg{width:22px;height:22px;fill:#eaf0f7}
+    .service p{margin:.25rem 0 0;color:var(--mut)}
+    .timeline{display:grid;gap:12px}
+    .step{padding:14px;border-radius:14px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);font-weight:700}
+    .cta{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid var(--stroke);border-radius:var(--radius);padding:22px}
+    .footer{border-top:1px solid rgba(255,255,255,.08);padding:30px 0;color:var(--mut)}
   </style>
 </head>
 <body>
@@ -150,9 +80,9 @@
     </div>
   </nav>
 
-  <!-- Drawer (IDs kept for your JS) -->
+  <!-- DRAWER -->
   <div class="menu-panel" id="menuPanel" aria-hidden="true">
-    <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">✕</button></div>
+    <div class="menu-head"><strong>Menü</strong><button id="menuClose">✕</button></div>
     <nav class="menu-links">
       <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
       <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
@@ -161,140 +91,94 @@
     <div class="menu-quick">
       <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD">E-Mail</a>
       <a href="tel:+4915770070701">Anrufen</a>
-      <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
+      <a target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
     </div>
     <div class="menu-footer"><a href="/legal/impressum.html">Impressum</a><a href="/legal/datenschutz.html">Datenschutz</a></div>
   </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- ===== Fullscreen Video Hero (unchanged) ===== -->
-  <header class="hero-full" aria-label="Hero">
+  <!-- HERO VIDEO (unchanged) -->
+  <header class="hero" aria-label="Hero">
     <video autoplay muted loop playsinline preload="metadata" poster="/assets/uploads/hero.jpg">
       <source src="/assets/uploads/hero.mp4" type="video/mp4"/>
       <img src="/assets/uploads/hero.jpg" alt="">
     </video>
-    <div class="hero-overlay">
-      <div class="scroll-cue" aria-hidden="true">
-        <div class="mouse"><span class="wheel"></span></div>
-        <span>Scroll</span>
-      </div>
-    </div>
+    <div class="overlay"></div>
   </header>
 
-  <!-- ===== Intro / Value Proposition ===== -->
-  <section class="intro">
-    <div class="container">
-      <div class="card pad" style="margin-bottom:22px">
-        <span class="badge"><span class="dot"></span> AUSBAU & AUSSENANLAGEN</span>
-        <h1 class="title">Präzision im Bau. Deutschlandweit.</h1>
-        <p class="lead">Innenausbau · Trockenbau · Bodenleger · Gartenarbeit — fugenbündig, staubarm, termintreu. Angebot in <strong>24&nbsp;Stunden</strong>.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
-          <a class="btn primary" href="/leistungen.html">Unsere Leistungen</a>
-          <a class="btn ghost" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
-          <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
-        </div>
-      </div>
-
-      <!-- Pillars -->
-      <div class="grid cols-3 pillars">
-        <div class="card pad">
-          <div class="icon">
-            <svg viewBox="0 0 24 24"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FF8A00"/><stop offset="1" stop-color="#6EA0FF"/></linearGradient></defs><path d="M3 11l9-7 9 7v8a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2v-8z"/></svg>
-          </div>
-          <div>
-            <h3>Schlüsselfertig</h3>
-            <p>Ein Ansprechpartner koordiniert alle Gewerke bis zur Abnahme.</p>
-          </div>
-        </div>
-        <div class="card pad">
-          <div class="icon">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h10v4H4zM4 16h7v4H4z"/></svg>
-          </div>
-          <div>
-            <h3>Dokumentiert</h3>
-            <p>Digitale Doku, klare Angebote, verbindliche Zeitpläne.</p>
-          </div>
-        </div>
-        <div class="card pad">
-          <div class="icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4z"/></svg>
-          </div>
-          <div>
-            <h3>Sauber & präzise</h3>
-            <p>Fugenbündig, staubarm, millimetergenau – TÜV-nahe Standards.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Process Timeline ===== -->
+  <!-- ===== Compact Intro ===== -->
   <section>
     <div class="container">
-      <div class="grid cols-2">
-        <div>
-          <span class="kicker">ABLAUF</span>
-          <h2>So läuft Ihr Projekt mit TFD</h2>
-          <div class="timeline">
-            <div class="step" data-step="1"><strong>Kontakt & Erstgespräch</strong><br><span class="lead">Telefonisch, WhatsApp oder E-Mail – wir klären Ziele & Rahmen.</span></div>
-            <div class="step" data-step="2"><strong>Vor-Ort Termin</strong><br><span class="lead">Aufmaß, Beratung, Materialvorschläge.</span></div>
-            <div class="step" data-step="3"><strong>Angebot in 24&nbsp;Stunden</strong><br><span class="lead">Transparent, verbindlich, mit Zeitplan.</span></div>
-            <div class="step" data-step="4"><strong>Ausführung</strong><br><span class="lead">Innenausbau, Trockenbau, Boden, Außenanlagen – alles aus einer Hand.</span></div>
-            <div class="step" data-step="5"><strong>Abnahme & Doku</strong><br><span class="lead">Digitale Übergabe, saubere Baustelle, zufriedenstellende Übergabe.</span></div>
-          </div>
+      <div class="card pad">
+        <span class="kicker">SCHLÜSSELFERTIG</span>
+        <h1 class="title">Präzision im Bau. Deutschlandweit.</h1>
+        <p class="mut">Innenausbau · Trockenbau · Boden · Außenanlagen — Angebot in <strong>24&nbsp;Stunden</strong>.</p>
+        <div class="chips" style="margin-top:12px">
+          <span class="chip">14+ Jahre</span>
+          <span class="chip">TÜV-nahe Standards</span>
+          <span class="chip">Staubarm</span>
+          <span class="chip">Dokumentiert</span>
         </div>
-        <div class="card pad">
-          <h3>Direkt loslegen?</h3>
-          <p class="lead">Schicken Sie uns Fotos/Pläne – wir melden uns noch heute.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20mit%20Fotos%2FPl%C3%A4nen">E-Mail senden</a>
-            <a class="btn" href="tel:+4915770070701">Anrufen</a>
-            <a class="btn" target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
-          </div>
-          <div style="margin-top:16px;display:grid;gap:10px">
-            <div class="badge"><span class="dot"></span>14+ Jahre Erfahrung</div>
-            <div class="badge"><span class="dot"></span>Antwort in 24h</div>
-            <div class="badge"><span class="dot"></span>Versichert</div>
-          </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <a class="btn primary" href="/leistungen.html">Unsere Leistungen</a>
+          <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
+          <a class="btn" href="/galerie.html">Vorher/Nachher</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Services Overview ===== -->
-  <section class="intro">
+  <!-- ===== Why TFD (super short) ===== -->
+  <section>
+    <div class="container grid cols-3 value">
+      <div class="card pad item">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v8a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2v-8z"/></svg></div>
+        <div><strong>Ein Ansprechpartner</strong><div class="mut">Alles aus einer Hand bis Abnahme.</div></div>
+      </div>
+      <div class="card pad item">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h10v4H4zM4 16h7v4H4z"/></svg></div>
+        <div><strong>Klare Angebote</strong><div class="mut">Plan, Preis, Termin – transparent.</div></div>
+      </div>
+      <div class="card pad item">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4z"/></svg></div>
+        <div><strong>Präzise & sauber</strong><div class="mut">Fugenbündig, staubarm, millimetergenau.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Services (one-liners) ===== -->
+  <section>
     <div class="container">
-      <span class="kicker">LEISTUNGEN</span>
-      <h2>Innenausbau · Trockenbau · Bodenleger · Gartenarbeit</h2>
+      <h2 style="margin:.2em 0 .6em">Leistungen</h2>
       <div class="grid cols-2">
         <div class="card pad service">
-          <h3>Innenausbau</h3>
-          <p>Turn-key Interiors mit sauberen Kanten, abgestimmten Details und zuverlässiger Abnahme.</p>
-          <div class="actions">
+          <strong>Innenausbau</strong>
+          <p>Turn-key Interiors mit sauberen Kanten.</p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn primary" href="/leistungen.html#innenausbau">Details</a>
             <a class="btn" href="/galerie.html">Referenzen</a>
           </div>
         </div>
         <div class="card pad service">
-          <h3>Trockenbau</h3>
-          <p>Leichtbauwände, Decken, Akustik &amp; Brandschutz — millimetergenau und staubarm.</p>
-          <div class="actions">
+          <strong>Trockenbau</strong>
+          <p>Wände, Decken, Akustik & Brandschutz.</p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn primary" href="/leistungen.html#trockenbau">Details</a>
             <a class="btn" href="/galerie.html">Referenzen</a>
           </div>
         </div>
         <div class="card pad service">
-          <h3>Bodenleger</h3>
-          <p>Parkett, Vinyl, Laminat — fachgerecht vorbereitet, präzise verlegt und sauber übergeben.</p>
-          <div class="actions">
+          <strong>Bodenleger</strong>
+          <p>Parkett, Vinyl, Laminat – fachgerecht verlegt.</p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn primary" href="/leistungen.html#bodenleger">Details</a>
             <a class="btn" href="/galerie.html">Referenzen</a>
           </div>
         </div>
         <div class="card pad service">
-          <h3>Gartenarbeit</h3>
-          <p>Terrassen, Pflaster, Rasen, Hecken — robuste Außenflächen &amp; Pflege.</p>
-          <div class="actions">
+          <strong>Gartenarbeit</strong>
+          <p>Terrassen, Pflaster, Rasen, Hecken.</p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn primary" href="/leistungen.html#gartenarbeit">Details</a>
             <a class="btn" href="/galerie.html">Referenzen</a>
           </div>
@@ -303,53 +187,54 @@
     </div>
   </section>
 
-  <!-- ===== Testimonial / Credibility ===== -->
+  <!-- ===== Ultra-short Process ===== -->
   <section>
     <div class="container">
-      <div class="quote">
-        <p>„Wir bauen so, als wäre es unser eigenes. Sauber, fugenbündig, termintreu – und mit einem Ansprechpartner, der alles koordiniert.“</p>
-        <small>Ahmad Almamo · Geschäftsführer, 14+ Jahre Erfahrung</small>
+      <h2 style="margin:.2em 0 .6em">Ablauf</h2>
+      <div class="grid cols-2 timeline">
+        <div class="step">1 · Kontakt & Fotos senden</div>
+        <div class="step">2 · Vor-Ort Termin & Aufmaß</div>
+        <div class="step">3 · Angebot in 24h</div>
+        <div class="step">4 · Ausführung & Abnahme</div>
       </div>
     </div>
   </section>
 
-  <!-- ===== CTA Band ===== -->
-  <section class="intro" style="padding-top:0">
+  <!-- ===== CTA band ===== -->
+  <section>
     <div class="container">
-      <div class="cta-band">
-        <div><strong>Kostenlose Einschätzung</strong><br><span>Schicken Sie uns kurz Ihr Anliegen – Angebot in 24&nbsp;Stunden.</span></div>
-        <div class="row">
-          <a class="btn" href="tel:+4915770070701">Anrufen</a>
-          <a class="btn" target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
-          <a class="btn" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">E-Mail</a>
-          <a class="btn" href="/kontakt.html">Kontakt</a>
+      <div class="cta">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+          <div><strong>Kostenlose Einschätzung</strong><div class="mut">Antwort noch heute – Angebot in 24&nbsp;Stunden.</div></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn" href="tel:+4915770070701">Anrufen</a>
+            <a class="btn" target="_blank" rel="noopener" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage.">WhatsApp</a>
+            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Kostenlose%20Einsch%C3%A4tzung">E-Mail</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Footer ===== -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-      <div>© <span id="year"></span> TFD</div>
+      <div>© <span id="y"></span> TFD</div>
       <div><a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div>
     </div>
   </footer>
 
-  <!-- Minimal JS for drawer + year -->
   <script>
     // year
-    document.getElementById('year').textContent = new Date().getFullYear();
-    // simple drawer wiring (works even if your main.js is missing)
-    const panel=document.getElementById('menuPanel'),
-          backdrop=document.getElementById('menuBackdrop')||document.querySelector('.menu-backdrop'),
-          toggle=document.getElementById('menuToggle'),
-          closeBtn=document.getElementById('menuClose');
-    function open(){panel.setAttribute('aria-hidden','false');(backdrop||{}).classList?.add('show')}
-    function close(){panel.setAttribute('aria-hidden','true');(backdrop||{}).classList?.remove('show')}
-    toggle?.addEventListener('click',()=>panel.getAttribute('aria-hidden')==='true'?open():close());
-    closeBtn?.addEventListener('click',close);
-    (backdrop||document.body).addEventListener?.('click',e=>{if(e.target===backdrop) close();});
+    document.getElementById('y').textContent=new Date().getFullYear();
+    // drawer
+    const p=document.getElementById('menuPanel'), b=document.getElementById('menuBackdrop')||document.querySelector('.menu-backdrop'),
+          t=document.getElementById('menuToggle'), c=document.getElementById('menuClose');
+    function open(){p.setAttribute('aria-hidden','false');b?.classList.add('show')}
+    function close(){p.setAttribute('aria-hidden','true');b?.classList.remove('show')}
+    t?.addEventListener('click',()=>p.getAttribute('aria-hidden')==='true'?open():close());
+    c?.addEventListener('click',close);
+    (b||document.body).addEventListener?.('click',e=>{if(e.target===b) close();});
   </script>
 </body>
 </html>
