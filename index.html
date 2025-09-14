@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TFD — Präzision im Bau</title>
 
-  <!-- Base site CSS (already in your repo) -->
   <link rel="stylesheet" href="/assets/css/styles.css" />
-
-  <!-- NEW: Home hero + brief styles -->
   <link rel="stylesheet" href="/assets/css/home-hero.css" />
 
-  <!-- Helpful preloads -->
+  <!-- Preload logo + default video -->
   <link rel="preload" as="image" href="/assets/img/tfd-logo-3d.png" />
   <link rel="preload" as="video" href="/assets/uploads/hero.mp4" />
   <meta name="theme-color" content="#0b0f14">
@@ -20,13 +17,13 @@
 
   <!-- Header -->
   <header class="tfd-header">
-    <div class="tfd-wrap">
+    <div class="tfd-wrap tfd-header__row">
       <a class="tfd-brand" href="/">
         <img src="/assets/img/tfd-logo-3d.png" alt="TFD" />
         <span>TFD</span>
       </a>
 
-      <nav class="tfd-nav">
+      <nav class="tfd-nav" aria-label="Hauptmenü">
         <a href="/" aria-current="page">Start</a>
         <a href="/leistungen.html">Leistungen</a>
         <a href="/galerie.html">Galerie</a>
@@ -34,119 +31,54 @@
         <a class="tfd-cta" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20TFD">Kontakt</a>
       </nav>
 
-      <button class="tfd-burger" aria-label="Menü öffnen" aria-expanded="false">Menü</button>
+      <button class="tfd-burger" aria-label="Menü" aria-expanded="false">Menü</button>
+    </div>
+
+    <!-- Mobile dropdown (links live *under* the button) -->
+    <div class="tfd-navpanel" hidden>
+      <a href="/" aria-current="page">Start</a>
+      <a href="/leistungen.html">Leistungen</a>
+      <a href="/galerie.html">Galerie</a>
+      <a href="/faq.html">FAQ</a>
+      <a class="tfd-cta" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20TFD">Kontakt</a>
     </div>
   </header>
 
   <main>
-    <!-- HERO: full-bleed video, no controls -->
+    <!-- HERO: full screen video, no controls -->
     <section class="tfd-hero" aria-label="Hero Video">
       <video
         id="heroVideo"
         class="tfd-hero__video"
-        src="/assets/uploads/hero.mp4"
         muted
         playsinline
         autoplay
         loop
-        preload="metadata"
+        preload="auto"
         controlslist="nodownload noplaybackrate noremoteplayback"
         disablepictureinpicture
-      ></video>
+        poster="/assets/uploads/123-after-1757387277155.jpeg"
+      >
+        <!-- Fallback if JS is disabled -->
+        <source src="/assets/uploads/hero.mp4" type="video/mp4" />
+      </video>
 
+      <!-- Very subtle gradient only to keep text readable near bottom -->
       <div class="tfd-hero__veil"></div>
-      <div class="tfd-hero__hint" aria-hidden="true">Scroll</div>
-    </section>
 
-    <!-- QUICK CONVERSION: Projekt-Brief (inline) -->
-    <section class="tfd-brief">
-      <div class="tfd-wrap">
-        <div class="tfd-brief__card">
-          <header class="tfd-brief__head">
-            <h1>Projekt in 60 Sekunden anfragen</h1>
-            <p class="tfd-muted">Antwort in der Regel <strong>innerhalb von 24 Stunden</strong>.</p>
-          </header>
-
-          <form id="briefForm" class="tfd-form" autocomplete="on">
-            <div class="tfd-form__grid">
-              <label class="tfd-field">
-                <span>Ihr Name</span>
-                <input type="text" name="name" placeholder="Vor- und Nachname" required />
-              </label>
-
-              <label class="tfd-field">
-                <span>E-Mail</span>
-                <input type="email" name="email" placeholder="name@beispiel.de" required />
-              </label>
-
-              <label class="tfd-field">
-                <span>Telefon</span>
-                <input type="tel" name="phone" placeholder="+49 …" />
-              </label>
-
-              <label class="tfd-field">
-                <span>Ort / PLZ</span>
-                <input type="text" name="city" placeholder="z. B. Frankfurt 60311" />
-              </label>
-
-              <label class="tfd-field">
-                <span>Leistung</span>
-                <select name="service" required>
-                  <option value="Innenausbau">Innenausbau</option>
-                  <option value="Trockenbau">Trockenbau</option>
-                  <option value="Bodenleger">Bodenleger</option>
-                  <option value="Gartenarbeit">Gartenarbeit</option>
-                  <option value="Sonstiges">Sonstiges</option>
-                </select>
-              </label>
-
-              <label class="tfd-field">
-                <span>Fläche / Umfang</span>
-                <input type="text" name="scope" placeholder="z. B. 60 m², 2 Zimmer" />
-              </label>
-
-              <label class="tfd-field tfd-field--full">
-                <span>Kurzbeschreibung</span>
-                <textarea name="desc" rows="3" placeholder="Was soll gemacht werden? Wunschtermin?"></textarea>
-              </label>
-            </div>
-
-            <div class="tfd-brief__actions">
-              <button type="submit" class="tfd-btn tfd-btn--primary">Per E-Mail senden</button>
-              <a id="waBtn" class="tfd-btn tfd-btn--ghost" href="#" target="_blank" rel="noopener">WhatsApp öffnen</a>
-              <a class="tfd-btn tfd-btn--ghost" href="tel:+4915770070701">Anrufen</a>
-            </div>
-
-            <p class="tfd-mini">
-              Mit dem Senden stimmen Sie der Verarbeitung Ihrer Angaben gemäß unserer
-              <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
-            </p>
-          </form>
-        </div>
-
-        <!-- credibility chips -->
-        <ul class="tfd-badges">
-          <li>14+ Jahre Erfahrung</li>
-          <li>TÜV-nahe Standards</li>
-          <li>Digitale Doku</li>
-          <li>Versichert</li>
-          <li>Ganz Deutschland</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Optional: quick service links -->
-    <section class="tfd-services-short">
-      <div class="tfd-wrap">
-        <h2 class="tfd-h2">Was wir täglich liefern</h2>
-        <div class="tfd-chiprow">
-          <a class="tfd-chip" href="/leistungen.html#innenausbau">Innenausbau</a>
-          <a class="tfd-chip" href="/leistungen.html#trockenbau">Trockenbau</a>
-          <a class="tfd-chip" href="/leistungen.html#bodenleger">Bodenleger</a>
-          <a class="tfd-chip" href="/leistungen.html#gartenarbeit">Gartenarbeit</a>
+      <!-- Minimal caption, bottom-left -->
+      <div class="tfd-hero__caption">
+        <div class="tfd-eyebrow">Schlüsselfertig • Deutschlandweit</div>
+        <h1>Präzision im Bau.</h1>
+        <p>Sauber, fugenbündig, termintreu. Angebot in <strong>24 Stunden</strong>.</p>
+        <div class="tfd-hero__cta">
+          <a class="tfd-btn tfd-btn--primary" href="/leistungen.html">Unsere Leistungen</a>
+          <a class="tfd-btn tfd-btn--ghost" href="mailto:Almamo@tfd-bau.de?subject=Kostenlose%20Einsch%C3%A4tzung">Kostenlose Einschätzung</a>
         </div>
       </div>
     </section>
+
+    <!-- You can add more sections below if you like -->
   </main>
 
   <footer class="tfd-footer">
@@ -160,7 +92,6 @@
     </div>
   </footer>
 
-  <!-- NEW: tiny JS just for this page -->
   <script src="/assets/js/home-hero.js" defer></script>
 </body>
 </html>
