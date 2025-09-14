@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FAQ & Philosophie — TFD</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
+
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64" />
+
   <style>
     :root{
       --bg:#0F1115;--surf:#12161E;--card:#10141b;--line:#1B2230;--text:#F3F6F9;--mut:#A9B4C2;
@@ -19,7 +22,7 @@
     .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#0f131a;border:1px solid var(--line)}
     .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--a1),var(--a2))}
 
-    /* section cards */
+    /* grids + cards */
     .grid{display:grid;gap:16px}
     .grid-2{grid-template-columns:1fr 1fr}
     .grid-3{grid-template-columns:repeat(3,1fr)}
@@ -37,7 +40,7 @@
     .stat{border:1px solid var(--line);background:#0f131a;border-radius:12px;padding:8px 12px}
     .stat b{font-size:18px}
 
-    /* FAQ accordion using <details> for simplicity + custom look */
+    /* FAQ accordion */
     details{border:1px solid var(--line);border-radius:14px;background:#0f131a;padding:12px 14px}
     details + details{margin-top:10px}
     summary{cursor:pointer;list-style:none;font-weight:800}
@@ -77,39 +80,46 @@
   </style>
 </head>
 <body class="logo-bg">
-  <!-- NAV -->
+  <!-- ===== NAV (top) ===== -->
   <nav class="nav">
     <div class="container bar">
       <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false">
         <span class="bars"></span><span>Menü</span>
       </button>
       <a class="brand" href="/index.html" aria-label="Startseite">
-        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
+        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo" />
+        <strong>TFD</strong>
       </a>
       <div class="spacer"></div>
     </div>
   </nav>
 
-  <!-- Drawer -->
-  <div class="menu-panel" id="menuPanel" aria-hidden="true">
+  <!-- ===== Right-side drawer ===== -->
+  <aside class="menu-panel" id="menuPanel" aria-hidden="true">
     <div class="menu-head">
       <div class="mini-brand"><strong>Menü</strong></div>
-      <button class="menu-close" id="menuClose">Schließen ✕</button>
+      <button class="menu-close" id="menuClose" aria-label="Schließen">Schließen ✕</button>
     </div>
-    <nav class="menu-links">
+
+    <nav class="menu-links" aria-label="Hauptmenü">
       <a href="/index.html">Start</a>
       <a href="/leistungen.html">Leistungen</a>
       <a href="/galerie.html">Galerie</a>
       <a href="/faq.html">FAQ</a>
       <a class="cta" href="/kontakt.html">Kontakt</a>
     </nav>
-    <div class="menu-quick">
-      <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
+
+    <div class="menu-quick" aria-label="Schnellzugriff">
+      <a class="primary" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
       <a href="tel:+4915770070701">Anrufen</a>
       <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
     </div>
-    <div class="menu-footer"><a href="/legal/impressum.html">Impressum</a><a href="/legal/datenschutz.html">Datenschutz</a></div>
-  </div>
+
+    <div class="menu-footer">
+      <a href="/legal/impressum.html">Impressum</a>
+      <a href="/legal/datenschutz.html">Datenschutz</a>
+    </div>
+  </aside>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
   <main class="container">
@@ -173,7 +183,7 @@
             <span class="stat"><b>Bundesweit</b><br><span class="mut">flexible Teams</span></span>
           </div>
           <div class="cta-row">
-            <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20Ahmad%2C%20ich%20plane%3A%20">Direkt anfragen</a>
+            <a class="btn primary" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20Ahmad%2C%20ich%20plane%3A%20">Direkt anfragen</a>
             <a class="btn" href="tel:+4915770070701">Anrufen</a>
             <a class="btn ghost" href="/galerie.html">Vorher/Nachher ansehen</a>
           </div>
@@ -255,7 +265,7 @@
       <h2>Noch Fragen? Wir beraten gern.</h2>
       <p class="mut">Schicken Sie uns kurz Ihr Vorhaben – wir melden uns innerhalb von 24 Stunden.</p>
       <div class="cta-row">
-        <a class="btn primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Frage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Frage%20zu%3A%20">E-Mail</a>
+        <a class="btn primary" href="mailto:Almamo@tfd-bau.de?subject=Frage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Frage%20zu%3A%20">E-Mail</a>
         <a class="btn" href="tel:+4915770070701">Anrufen</a>
         <a class="btn" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Frage." target="_blank" rel="noopener">WhatsApp</a>
         <a class="btn ghost" href="/leistungen.html">Leistungen ansehen</a>
@@ -265,15 +275,59 @@
     <!-- sticky mobile dock -->
     <div class="dock">
       <div class="dock-inner">
-        <a class="btn primary" style="flex:1" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
+        <a class="btn primary" style="flex:1" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
         <a class="btn" style="flex:1" href="tel:+4915770070701">Anrufen</a>
         <a class="btn" style="flex:1" href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
       </div>
     </div>
   </main>
 
-  <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
+  <footer class="footer">
+    <div class="container">© <span id="year"></span> TFD ·
+      <a href="/legal/impressum.html">Impressum</a> ·
+      <a href="/legal/datenschutz.html">Datenschutz</a>
+    </div>
+  </footer>
 
-  <script src="/assets/js/main.js"></script>
+  <!-- Optional global -->
+  <script src="/assets/js/main.js" defer></script>
+
+  <!-- Drawer wiring fallback (safe if main.js also binds) -->
+  <script>
+    (function () {
+      const body = document.body;
+      const panel = document.getElementById('menuPanel');
+      const toggle = document.getElementById('menuToggle');
+      const closeBtn = document.getElementById('menuClose');
+      const backdrop = document.getElementById('menuBackdrop');
+
+      if (toggle && !toggle.dataset.bound) {
+        toggle.dataset.bound = '1';
+
+        function openMenu() {
+          panel.classList.add('open');
+          backdrop.classList.add('open','show');
+          toggle.setAttribute('aria-expanded','true');
+          panel.setAttribute('aria-hidden','false');
+          body.classList.add('menu-locked');
+        }
+        function closeMenu() {
+          panel.classList.remove('open');
+          backdrop.classList.remove('open','show');
+          toggle.setAttribute('aria-expanded','false');
+          panel.setAttribute('aria-hidden','true');
+          body.classList.remove('menu-locked');
+        }
+
+        toggle.addEventListener('click', (e)=>{ e.preventDefault(); panel.classList.contains('open') ? closeMenu() : openMenu(); });
+        closeBtn && closeBtn.addEventListener('click', closeMenu);
+        backdrop && backdrop.addEventListener('click', closeMenu);
+        window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
+      }
+
+      const y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+  </script>
 </body>
 </html>
