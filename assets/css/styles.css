@@ -198,48 +198,51 @@ body.logo-bg::before{
     opacity: 0;
     animation: mm-item .32s var(--mm-delay, 0s) cubic-bezier(.2,.8,.2,1) forwards;
   }
-/* ===== Unified header & right-side drawer (mobile) ===== */
-.site-header { position: sticky; top: 0; z-index: 1000; background: rgba(10,12,16,.82); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,.06); }
-.site-header .wrap { max-width:1180px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:14px; }
-.site-header .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:#e9eef7; font-weight:800; }
-.site-header .brand img{ width:34px; height:34px; border-radius:10px; display:block; }
-.site-header .brand span{ font-size:18px; letter-spacing:.3px; }
+/* ===== UNIVERSAL MENU PATCH (right-side drawer) ===== */
 
-.site-header .menu-toggle {
-  display:none; align-items:center; gap:.5rem;
-  padding:.55rem .9rem; border-radius:14px;
-  background:rgba(255,255,255,.06);
+/* Make the toggle visible on all pages */
+.menu-btn,
+.menu-toggle{
+  display:inline-flex !important; align-items:center; gap:.5rem;
+  padding:.55rem .9rem; border-radius:14px; cursor:pointer;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
+  color:#e9eef7; font-weight:600; z-index:1101; position:relative;
+}
+
+/* Old markup drawer (.menu-panel) */
+.menu-panel{
+  position:fixed; top:0; right:0; bottom:0; left:auto;
+  width:min(86vw,380px);
+  display:flex !important; flex-direction:column; gap:12px;
+  padding:84px 18px 22px;
+  background:rgba(8,11,18,.92);
+  border-left:1px solid rgba(255,255,255,.08);
+  transform:translateX(100%);
+  transition:transform .28s cubic-bezier(.22,.8,.2,1);
+  will-change:transform; overflow-y:auto; z-index:1001;
+}
+.menu-panel.open{ transform:translateX(0); }
+
+.menu-links a{
+  display:block; text-decoration:none; color:#e9eef7;
+  background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.08);
-  color:#e9eef7; font-weight:600;
+  border-radius:14px; padding:14px 16px; font-size:18px;
 }
-.site-header .site-menu { display:flex; gap:16px; margin-left:auto; }
-.site-header .site-menu a { color:#e9eef7; text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.04); }
-.site-header .site-menu a.cta { border:0; background:linear-gradient(90deg,#ff824b,#6574ff); color:#fff; }
-
-@media (max-width: 900px) {
-  body.menu-locked { overflow: hidden; }
-  .site-header .menu-toggle { display:inline-flex; margin-left:auto; }
-  .site-header .site-menu {
-    position: fixed; top:0; right:0; bottom:0; left:auto;
-    width:min(86vw,380px);
-    flex-direction:column; gap:12px; padding:84px 18px 22px;
-    background:rgba(8,11,18,.92); border-left:1px solid rgba(255,255,255,.08);
-    transform: translateX(100%); transition: transform .28s cubic-bezier(.22,.8,.2,1);
-    will-change: transform; overflow-y:auto; z-index:1001;
-  }
-  .site-header .site-menu.open { transform: translateX(0); }
-
-  /* hide inline desktop nav while we use drawer */
-  .site-header .wrap > .site-menu:not(.open) { display: none; }
-
-  .site-header .site-menu a { font-size:18px; }
-  .site-header .site-menu .cta { text-align:center; box-shadow:0 10px 30px rgba(101,116,255,.25); }
-
-  .menu-backdrop {
-    position:fixed; inset:0; z-index:1000;
-    background:rgba(8,11,18,.45);
-    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-    opacity:0; pointer-events:none; transition:opacity .2s;
-  }
-  .menu-backdrop.show { opacity:1; pointer-events:auto; }
+.menu-links a.cta{
+  text-align:center; color:#fff; border:0;
+  background:linear-gradient(90deg,#ff824b,#6574ff);
+  box-shadow:0 10px 30px rgba(101,116,255,.25);
 }
+
+/* Backdrop (shared) */
+.menu-backdrop{
+  position:fixed; inset:0;
+  background:rgba(8,11,18,.45);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  opacity:0; pointer-events:none; transition:opacity .2s; z-index:1000;
+}
+.menu-backdrop.show{ opacity:1; pointer-events:auto; }
+
+/* Ensure the top bar stays above page content */
+.nav{ position:sticky; top:0; z-index:1100; }
