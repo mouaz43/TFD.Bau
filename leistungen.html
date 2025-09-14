@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Leistungen — TFD</title>
 
-  <!-- Base styles in your repo -->
   <link rel="stylesheet" href="/assets/css/styles.css" />
-  <!-- Services page styles -->
   <link rel="stylesheet" href="/assets/css/services.css" />
 
   <style>
-    /* ensure logo shows nicely even if base CSS differs */
     .site-header .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
     .site-header .brand img{width:34px;height:34px;border-radius:10px;display:block}
     .site-header .brand span{font-weight:800;font-size:18px;letter-spacing:.3px;color:#e9eef7}
@@ -19,16 +16,13 @@
 </head>
 <body>
 
-  <!-- ===== Header with LOGO restored ===== -->
+  <!-- Header -->
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="/">
-        <!-- ✅ points to your existing file -->
-        <img
-          src="/assets/img/tfd-logo-3d.png"
-          alt="TFD Logo"
-          onerror="this.onerror=null;this.src='/assets/img/logo.svg';"
-        />
+        <img src="/assets/img/tfd-logo-3d.png"
+             alt="TFD Logo"
+             onerror="this.onerror=null;this.src='/assets/img/logo.svg';" />
         <span>TFD</span>
       </a>
 
@@ -46,7 +40,7 @@
 
   <main>
 
-    <!-- (Optional) short intro video at the top of the services page -->
+    <!-- optional intro video -->
     <section class="intro-hero" aria-label="Einleitungsvideo">
       <div class="intro-hero__frame">
         <video class="intro-video" playsinline muted loop autoplay preload="none"
@@ -67,7 +61,7 @@
       </div>
     </section>
 
-    <!-- ===== Services Grid (videos) ===== -->
+    <!-- Services -->
     <section class="wrap services-grid">
 
       <!-- Innenausbau -->
@@ -94,7 +88,6 @@
           </div>
 
           <div class="actions">
-            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
             <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Innenausbau%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
             <a class="btn ghost" href="https://wa.me/4915770070701" target="_blank" rel="noopener">WhatsApp</a>
@@ -125,9 +118,9 @@
           </div>
 
           <div class="actions">
-            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
             <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Trockenbau%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
+            <a class="btn ghost" href="https://wa.me/4915770070701" target="_blank" rel="noopener">WhatsApp</a>
           </div>
         </div>
       </article>
@@ -156,9 +149,9 @@
           </div>
 
           <div class="actions">
-            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
             <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Bodenleger%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
+            <a class="btn ghost" href="https://wa.me/4915770070701" target="_blank" rel="noopener">WhatsApp</a>
           </div>
         </div>
       </article>
@@ -186,9 +179,9 @@
           </div>
 
           <div class="actions">
-            <a class="btn" href="/galerie.html">Vorher/Nachher ansehen</a>
             <a class="btn ghost" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20Gartenarbeit%20(TFD)">E-Mail</a>
             <a class="btn ghost" href="tel:+4915770070701">Anrufen</a>
+            <a class="btn ghost" href="https://wa.me/4915770070701" target="_blank" rel="noopener">WhatsApp</a>
           </div>
         </div>
       </article>
@@ -207,7 +200,6 @@
     </div>
   </footer>
 
-  <!-- Services page logic (lazy load videos etc.) -->
   <script src="/assets/js/services.js" defer></script>
 </body>
 </html>
