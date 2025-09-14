@@ -3,307 +3,164 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TFD — Präzision im Bau. Deutschlandweit.</title>
-  <meta name="description" content="Innenausbau, Trockenbau, Bodenleger & Außenanlagen — fugenbündig, staubarm, termintreu. Angebot in 24 Stunden." />
+  <title>TFD — Präzision im Bau</title>
 
-  <!-- Base CSS (keep if you have it) -->
+  <!-- Base site CSS (already in your repo) -->
   <link rel="stylesheet" href="/assets/css/styles.css" />
 
-  <style>
-    /* ==== Layout primitives ==== */
-    :root{
-      --bg:#0a0f14;
-      --panel:#0f1620;
-      --muted:#9fb0c3;
-      --text:#e8eef6;
-      --accent1:#ff884a;
-      --accent2:#6a8cff;
-      --border:#1f2a38;
-      --ok:#7ee787;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+  <!-- NEW: Home hero + brief styles -->
+  <link rel="stylesheet" href="/assets/css/home-hero.css" />
 
-    /* ==== Header (sticky) ==== */
-    .site-header{position:sticky;top:0;z-index:50;background:rgba(10,15,20,.65);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
-    .site-header .wrap{display:flex;align-items:center;gap:20px;padding:14px 20px}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
-    .brand-logo{width:34px;height:34px;border-radius:10px;display:block}
-    .brand span{font-weight:800;letter-spacing:.2px}
-    .site-menu{display:flex;gap:16px;margin-left:auto;align-items:center}
-    .site-menu a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:12px;border:1px solid transparent}
-    .site-menu a:hover,.site-menu a[aria-current="page"]{color:#fff;background:#121a1f;border-color:var(--border)}
-    .site-menu .cta{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;border:none}
-    .menu-toggle{display:none}
-
-    @media (max-width:860px){
-      .menu-toggle{display:inline-flex;margin-left:auto;align-items:center;gap:.5rem;padding:.45rem .7rem;border:1px solid var(--border);background:#0e1622;color:#cfd6e2;border-radius:10px}
-      .site-menu{display:none;position:absolute;right:14px;top:64px;background:#0e1622;border:1px solid var(--border);border-radius:14px;padding:10px;flex-direction:column;min-width:220px}
-      .site-menu.open{display:flex}
-      .site-menu a{width:100%}
-    }
-
-    /* ==== HERO video block ==== */
-    .hero{position:relative;isolation:isolate}
-    .hero video{
-      width:100%;height:78svh;min-height:420px;object-fit:cover;display:block;
-      /* Make video non-interactive, no play UI on mobile */
-      pointer-events:none;
-    }
-    /* Hide any iOS media overlays just in case */
-    .hero video::-webkit-media-controls{display:none !important}
-    .hero .overlay{
-      position:absolute;inset:0;
-      background:radial-gradient(1200px 500px at 15% 10%, rgba(255,136,74,.22), transparent 60%),
-                 radial-gradient(1200px 500px at 85% 10%, rgba(106,140,255,.16), transparent 60%),
-                 linear-gradient(180deg, rgba(10,15,20,.05), rgba(10,15,20,.55));
-      pointer-events:none;
-    }
-    /* soft grid lines for depth */
-    .hero .grid{
-      position:absolute;inset:0;background:
-        linear-gradient(transparent 31px,#12202e 32px) 0 0/32px 32px,
-        linear-gradient(90deg,transparent 31px,#12202e 32px) 0 0/32px 32px;
-      opacity:.25;mix-blend-mode:overlay;pointer-events:none;
-    }
-    /* floating micro particles for motion */
-    .spark{position:absolute;width:6px;height:6px;border-radius:50%;
-      background:radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.2) 60%, transparent);
-      filter:blur(.2px);opacity:.7;animation:float 12s linear infinite;
-    }
-    .spark.s1{left:12%;top:22%}
-    .spark.s2{left:28%;top:40%;animation-duration:14s}
-    .spark.s3{right:18%;top:28%;animation-duration:16s}
-    .spark.s4{right:8%;top:58%;animation-duration:18s}
-    @keyframes float{
-      0%{transform:translateY(0)}
-      50%{transform:translateY(-16px)}
-      100%{transform:translateY(0)}
-    }
-
-    .hero .headline{
-      position:absolute;inset:auto 0 26px 0; /* bottom overlay copy */
-      display:flex;justify-content:center;
-    }
-    .headline .badge{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-      padding:12px 16px;border-radius:16px;border:1px solid var(--border);
-      background:rgba(12,18,26,.65);backdrop-filter:blur(8px);color:#cfe0f1;
-      box-shadow:0 8px 30px rgba(0,0,0,.25);
-    }
-    .headline .chip{padding:6px 10px;border-radius:999px;background:#0e1622;border:1px solid var(--border);color:#cfe0f1}
-    .headline .cta{padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;color:#fff;text-decoration:none}
-
-    /* ==== Briefing form ==== */
-    .brief{padding:48px 0}
-    .brief .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:28px}
-    @media (max-width:980px){.brief .wrap{grid-template-columns:1fr}}
-    .panel{background:linear-gradient(180deg,#0f1620,#0b121a);border:1px solid var(--border);border-radius:18px;padding:20px}
-    .panel h2{margin:0 0 10px;font-size:28px}
-    .muted{color:var(--muted)}
-    form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:680px){form .row{grid-template-columns:1fr}}
-    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
-    input,select,textarea{
-      width:100%;padding:12px 12px;border-radius:12px;background:#0e1622;border:1px solid var(--border);color:#e9f2fd;
-      outline:none
-    }
-    input:focus,select:focus,textarea:focus{border-color:#2a3a4f;box-shadow:0 0 0 3px rgba(106,140,255,.18)}
-    textarea{min-height:120px;resize:vertical}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:#121a24;color:#eaf2fe;text-decoration:none;cursor:pointer}
-    .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;color:#fff}
-    .note{font-size:12px;color:var(--muted);margin-top:8px}
-    .ok{color:var(--ok)}
-  </style>
+  <!-- Helpful preloads -->
+  <link rel="preload" as="image" href="/assets/img/tfd-logo-3d.png" />
+  <link rel="preload" as="video" href="/assets/uploads/hero.mp4" />
+  <meta name="theme-color" content="#0b0f14">
 </head>
 <body>
 
-  <!-- ===== Header ===== -->
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="/">
-        <!-- IMPORTANT: this file exists in your repo -->
-        <img src="/assets/img/tfd-logo-3d.png" alt="TFD Logo" class="brand-logo" />
+  <!-- Header -->
+  <header class="tfd-header">
+    <div class="tfd-wrap">
+      <a class="tfd-brand" href="/">
+        <img src="/assets/img/tfd-logo-3d.png" alt="TFD" />
         <span>TFD</span>
       </a>
 
-      <nav class="site-menu">
+      <nav class="tfd-nav">
         <a href="/" aria-current="page">Start</a>
         <a href="/leistungen.html">Leistungen</a>
         <a href="/galerie.html">Galerie</a>
         <a href="/faq.html">FAQ</a>
-        <a class="cta" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20TFD">Kontakt</a>
+        <a class="tfd-cta" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20TFD">Kontakt</a>
       </nav>
 
-      <button class="menu-toggle" aria-label="Menü">☰ Menü</button>
+      <button class="tfd-burger" aria-label="Menü öffnen" aria-expanded="false">Menü</button>
     </div>
   </header>
 
-  <!-- ===== HERO with autoplay video (no controls) ===== -->
-  <section class="hero" aria-label="Intro">
-    <!-- Make sure these two files exist -->
-    <!-- /assets/uploads/hero/hero.mp4  and  /assets/uploads/hero/hero.jpg -->
-    <video autoplay muted playsinline loop preload="auto"
-           poster="/assets/uploads/hero/hero.jpg"
-           controlslist="nodownload nofullscreen noplaybackrate"
-           disablepictureinpicture>
-      <source src="/assets/uploads/hero/hero.mp4" type="video/mp4" />
-    </video>
+  <main>
+    <!-- HERO: full-bleed video, no controls -->
+    <section class="tfd-hero" aria-label="Hero Video">
+      <video
+        id="heroVideo"
+        class="tfd-hero__video"
+        src="/assets/uploads/hero.mp4"
+        muted
+        playsinline
+        autoplay
+        loop
+        preload="metadata"
+        controlslist="nodownload noplaybackrate noremoteplayback"
+        disablepictureinpicture
+      ></video>
 
-    <div class="overlay"></div>
-    <div class="grid"></div>
-    <span class="spark s1"></span>
-    <span class="spark s2"></span>
-    <span class="spark s3"></span>
-    <span class="spark s4"></span>
+      <div class="tfd-hero__veil"></div>
+      <div class="tfd-hero__hint" aria-hidden="true">Scroll</div>
+    </section>
 
-    <!-- Optional headline chips (transparent, non-blocking) -->
-    <div class="headline">
-      <div class="badge">
-        <span class="chip">Schlüsselfertig</span>
-        <span class="chip">TÜV-nahe Standards</span>
-        <span class="chip">Antwort in 24h</span>
-        <a class="cta" href="#brief">Kostenlose Einschätzung</a>
-      </div>
-    </div>
-  </section>
+    <!-- QUICK CONVERSION: Projekt-Brief (inline) -->
+    <section class="tfd-brief">
+      <div class="tfd-wrap">
+        <div class="tfd-brief__card">
+          <header class="tfd-brief__head">
+            <h1>Projekt in 60 Sekunden anfragen</h1>
+            <p class="tfd-muted">Antwort in der Regel <strong>innerhalb von 24 Stunden</strong>.</p>
+          </header>
 
-  <!-- ===== Project Brief (inline) ===== -->
-  <section id="brief" class="brief">
-    <div class="wrap">
-      <div class="panel">
-        <h2>Projekt-Briefing</h2>
-        <p class="muted">2–3 Minuten. Wir melden uns innerhalb von 24&nbsp;Stunden mit einer Einschätzung.</p>
+          <form id="briefForm" class="tfd-form" autocomplete="on">
+            <div class="tfd-form__grid">
+              <label class="tfd-field">
+                <span>Ihr Name</span>
+                <input type="text" name="name" placeholder="Vor- und Nachname" required />
+              </label>
 
-        <form id="briefForm">
-          <div class="row">
-            <div>
-              <label for="name">Name*</label>
-              <input id="name" name="name" placeholder="Ihr Name" required>
+              <label class="tfd-field">
+                <span>E-Mail</span>
+                <input type="email" name="email" placeholder="name@beispiel.de" required />
+              </label>
+
+              <label class="tfd-field">
+                <span>Telefon</span>
+                <input type="tel" name="phone" placeholder="+49 …" />
+              </label>
+
+              <label class="tfd-field">
+                <span>Ort / PLZ</span>
+                <input type="text" name="city" placeholder="z. B. Frankfurt 60311" />
+              </label>
+
+              <label class="tfd-field">
+                <span>Leistung</span>
+                <select name="service" required>
+                  <option value="Innenausbau">Innenausbau</option>
+                  <option value="Trockenbau">Trockenbau</option>
+                  <option value="Bodenleger">Bodenleger</option>
+                  <option value="Gartenarbeit">Gartenarbeit</option>
+                  <option value="Sonstiges">Sonstiges</option>
+                </select>
+              </label>
+
+              <label class="tfd-field">
+                <span>Fläche / Umfang</span>
+                <input type="text" name="scope" placeholder="z. B. 60 m², 2 Zimmer" />
+              </label>
+
+              <label class="tfd-field tfd-field--full">
+                <span>Kurzbeschreibung</span>
+                <textarea name="desc" rows="3" placeholder="Was soll gemacht werden? Wunschtermin?"></textarea>
+              </label>
             </div>
-            <div>
-              <label for="email">E-Mail*</label>
-              <input id="email" name="email" type="email" placeholder="name@mail.de" required>
-            </div>
-          </div>
 
-          <div class="row">
-            <div>
-              <label for="phone">Telefon (optional)</label>
-              <input id="phone" name="phone" type="tel" placeholder="+49 …">
+            <div class="tfd-brief__actions">
+              <button type="submit" class="tfd-btn tfd-btn--primary">Per E-Mail senden</button>
+              <a id="waBtn" class="tfd-btn tfd-btn--ghost" href="#" target="_blank" rel="noopener">WhatsApp öffnen</a>
+              <a class="tfd-btn tfd-btn--ghost" href="tel:+4915770070701">Anrufen</a>
             </div>
-            <div>
-              <label for="ort">Ort / PLZ*</label>
-              <input id="ort" name="ort" placeholder="z. B. Frankfurt 60311" required>
-            </div>
-          </div>
 
-          <div class="row">
-            <div>
-              <label for="kategorie">Kategorie*</label>
-              <select id="kategorie" name="kategorie" required>
-                <option value="">Bitte wählen …</option>
-                <option>Innenausbau</option>
-                <option>Trockenbau</option>
-                <option>Bodenleger</option>
-                <option>Gartenarbeit</option>
-              </select>
-            </div>
-            <div>
-              <label for="flaeche">Fläche (m²) / Umfang</label>
-              <input id="flaeche" name="flaeche" placeholder="z. B. 60 m², 3 Räume">
-            </div>
-          </div>
+            <p class="tfd-mini">
+              Mit dem Senden stimmen Sie der Verarbeitung Ihrer Angaben gemäß unserer
+              <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
+            </p>
+          </form>
+        </div>
 
-          <div class="row">
-            <div>
-              <label for="start">Start / Deadline</label>
-              <input id="start" name="start" placeholder="z. B. ab 10.10. oder bis 01.12.">
-            </div>
-            <div>
-              <label for="budget">Budget (optional)</label>
-              <input id="budget" name="budget" placeholder="z. B. 8.000 €">
-            </div>
-          </div>
-
-          <label for="details">Kurzbeschreibung*</label>
-          <textarea id="details" name="details" placeholder="Worum geht es? Besondere Wünsche? Zugriff/Etage/Anlieferung?" required></textarea>
-
-          <div class="actions">
-            <button class="btn primary" type="submit">Anfrage senden</button>
-            <a class="btn" href="https://wa.me/4915770070701" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn" href="tel:+4915770070701">Anrufen</a>
-          </div>
-          <p id="briefStatus" class="note"></p>
-        </form>
-      </div>
-
-      <div class="panel">
-        <h3 style="margin:0 0 8px">Wie es abläuft</h3>
-        <ul class="muted" style="margin:0;padding-left:18px">
-          <li>Wir prüfen Ihre Angaben und melden uns <strong>innerhalb von 24 Stunden</strong>.</li>
-          <li>Optional: ein kurzer Video-Call zur Klärung & Material-Abstimmung.</li>
-          <li>Festes, transparentes Angebot mit Terminfenster.</li>
-          <li>Digitale Doku & Übergabeprotokoll.</li>
+        <!-- credibility chips -->
+        <ul class="tfd-badges">
+          <li>14+ Jahre Erfahrung</li>
+          <li>TÜV-nahe Standards</li>
+          <li>Digitale Doku</li>
+          <li>Versichert</li>
+          <li>Ganz Deutschland</li>
         </ul>
+      </div>
+    </section>
 
-        <div style="height:14px"></div>
-        <div class="panel" style="background:#0b121a;border-style:dashed">
-          <div style="display:flex;gap:10px;align-items:center">
-            <span style="display:inline-block;width:10px;height:10px;border-radius:50%;
-                         background:radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.15) 60%, transparent);
-                         box-shadow:0 0 30px rgba(106,140,255,.45)"></span>
-            <span class="muted">Tipp: Hängen Sie bei Bedarf Fotos/Skizzen an die Antwort-E-Mail an — das beschleunigt unsere Einschätzung.</span>
-          </div>
+    <!-- Optional: quick service links -->
+    <section class="tfd-services-short">
+      <div class="tfd-wrap">
+        <h2 class="tfd-h2">Was wir täglich liefern</h2>
+        <div class="tfd-chiprow">
+          <a class="tfd-chip" href="/leistungen.html#innenausbau">Innenausbau</a>
+          <a class="tfd-chip" href="/leistungen.html#trockenbau">Trockenbau</a>
+          <a class="tfd-chip" href="/leistungen.html#bodenleger">Bodenleger</a>
+          <a class="tfd-chip" href="/leistungen.html#gartenarbeit">Gartenarbeit</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <footer class="site-footer">
-    <div class="wrap" style="padding:26px 20px;border-top:1px solid var(--border);color:var(--muted)">
-      © 2025 TFD · <a href="/impressum.html" style="color:inherit">Impressum</a> ·
-      <a href="/datenschutz.html" style="color:inherit">Datenschutz</a> ·
-      <a href="mailto:Almamo@tfd-bau.de" style="color:inherit">Almamo@tfd-bau.de</a>
+  <footer class="tfd-footer">
+    <div class="tfd-wrap">
+      <span>© 2025 TFD</span>
+      <span class="tfd-footer__links">
+        <a href="/impressum.html">Impressum</a> ·
+        <a href="/datenschutz.html">Datenschutz</a> ·
+        <a href="mailto:Almamo@tfd-bau.de">Almamo@tfd-bau.de</a>
+      </span>
     </div>
   </footer>
 
-  <script>
-    /* Mobile menu toggle */
-    document.querySelector('.menu-toggle')?.addEventListener('click',()=>{
-      document.querySelector('.site-menu')?.classList.toggle('open');
-    });
-
-    /* Briefing: build a mailto with all fields */
-    const f = document.getElementById('briefForm');
-    f?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const v = (id)=>document.getElementById(id)?.value?.trim()||'';
-      const subject = `Projektanfrage — ${v('kategorie')||'Bau'} (${v('ort')||'Ort'})`;
-      const body = [
-        `Name: ${v('name')}`,
-        `E-Mail: ${v('email')}`,
-        `Telefon: ${v('phone')}`,
-        `Ort/PLZ: ${v('ort')}`,
-        `Kategorie: ${v('kategorie')}`,
-        `Fläche/Umfang: ${v('flaeche')}`,
-        `Start/Deadline: ${v('start')}`,
-        `Budget: ${v('budget')}`,
-        '',
-        'Beschreibung:',
-        v('details'),
-        '',
-        '— Gesendet von tfd-bau.de'
-      ].join('\n');
-
-      const url = `mailto:Almamo@tfd-bau.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = url;
-      const s = document.getElementById('briefStatus');
-      if (s){ s.innerHTML = '<span class="ok">Danke! Ihr E-Mail-Programm öffnet sich mit den Daten.</span>'; }
-    });
-  </script>
+  <!-- NEW: tiny JS just for this page -->
+  <script src="/assets/js/home-hero.js" defer></script>
 </body>
 </html>
