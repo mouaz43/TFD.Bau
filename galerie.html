@@ -19,41 +19,28 @@
 </head>
 <body class="logo-bg">
   <!-- NAV -->
-  <nav class="nav">
-    <div class="container bar">
-      <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false">
-        <span class="bars"></span><span>Menü</span>
-      </button>
-      <a class="brand" href="/index.html" aria-label="Startseite">
-        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
-      </a>
-      <div class="spacer"></div>
-    </div>
-  </nav>
+  <nav class="nav"><div class="container bar">
+    <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
+    <a class="brand" href="/index.html" aria-label="Startseite">
+      <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
+    </a>
+    <div class="spacer"></div>
+  </div></nav>
 
-  <!-- Right-side drawer -->
-  <aside class="menu-panel" id="menuPanel" aria-hidden="true">
-    <div class="menu-head">
-      <div class="mini-brand"><strong>Menü</strong></div>
-      <button class="menu-close" id="menuClose" aria-label="Schließen">Schließen ✕</button>
-    </div>
-    <nav class="menu-links" aria-label="Hauptmenü">
-      <a href="/index.html">Start</a>
-      <a href="/leistungen.html">Leistungen</a>
-      <a href="/galerie.html">Galerie</a>
-      <a href="/faq.html">FAQ</a>
+  <div class="menu-panel" id="menuPanel" aria-hidden="true">
+    <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">Schließen ✕</button></div>
+    <nav class="menu-links">
+      <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
+      <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
       <a class="cta" href="/kontakt.html">Kontakt</a>
     </nav>
-    <div class="menu-quick" aria-label="Schnellzugriff">
-      <a class="primary" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
+    <div class="menu-quick">
+      <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
       <a href="tel:+4915770070701">Anrufen</a>
       <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
     </div>
-    <div class="menu-footer">
-      <a href="/legal/impressum.html">Impressum</a>
-      <a href="/legal/datenschutz.html">Datenschutz</a>
-    </div>
-  </aside>
+    <div class="menu-footer"><a href="/legal/impressum.html">Impressum</a><a href="/legal/datenschutz.html">Datenschutz</a></div>
+  </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
   <main class="container">
@@ -118,50 +105,10 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">© <span id="year"></span> TFD ·
-      <a href="/legal/impressum.html">Impressum</a> ·
-      <a href="/legal/datenschutz.html">Datenschutz</a>
-    </div>
-  </footer>
+  <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
 
-  <script src="/assets/js/main.js" defer></script>
-  <script src="/assets/js/ba-slider.js" defer></script>
-
-  <script>
-    /* ===== Drawer wiring fallback (safe if main.js also binds) ===== */
-    (function () {
-      const body = document.body;
-      const panel = document.getElementById('menuPanel');
-      const toggle = document.getElementById('menuToggle');
-      const closeBtn = document.getElementById('menuClose');
-      const backdrop = document.getElementById('menuBackdrop');
-
-      if (toggle && !toggle.dataset.bound) {
-        toggle.dataset.bound = '1';
-        function openMenu(){
-          panel.classList.add('open');
-          backdrop.classList.add('open','show');
-          toggle.setAttribute('aria-expanded','true');
-          panel.setAttribute('aria-hidden','false');
-          body.classList.add('menu-locked');
-        }
-        function closeMenu(){
-          panel.classList.remove('open');
-          backdrop.classList.remove('open','show');
-          toggle.setAttribute('aria-expanded','false');
-          panel.setAttribute('aria-hidden','true');
-          body.classList.remove('menu-locked');
-        }
-        toggle.addEventListener('click', (e)=>{ e.preventDefault(); panel.classList.contains('open') ? closeMenu() : openMenu(); });
-        closeBtn && closeBtn.addEventListener('click', closeMenu);
-        backdrop && backdrop.addEventListener('click', closeMenu);
-        window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
-      }
-      const y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
-    })();
-  </script>
-
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/ba-slider.js"></script>
   <script>
     /* ====== CONFIG (your repo) ====== */
     const OWNER = "mouaz43";
@@ -232,6 +179,7 @@
     async function ensureProjectsFile(){
       const r = await gh(contentsUrl(JSON_PATH));
       if (r.status === 404){
+        // create the file with []
         const create = await gh(putUrl(JSON_PATH), {
           method:"PUT",
           body: JSON.stringify({
@@ -326,13 +274,16 @@
 
       statusEl.textContent = "Lade hoch…";
       try{
+        // ensure file exists + get sha + current array
         const arr = await ensureProjectsFile();
         if(arr.find(x=>x.id===id)) throw new Error("ID existiert bereits");
 
+        // upload images
         const base = UPLOAD_DIR + id + "-";
         const beforeUrl = await uploadFile(base + "before-", bf);
         const afterUrl  = await uploadFile(base + "after-",  af);
 
+        // append new project
         arr.push({
           id, category, title, location, date,
           metrics: { qm: qm?Number(qm):undefined, dauer_tage: days?Number(days):undefined },
@@ -340,6 +291,7 @@
         });
         await saveProjectsArray(arr, `gallery: add ${id}`);
         statusEl.textContent = "Gespeichert.";
+        // reset
         ["f_id","f_date","f_title","f_loc","f_qm","f_days","f_high"].forEach(i=>document.getElementById(i).value="");
         document.getElementById('f_before').value=""; document.getElementById('f_after').value="";
         renderGallery(document.getElementById('filter').value, true);
