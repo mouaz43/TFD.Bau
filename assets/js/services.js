@@ -1,4 +1,4 @@
-/* services.js — LEFT drawer + lazy videos */
+/* services.js — RIGHT drawer + lazy videos */
 (function () {
   const $  = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -10,10 +10,10 @@
     const nav    = header && $('.site-menu', header);
     if (!header || !btn || !nav) return;
 
-    // Ensure nav is flex (in case base CSS hides it)
+    // make sure nav exists on desktop too
     nav.style.display = 'flex';
 
-    // Backdrop (one per page)
+    // create one backdrop
     let backdrop = $('.menu-backdrop');
     if (!backdrop) {
       backdrop = document.createElement('div');
@@ -26,14 +26,14 @@
       nav.classList.add('open');
       backdrop.classList.add('show');
       document.body.classList.add('menu-locked');
-      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-expanded','true');
     };
     const closeMenu = () => {
       header.classList.remove('menu-open');
       nav.classList.remove('open');
       backdrop.classList.remove('show');
       document.body.classList.remove('menu-locked');
-      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-expanded','false');
     };
 
     btn.addEventListener('click', (e) => {
@@ -48,21 +48,15 @@
       if (e.key === 'Escape' && header.classList.contains('menu-open')) closeMenu();
     });
 
-    // Desktop = normal header, Mobile = drawer closed by default
     const apply = () => {
-      if (isMobile()) {
-        btn.style.display = 'inline-flex';
-        closeMenu();
-      } else {
-        btn.style.display = 'none';
-        closeMenu();
-      }
+      if (isMobile()) { btn.style.display = 'inline-flex'; closeMenu(); }
+      else { btn.style.display = 'none'; closeMenu(); }
     };
     window.addEventListener('resize', apply);
     apply();
   });
 
-  // ---- Lazy-load + autoplay videos (hero + cards) ----
+  /* ---- lazy video loading (hero + cards) ---- */
   document.addEventListener('DOMContentLoaded', () => {
     const vids = $$('video[data-src], .intro-video, .service-video');
     const loadVideo = (v) => {
