@@ -1,106 +1,91 @@
-/* services.js — iOS-safe mobile menu + video lazy-load/autoplay */
-
+/* services.js — side drawer menu + lazy video (iOS safe) */
 (function () {
-  const $ = (s, r = document) => r.querySelector(s);
+  const $  = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const debounce = (fn, ms = 150) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
   const isMobile = () => window.innerWidth <= 900;
+  const debounce = (fn, ms = 150) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
-  // ===== 1) MOBILE MENU =====
+  // ===== Drawer Menu =====
   document.addEventListener('DOMContentLoaded', () => {
-    try {
-      const header = $('.site-header');
-      const btn    = header && $('.menu-toggle', header);
-      const nav    = header && $('.site-menu', header);
-      if (!header || !btn || !nav) return;
+    const header = $('.site-header');
+    const btn    = header && $('.menu-toggle', header);
+    const nav    = header && $('.site-menu', header);
+    if (!header || !btn || !nav) return;
 
-      const applyLayout = () => {
-        if (isMobile()) {
-          btn.style.display = 'inline-flex';
-          nav.classList.remove('open');                     // closed by default
-          document.body.classList.remove('menu-locked');
-          header.classList.remove('menu-open');
-          btn.setAttribute('aria-expanded', 'false');
-          btn.textContent = '☰ Menü';
-        } else {
-          btn.style.display = 'none';
-          nav.classList.remove('open');
-          document.body.classList.remove('menu-locked');
-          header.classList.remove('menu-open');
-        }
-      };
+    // back-drop (created once)
+    let backdrop = $('.menu-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'menu-backdrop';
+      document.body.appendChild(backdrop);
+    }
 
-      const openMenu  = () => {
-        header.classList.add('menu-open');
-        nav.classList.add('open');
-        document.body.classList.add('menu-locked');
-        btn.setAttribute('aria-expanded', 'true');
-        btn.textContent = '× Schließen';
-      };
-      const closeMenu = () => {
-        header.classList.remove('menu-open');
-        nav.classList.remove('open');
-        document.body.classList.remove('menu-locked');
-        btn.setAttribute('aria-expanded', 'false');
-        btn.textContent = '☰ Menü';
-      };
+    const openMenu = () => {
+      header.classList.add('menu-open');
+      nav.classList.add('open');
+      backdrop.classList.add('show');
+      document.body.classList.add('menu-locked');
+      btn.setAttribute('aria-expanded', 'true');
+    };
+    const closeMenu = () => {
+      header.classList.remove('menu-open');
+      nav.classList.remove('open');
+      backdrop.classList.remove('show');
+      document.body.classList.remove('menu-locked');
+      btn.setAttribute('aria-expanded', 'false');
+    };
+    const applyLayout = () => {
+      if (isMobile()) {
+        btn.style.display = 'inline-flex';
+        closeMenu();
+      } else {
+        btn.style.display = 'none';
+        closeMenu();
+      }
+    };
 
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        header.classList.contains('menu-open') ? closeMenu() : openMenu();
-      });
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      header.classList.contains('menu-open') ? closeMenu() : openMenu();
+    });
+    backdrop.addEventListener('click', closeMenu);
+    nav.addEventListener('click', (e) => {
+      if (isMobile() && e.target.tagName === 'A') closeMenu();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && header.classList.contains('menu-open')) closeMenu();
+    });
 
-      // Close when tapping a link
-      nav.addEventListener('click', (e) => {
-        if (isMobile() && e.target.tagName === 'A') closeMenu();
-      });
-
-      // ESC to close
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && header.classList.contains('menu-open')) closeMenu();
-      });
-
-      window.addEventListener('resize', debounce(applyLayout, 100));
-      applyLayout();
-    } catch (err) { console.error('Menu init error:', err); }
+    window.addEventListener('resize', debounce(applyLayout, 120));
+    applyLayout();
   });
 
-  // ===== 2) LAZY-LOAD VIDEOS (hero + service cards) =====
+  // ===== Lazy-load & autoplay videos (hero + cards) =====
   document.addEventListener('DOMContentLoaded', () => {
-    try {
-      const videos = $$('video[data-src], .intro-video, .service-video');
-
-      const loadVideo = (video) => {
-        if (!video) return;
-        if (video.dataset && video.dataset.src && !video.src) video.src = video.dataset.src;
-        // iOS autoplay requirements
-        video.muted = true;
-        video.playsInline = true;
-        video.autoplay = true;
-        video.loop = true;
-        video.controls = false;
-
-        const tryPlay = () => {
-          const p = video.play();
-          if (p && p.catch) {
-            p.catch(() => {
-              const unlock = () => { video.play().catch(() => {}); window.removeEventListener('pointerdown', unlock); };
-              window.addEventListener('pointerdown', unlock, { once: true });
-            });
-          }
-        };
-        if (video.readyState >= 1) tryPlay();
-        else video.addEventListener('loadedmetadata', tryPlay, { once: true });
+    const vids = $$('video[data-src], .intro-video, .service-video');
+    const loadVideo = (v) => {
+      if (!v) return;
+      if (v.dataset && v.dataset.src && !v.src) v.src = v.dataset.src;
+      v.muted = true; v.playsInline = true; v.autoplay = true; v.loop = true; v.controls = false;
+      const tryPlay = () => {
+        const p = v.play();
+        if (p && p.catch) {
+          p.catch(() => {
+            const unlock = () => { v.play().catch(()=>{}); window.removeEventListener('pointerdown', unlock); };
+            window.addEventListener('pointerdown', unlock, { once: true });
+          });
+        }
       };
-
-      if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver((entries, obs) => {
-          entries.forEach((en) => { if (en.isIntersecting) { loadVideo(en.target); obs.unobserve(en.target); } });
-        }, { rootMargin: '200px 0px' });
-        videos.forEach(v => io.observe(v));
-      } else {
-        videos.forEach(loadVideo);
-      }
-    } catch (err) { console.error('Video init error:', err); }
+      if (v.readyState >= 1) tryPlay();
+      else v.addEventListener('loadedmetadata', tryPlay, { once: true });
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es, o) => {
+        es.forEach(en => { if (en.isIntersecting) { loadVideo(en.target); o.unobserve(en.target); } });
+      }, { rootMargin: '200px 0px' });
+      vids.forEach(v => io.observe(v));
+    } else {
+      vids.forEach(loadVideo);
+    }
   });
 })();
