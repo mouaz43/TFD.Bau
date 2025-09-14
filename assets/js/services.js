@@ -1,18 +1,19 @@
-/* services.js — side drawer menu + lazy video (iOS safe) */
+/* services.js — LEFT drawer + lazy videos */
 (function () {
   const $  = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const isMobile = () => window.innerWidth <= 900;
-  const debounce = (fn, ms = 150) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
-  // ===== Drawer Menu =====
   document.addEventListener('DOMContentLoaded', () => {
     const header = $('.site-header');
     const btn    = header && $('.menu-toggle', header);
     const nav    = header && $('.site-menu', header);
     if (!header || !btn || !nav) return;
 
-    // back-drop (created once)
+    // Ensure nav is flex (in case base CSS hides it)
+    nav.style.display = 'flex';
+
+    // Backdrop (one per page)
     let backdrop = $('.menu-backdrop');
     if (!backdrop) {
       backdrop = document.createElement('div');
@@ -34,15 +35,6 @@
       document.body.classList.remove('menu-locked');
       btn.setAttribute('aria-expanded', 'false');
     };
-    const applyLayout = () => {
-      if (isMobile()) {
-        btn.style.display = 'inline-flex';
-        closeMenu();
-      } else {
-        btn.style.display = 'none';
-        closeMenu();
-      }
-    };
 
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -56,11 +48,21 @@
       if (e.key === 'Escape' && header.classList.contains('menu-open')) closeMenu();
     });
 
-    window.addEventListener('resize', debounce(applyLayout, 120));
-    applyLayout();
+    // Desktop = normal header, Mobile = drawer closed by default
+    const apply = () => {
+      if (isMobile()) {
+        btn.style.display = 'inline-flex';
+        closeMenu();
+      } else {
+        btn.style.display = 'none';
+        closeMenu();
+      }
+    };
+    window.addEventListener('resize', apply);
+    apply();
   });
 
-  // ===== Lazy-load & autoplay videos (hero + cards) =====
+  // ---- Lazy-load + autoplay videos (hero + cards) ----
   document.addEventListener('DOMContentLoaded', () => {
     const vids = $$('video[data-src], .intro-video, .service-video');
     const loadVideo = (v) => {
@@ -79,6 +81,7 @@
       if (v.readyState >= 1) tryPlay();
       else v.addEventListener('loadedmetadata', tryPlay, { once: true });
     };
+
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((es, o) => {
         es.forEach(en => { if (en.isIntersecting) { loadVideo(en.target); o.unobserve(en.target); } });
