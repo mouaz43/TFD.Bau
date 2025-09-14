@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Anfrage — TFD</title>
-
-  <!-- Base styles -->
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-  <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64" />
-
-  <!-- Page-local styles (wizard) -->
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
   <style>
     :root{--line:#1B2230;--mut:#A9B4C2;--a1:#FF5C00;--a2:#2B5BD3}
     .wizard{max-width:820px;margin:0 auto}
@@ -29,52 +24,30 @@
   </style>
 </head>
 <body class="logo-bg">
+  <nav class="nav"><div class="container bar">
+    <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false"><span class="bars"></span><span>Menü</span></button>
+    <a class="brand" href="/index.html" aria-label="Startseite">
+      <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo"><strong>TFD</strong>
+    </a>
+    <div class="spacer"></div>
+  </div></nav>
 
-  <!-- ===== Top bar ===== -->
-  <nav class="nav">
-    <div class="container bar">
-      <button class="menu-btn" id="menuToggle" aria-label="Menü" aria-expanded="false">
-        <span class="bars"></span><span>Menü</span>
-      </button>
-
-      <a class="brand" href="/index.html" aria-label="Startseite">
-        <img class="logo-img" src="/assets/img/tfd-logo-3d.png" alt="TFD Logo" />
-        <strong>TFD</strong>
-      </a>
-
-      <div class="spacer"></div>
-    </div>
-  </nav>
-
-  <!-- ===== Right-side drawer menu ===== -->
-  <aside class="menu-panel" id="menuPanel" aria-hidden="true">
-    <div class="menu-head">
-      <div class="mini-brand"><strong>Menü</strong></div>
-      <button class="menu-close" id="menuClose" aria-label="Schließen">Schließen ✕</button>
-    </div>
-
-    <nav class="menu-links" aria-label="Hauptmenü">
-      <a href="/index.html">Start</a>
-      <a href="/leistungen.html">Leistungen</a>
-      <a href="/galerie.html">Galerie</a>
-      <a href="/faq.html">FAQ</a>
+  <div class="menu-panel" id="menuPanel" aria-hidden="true">
+    <div class="menu-head"><div class="mini-brand"><strong>Menü</strong></div><button class="menu-close" id="menuClose">Schließen ✕</button></div>
+    <nav class="menu-links">
+      <a href="/index.html">Start</a><a href="/leistungen.html">Leistungen</a>
+      <a href="/galerie.html">Galerie</a><a href="/faq.html">FAQ</a>
       <a class="cta" href="/kontakt.html">Kontakt</a>
     </nav>
-
-    <div class="menu-quick" aria-label="Schnellzugriff">
-      <a class="primary" href="mailto:Almamo@tfd-bau.de?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
+    <div class="menu-quick">
+      <a class="primary" href="mailto:AHMAD.MAMO@gmail.com?subject=Anfrage%20%E2%80%93%20TFD&body=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage%20zu%3A%20">E-Mail</a>
       <a href="tel:+4915770070701">Anrufen</a>
       <a href="https://wa.me/4915770070701?text=Hallo%20TFD%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">WhatsApp</a>
     </div>
-
-    <div class="menu-footer">
-      <a href="/legal/impressum.html">Impressum</a>
-      <a href="/legal/datenschutz.html">Datenschutz</a>
-    </div>
-  </aside>
+    <div class="menu-footer"><a href="/legal/impressum.html">Impressum</a><a href="/legal/datenschutz.html">Datenschutz</a></div>
+  </div>
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- ===== Page content ===== -->
   <main class="container">
     <section class="wizard">
       <h1>Projekt anfragen</h1>
@@ -87,11 +60,9 @@
         <div class="p"><span id="p4"></span></div>
       </div>
 
-      <!-- Step 1 -->
       <div class="step" data-step="1">
         <div class="row">
-          <div>
-            <label>Leistung</label>
+          <div><label>Leistung</label>
             <select id="svc">
               <option value="Innenausbau">Innenausbau</option>
               <option value="Trockenbau">Trockenbau</option>
@@ -99,57 +70,36 @@
               <option value="Gartenarbeit">Gartenarbeit</option>
             </select>
           </div>
-          <div>
-            <label>Ort / PLZ</label>
-            <input id="city" placeholder="z. B. Frankfurt am Main / 60313" />
-          </div>
+          <div><label>Ort / PLZ</label><input id="city" placeholder="z. B. Frankfurt am Main / 60313"></div>
         </div>
-        <div class="actions">
-          <button class="btn primary" onclick="next()">Weiter</button>
-        </div>
+        <div class="actions"><button class="btn primary" onclick="next()">Weiter</button></div>
       </div>
 
-      <!-- Step 2 -->
       <div class="step" data-step="2" hidden>
         <div class="row">
-          <div>
-            <label>Fläche (m²)</label>
-            <input id="area" type="number" min="0" placeholder="z. B. 48" />
-          </div>
-          <div>
-            <label>Zeitraum / Deadline</label>
-            <input id="when" placeholder="z. B. KW 42 oder nächster Monat" />
-          </div>
+          <div><label>Fläche (m²)</label><input id="area" type="number" min="0" placeholder="z. B. 48"></div>
+          <div><label>Zeitraum / Deadline</label><input id="when" placeholder="z. B. KW 42 oder nächster Monat"></div>
         </div>
         <label style="margin-top:10px">Kurzbeschreibung</label>
         <textarea id="desc" placeholder="Was soll gemacht werden? Besondere Punkte?"></textarea>
-        <div class="actions">
-          <button class="btn" onclick="back()">Zurück</button>
-          <button class="btn primary" onclick="next()">Weiter</button>
-        </div>
+        <div class="actions"><button class="btn" onclick="back()">Zurück</button><button class="btn primary" onclick="next()">Weiter</button></div>
       </div>
 
-      <!-- Step 3 -->
       <div class="step" data-step="3" hidden>
         <div class="row">
-          <div><label>Name</label><input id="name" placeholder="Ihr Name" /></div>
-          <div><label>Telefon</label><input id="phone" placeholder="+49 ..." /></div>
+          <div><label>Name</label><input id="name" placeholder="Ihr Name"></div>
+          <div><label>Telefon</label><input id="phone" placeholder="+49 ..."></div>
         </div>
         <div class="row">
-          <div><label>E-Mail</label><input id="email" placeholder="name@example.com" /></div>
-          <div>
-            <label>Kontakt bevorzugt</label>
+          <div><label>E-Mail</label><input id="email" placeholder="name@example.com"></div>
+          <div><label>Kontakt bevorzugt</label>
             <select id="pref"><option>E-Mail</option><option>Telefon</option><option>WhatsApp</option></select>
           </div>
         </div>
         <p class="mut" style="margin-top:8px">Fotos/Skizzen kannst du in der Antwort-Mail oder im WhatsApp-Chat anhängen.</p>
-        <div class="actions">
-          <button class="btn" onclick="back()">Zurück</button>
-          <button class="btn primary" onclick="next()">Weiter</button>
-        </div>
+        <div class="actions"><button class="btn" onclick="back()">Zurück</button><button class="btn primary" onclick="next()">Weiter</button></div>
       </div>
 
-      <!-- Step 4 -->
       <div class="step" data-step="4" hidden>
         <h3>Fertig – so senden</h3>
         <p class="mut">Wähle E-Mail oder WhatsApp. Der Text ist bereits vorgefüllt – einfach prüfen und abschicken.</p>
@@ -162,77 +112,21 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">© <span id="year"></span> TFD ·
-      <a href="/legal/impressum.html">Impressum</a> ·
-      <a href="/legal/datenschutz.html">Datenschutz</a>
-    </div>
-  </footer>
+  <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
 
-  <!-- (Optional) global JS -->
-  <script src="/assets/js/main.js" defer></script>
-
-  <!-- Page scripts (robust: works even if main.js is absent) -->
+  <script src="/assets/js/main.js"></script>
   <script>
-    // === Drawer menu wiring (right-side, consistent across pages) ===
-    (function () {
-      const body = document.body;
-      const panel = document.getElementById('menuPanel');
-      const toggle = document.getElementById('menuToggle');
-      const closeBtn = document.getElementById('menuClose');
-      const backdrop = document.getElementById('menuBackdrop');
-
-      function openMenu() {
-        panel.classList.add('open');
-        backdrop.classList.add('open','show');
-        toggle.setAttribute('aria-expanded','true');
-        panel.setAttribute('aria-hidden','false');
-        body.classList.add('menu-locked');
-      }
-      function closeMenu() {
-        panel.classList.remove('open');
-        backdrop.classList.remove('open','show');
-        toggle.setAttribute('aria-expanded','false');
-        panel.setAttribute('aria-hidden','true');
-        body.classList.remove('menu-locked');
-      }
-
-      toggle && toggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        panel.classList.contains('open') ? closeMenu() : openMenu();
-      });
-      closeBtn && closeBtn.addEventListener('click', closeMenu);
-      backdrop && backdrop.addEventListener('click', closeMenu);
-      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
-    })();
-
-    // === Wizard logic ===
     let step = 1; const total = 4;
     const $ = sel => document.querySelector(sel);
-
-    function showStep(){
-      document.querySelectorAll('.step').forEach(s => s.hidden = (s.dataset.step != step));
-      for(let i=1;i<=total;i++){
-        const bar = $("#p"+i);
-        if(bar) bar.style.width = (i<=step ? "100%" : "0");
-      }
-    }
+    function showStep(){ document.querySelectorAll('.step').forEach(s => s.hidden = (s.dataset.step != step));
+      for(let i=1;i<=total;i++){ const bar = $("#p"+i); if(bar) bar.style.width = (i<=step? "100%" : "0");}}
     function next(){ if(step<total){ step++; buildLinks(); showStep(); } }
     function back(){ if(step>1){ step--; showStep(); } }
     function enc(s){ return encodeURIComponent(s||""); }
-
     function buildLinks(){
       if(step!==4) return;
-      const svc  = $('#svc').value,
-            city = $('#city').value,
-            area = $('#area').value,
-            when = $('#when').value,
-            desc = $('#desc').value,
-            name = $('#name').value,
-            phone= $('#phone').value,
-            email= $('#email').value,
-            pref = $('#pref').value;
-
+      const svc = $('#svc').value, city=$('#city').value, area=$('#area').value, when=$('#when').value,
+            desc=$('#desc').value, name=$('#name').value, phone=$('#phone').value, email=$('#email').value, pref=$('#pref').value;
       const subject = `Anfrage — ${svc} — ${city||''}`.trim();
       const body = `Service: ${svc}
 Ort/PLZ: ${city}
@@ -248,19 +142,11 @@ Telefon: ${phone||'-'}
 E-Mail: ${email||'-'}
 Bevorzugt: ${pref}
 
-(gesendet über tfd-bau.de/anfrage.html)`;
-
-      const mailto = `mailto:Almamo@tfd-bau.de?subject=${enc(subject)}&body=${enc(body)}`;
-      const watext = enc(subject + "\\n\\n" + body);
-      const wa = `https://wa.me/4915770070701?text=${watext}`;
-
-      const mailBtn = $('#mailtoBtn'), waBtn = $('#waBtn');
-      if(mailBtn) mailBtn.href = mailto;
-      if(waBtn){ waBtn.href = wa; waBtn.target='_blank'; waBtn.rel='noopener'; }
+(gesendet über tfd-bau.onrender.com/anfrage.html)`;
+      $('#mailtoBtn').href = `mailto:AHMAD.MAMO@gmail.com?subject=${enc(subject)}&body=${enc(body)}`;
+      $('#waBtn').href = `https://wa.me/4915770070701?text=${enc(subject + "\n\n" + body)}`;
+      $('#waBtn').target = '_blank'; $('#waBtn').rel = 'noopener';
     }
-
-    // Footer year + initial paint
-    document.getElementById('year').textContent = new Date().getFullYear();
     showStep();
   </script>
 </body>
