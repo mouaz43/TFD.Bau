@@ -198,57 +198,61 @@ body.logo-bg::before{
     opacity: 0;
     animation: mm-item .32s var(--mm-delay, 0s) cubic-bezier(.2,.8,.2,1) forwards;
   }
-/* ===== Right-side drawer menu (mobile) ===== */
+/* ===== RIGHT-SIDE DRAWER (mobile) — unified version ===== */
+
+/* Desktop defaults: show inline nav, hide toggle */
+.site-header .site-menu{display:flex;gap:14px;align-items:center}
+.site-header .menu-toggle{display:none}
+
 @media (max-width: 900px) {
-  body.menu-locked { overflow: hidden; }
+  body.menu-locked{overflow:hidden}
 
-  .site-header { position: sticky; top: 0; z-index: 1000; }
+  .site-header{position:sticky;top:0;z-index:1000}
 
-  .site-header .menu-toggle {
-    display: inline-flex; align-items: center; gap: .5rem;
-    padding: .55rem .9rem; border-radius: 14px;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.08);
-    color: #e9eef7; font-weight: 600;
+  /* Show the toggle on mobile */
+  .site-header .menu-toggle{
+    display:inline-flex;align-items:center;gap:.5rem;
+    padding:.55rem .9rem;border-radius:14px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    color:#e9eef7;font-weight:600
   }
 
-  /* Drawer itself */
-  .site-header .site-menu {
-    position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(86vw, 380px);
-    display: flex; flex-direction: column; gap: 12px;
-    padding: 84px 18px 22px;
-    background: rgba(8,11,18,.92);
-    border-left: 1px solid rgba(255,255,255,.08);
-    transform: translateX(100%);
-    transition: transform .28s cubic-bezier(.22,.8,.2,1);
-    will-change: transform;
-    overflow-y: auto;
+  /* Drawer (RIGHT) */
+  .site-header .site-menu{
+    position:fixed;top:0;right:0;bottom:0;left:auto;
+    width:min(86vw,380px);
+    display:flex;flex-direction:column;gap:12px;
+    padding:84px 18px 22px;
+    background:rgba(8,11,18,.92);
+    border-left:1px solid rgba(255,255,255,.08);
+    transform:translateX(100%);           /* hidden to the RIGHT */
+    transition:transform .28s cubic-bezier(.22,.8,.2,1);
+    will-change:transform;overflow-y:auto;
+    z-index:1001
   }
-  .site-header .site-menu.open { transform: translateX(0); }
+  .site-header .site-menu.open{transform:translateX(0)} /* slide IN */
 
   /* Backdrop */
-  .menu-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(8,11,18,.45);
-    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    opacity: 0; pointer-events: none; transition: opacity .2s;
-    z-index: 999; /* under drawer/header */
+  .menu-backdrop{
+    position:fixed;inset:0;
+    background:rgba(8,11,18,.45);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    opacity:0;pointer-events:none;transition:opacity .2s;z-index:1000
   }
-  .menu-backdrop.show { opacity: 1; pointer-events: auto; }
+  .menu-backdrop.show{opacity:1;pointer-events:auto}
 
-  /* Links inside drawer */
-  .site-header .site-menu a {
-    display: block; text-decoration: none;
-    color: #e9eef7; background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px; padding: 14px 16px; font-size: 18px;
+  /* Drawer links */
+  .site-header .site-menu a{
+    display:block;text-decoration:none;color:#e9eef7;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;padding:14px 16px;font-size:18px
   }
-  .site-header .site-menu a:hover { background: rgba(255,255,255,.065); }
-
-  .site-header .site-menu .cta {
-    margin-top: 8px; text-align: center; color: #fff; border: 0;
-    background: linear-gradient(90deg,#ff824b,#6574ff);
-    box-shadow: 0 10px 30px rgba(101,116,255,.25);
+  .site-header .site-menu a:hover{background:rgba(255,255,255,.065)}
+  .site-header .site-menu .cta{
+    margin-top:8px;text-align:center;color:#fff;border:0;
+    background:linear-gradient(90deg,#ff824b,#6574ff);
+    box-shadow:0 10px 30px rgba(101,116,255,.25)
   }
 }
