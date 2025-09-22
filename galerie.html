@@ -5,6 +5,31 @@
   <title>Galerie — TFD</title>
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
+
+  <!-- Icon sprite (no external assets) -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <symbol id="i-calendar" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M7 2h2v2h6V2h2v2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V2zm15 8H2v10a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V10zM3 9h18V6a1 1 0 0 0-1-1h-3v2h-2V5H9v2H7V5H4a1 1 0 0 0-1 1v3z"/>
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7zm0 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+      </symbol>
+      <symbol id="i-ruler" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M3 16.5 16.5 3 21 7.5 7.5 21 3 16.5zm11.06-8.48 1.41 1.41-.71.71-1.41-1.41.71-.71zm2.83-2.83 1.41 1.41-.71.71-1.41-1.41.71-.71zM10.3 11.78l1.41 1.41-.7.71-1.42-1.41.71-.71zm-2.12 2.12 1.41 1.41-.71.71-1.41-1.41.71-.71z"/>
+      </symbol>
+      <symbol id="i-time" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 1a11 11 0 1 1 0 22A11 11 0 0 1 12 1m1 6h-2v6l5 3 .9-1.45-3.9-2.3V7z"/>
+      </symbol>
+      <symbol id="i-tag" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M21.41 11.58 12.41 2.58A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.41l9 9a2 2 0 0 0 2.82 0l7-7a2 2 0 0 0 0-2.83zM7.5 7A1.5 1.5 0 1 1 6 5.5 1.5 1.5 0 0 1 7.5 7z"/>
+      </symbol>
+      <symbol id="i-image" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 11.5A2.5 2.5 0 1 1 11 9a2.5 2.5 0 0 1-2.5 2.5zM5 19l4.5-6 3.5 4.5 2.5-3L19 19H5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <style>
     /* ====== keep existing admin styles ====== */
     .admin-wrap{display:none}
@@ -17,13 +42,12 @@
     .delete-btn{border:1px solid var(--line);background:#1a1010;color:#ffb0b0;padding:6px 8px;border-radius:10px;font-weight:800;cursor:pointer}
     .card .top-right{position:absolute;right:12px;top:12px}
 
-    /* ====== slider (new) ====== */
-    .slider{position:relative;overflow:hidden;border-radius:12px;background:#0b0f15}
+    /* ====== slider with filmstrip ====== */
+    .slider{position:relative;overflow:hidden;border-radius:14px;background:#0b0f15}
     .slider-track{display:flex;will-change:transform;transition:transform .35s ease}
     .slider .slide{flex:0 0 100%;user-select:none}
     .slider .slide img{width:100%;height:100%;display:block;object-fit:cover}
-    /* If you prefer a fixed ratio, uncomment: */
-    /* .slider{aspect-ratio:16/9} .slider .slide img{height:100%} */
+    /* .slider{aspect-ratio:16/9} */
 
     .slider-nav{position:absolute;inset:0;pointer-events:none}
     .slider-btn{
@@ -38,6 +62,12 @@
     .slider-prev{left:10px}
     .slider-next{right:10px}
 
+    .slider-count{
+      position:absolute;right:10px;top:10px;
+      background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);
+      color:#fff;padding:4px 8px;border-radius:999px;font-size:12px;line-height:1
+    }
+
     .slider-dots{
       position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;
       align-items:center;justify-content:center;pointer-events:auto
@@ -47,8 +77,41 @@
       background:rgba(255,255,255,.15);cursor:pointer
     }
     .slider-dot.active{background:#fff;border-color:#fff;width:20px;transition:width .2s}
-    /* subtle grab cursor while dragging */
     .slider.grabbing .slider-track{transition:none;cursor:grabbing}
+
+    .slider-thumbs{
+      display:flex;gap:8px;overflow:auto;padding:8px;margin-top:10px;
+      border:1px solid var(--line);border-radius:12px;background:var(--card)
+    }
+    .slider-thumb{
+      flex:0 0 auto;width:82px;height:58px;border-radius:8px;overflow:hidden;
+      border:1px solid var(--line);opacity:.7;cursor:pointer
+    }
+    .slider-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .slider-thumb.active{opacity:1;border-color:#fff}
+
+    /* ====== elegant info panel ====== */
+    .project-info{margin-top:14px}
+    .project-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .pill{display:inline-flex;align-items:center;gap:6px;
+      padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;background:#0F131A}
+    .pill svg{width:14px;height:14px;opacity:.9}
+
+    .meta-grid{
+      margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px
+    }
+    @media(max-width:900px){.meta-grid{grid-template-columns:repeat(2,1fr)}}
+    .meta{
+      background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px
+    }
+    .meta .k{display:flex;align-items:center;gap:6px;font-size:12px;color:#97a2b0}
+    .meta .k svg{width:14px;height:14px}
+    .meta .v{font-weight:700;margin-top:4px}
+
+    .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .badge{border-radius:999px;padding:6px 10px;border:1px solid var(--line);background:#0F131A}
+
+    .divider{height:1px;background:var(--line);margin:12px 0}
   </style>
 </head>
 <body class="logo-bg">
@@ -126,11 +189,11 @@
             <div><label>Dauer (Tage)</label><input id="f_days" type="number" min="0" step="1" placeholder="7"></div>
           </div>
 
-          <!-- NEW: multiple images input (replaces Vorher/Nachher) -->
+          <!-- multiple images -->
           <div style="margin-top:12px">
             <label>Galerie Bilder (mehrere erlaubt)</label>
             <input id="f_images" type="file" accept="image/*" multiple>
-            <div class="muted" style="margin-top:6px">Tipp: Wähle 3–12 Bilder. Die Reihenfolge wird so gespeichert, wie du sie auswählst.</div>
+            <div class="muted" style="margin-top:6px">Tipp: 3–12 Bilder, Reihenfolge der Auswahl = Reihenfolge im Slider.</div>
           </div>
 
           <div style="margin-top:12px"><label>Highlights (Komma-getrennt)</label><input id="f_high" placeholder="Feinspachtel Q3, Neue Decke, Saubere Kanten"></div>
@@ -149,19 +212,29 @@
   <!-- removed: /assets/js/ba-slider.js -->
 
   <script>
-    /* ====== CONFIG (your repo) ====== */
+    /* ====== CONFIG ====== */
     const OWNER = "mouaz43";
     const REPO  = "TFD.Bau";
     const BRANCH = "main";
-    const JSON_PATH = "content/project.json"; // array format
-    const UPLOAD_DIR = "assets/uploads/";     // where images go
+    const JSON_PATH = "content/project.json";
+    const UPLOAD_DIR = "assets/uploads/";
 
     /* ====== STATE ====== */
     let TOKEN = null;
     let isAuthed = false;
     let projectsSha = null;
 
-    /* ====== PUBLIC GALLERY ====== */
+    /* ====== HELPERS ====== */
+    function fmtMonth(yymm){
+      if(!yymm) return '';
+      const [y,m] = yymm.split('-').map(Number);
+      if(!y||!m) return yymm;
+      const d = new Date(y, m-1, 1);
+      return d.toLocaleDateString('de-DE',{month:'long', year:'numeric'});
+    }
+    function safeNum(n){ return (typeof n==='number' && !isNaN(n)) ? n : null; }
+
+    /* ====== PUBLIC LOAD ====== */
     async function loadPublicProjects(){
       try{
         const res = await fetch('/content/project.json?ts='+Date.now(), {cache:'no-store'});
@@ -169,18 +242,18 @@
         return Array.isArray(data) ? data : (data.items || []);
       }catch(e){ console.error(e); return []; }
     }
+
     function tags(list){
       if(!list || !list.length) return '';
-      return '<div class="badges" style="margin-top:8px">' +
+      return '<div class="badges">' +
         list.map(t => `<span class="badge">${t}</span>`).join('') + '</div>';
     }
 
-    /* build slider markup; supports p.images[] OR legacy before/after */
+    /* ====== SLIDER MARKUP (with filmstrip) ====== */
     function sliderHTML(p, uid){
       const imgs = Array.isArray(p.images) && p.images.length
         ? p.images
-        : [p.before, p.after].filter(Boolean); // backward compat
-
+        : [p.before, p.after].filter(Boolean);
       if (!imgs.length) return '';
 
       const slides = imgs.map((src, i) =>
@@ -191,28 +264,76 @@
         `<button class="slider-dot" data-idx="${i}" aria-label="Bild ${i+1}"></button>`
       ).join('');
 
+      const thumbs = imgs.map((src, i) =>
+        `<button class="slider-thumb" data-idx="${i}" aria-label="Bild ${i+1}">
+           <img src="${src}" alt="Vorschau ${i+1}" loading="lazy" decoding="async">
+         </button>`
+      ).join('');
+
       return `
-      <div class="slider" id="slider_${uid}" tabindex="0" aria-roledescription="Karussell">
-        <div class="slider-track">${slides}</div>
-        <div class="slider-nav" aria-hidden="true">
-          <button class="slider-btn slider-prev" type="button" aria-label="Vorheriges Bild">‹</button>
-          <button class="slider-btn slider-next" type="button" aria-label="Nächstes Bild">›</button>
-          <div class="slider-dots">${dots}</div>
+        <div class="slider" id="slider_${uid}" tabindex="0" aria-roledescription="Karussell">
+          <div class="slider-track">${slides}</div>
+          <div class="slider-nav" aria-hidden="true">
+            <button class="slider-btn slider-prev" type="button" aria-label="Vorheriges Bild">‹</button>
+            <button class="slider-btn slider-next" type="button" aria-label="Nächstes Bild">›</button>
+            <div class="slider-dots">${dots}</div>
+            <div class="slider-count"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-image"/></svg> <span data-role="count">1</span>/<span>${imgs.length}</span></div>
+          </div>
         </div>
-      </div>`;
+        <div class="slider-thumbs" id="thumbs_${uid}">${thumbs}</div>
+      `;
     }
 
-    function card(p, idx, authed){
-      const qm = p.metrics && p.metrics.qm ? p.metrics.qm+' m²' : '';
-      const tage = p.metrics && p.metrics.dauer_tage ? p.metrics.dauer_tage+' Tage' : '';
-      const meta = [p.date||'', qm, tage].filter(Boolean).join(' · ');
+    /* ====== INFO MARKUP ====== */
+    function infoHTML(p){
+      const qm = p.metrics && safeNum(p.metrics.qm);
+      const tage = p.metrics && safeNum(p.metrics.dauer_tage);
+      const dateText = fmtMonth(p.date);
 
+      const cat = (p.category||'').trim();
+      return `
+        <div class="project-info">
+          <div class="project-top">
+            ${cat ? `<span class="pill"><svg width="14" height="14"><use href="#i-tag"/></svg>${cat}</span>`:''}
+            ${p.location ? `<span class="pill"><svg width="14" height="14"><use href="#i-pin"/></svg>${p.location}</span>`:''}
+          </div>
+
+          <div class="meta-grid">
+            ${dateText ? `
+              <div class="meta">
+                <div class="k"><svg><use href="#i-calendar"/></svg>Datum</div>
+                <div class="v">${dateText}</div>
+              </div>`:''}
+            ${qm!=null ? `
+              <div class="meta">
+                <div class="k"><svg><use href="#i-ruler"/></svg>Fläche</div>
+                <div class="v">${qm} m²</div>
+              </div>`:''}
+            ${tage!=null ? `
+              <div class="meta">
+                <div class="k"><svg><use href="#i-time"/></svg>Dauer</div>
+                <div class="v">${tage} Tage</div>
+              </div>`:''}
+            ${p.title ? `
+              <div class="meta">
+                <div class="k">Projekt</div>
+                <div class="v">${p.title}</div>
+              </div>`:''}
+          </div>
+
+          ${tags(p.highlights)}
+        </div>
+      `;
+    }
+
+    /* ====== CARD ====== */
+    function card(p, idx, authed){
       return `<div class="card" style="position:relative">
         ${authed? `<div class="top-right"><button class="delete-btn" onclick="adminDelete('${p.id}')">Löschen</button></div>`:''}
         <div class="row"><strong>${p.title||'Projekt'}</strong><span class="muted">${p.location||''}</span></div>
         ${sliderHTML(p, idx)}
-        ${meta? `<div class="muted" style="margin-top:8px">${meta}</div>`: '' }
-        ${tags(p.highlights)}
+        <div class="divider"></div>
+        ${infoHTML(p)}
       </div>`;
     }
 
@@ -221,7 +342,7 @@
       const data = await loadPublicProjects();
       const list = data.filter(p => filter==='alle' ? true : (p.category||'').toLowerCase()===filter);
       mount.innerHTML = list.map((p,i)=>card(p,i,authed)).join('') || '<div class="muted">Noch keine Projekte.</div>';
-      initAllSliders(); // activate sliders after render
+      initAllSliders();
     }
 
     /* ====== SLIDER LOGIC ====== */
@@ -234,8 +355,11 @@
       const slides = Array.from(root.querySelectorAll('.slide'));
       const prevBtn = root.querySelector('.slider-prev');
       const nextBtn = root.querySelector('.slider-next');
-      const dotWrap = root.querySelector('.slider-dots');
       const dots = Array.from(root.querySelectorAll('.slider-dot'));
+      const countEl = root.querySelector('[data-role="count"]');
+      const uid = root.id.split('_')[1];
+      const thumbsWrap = document.getElementById('thumbs_'+uid);
+      const thumbs = thumbsWrap ? Array.from(thumbsWrap.querySelectorAll('.slider-thumb')) : [];
 
       let index = 0;
       let startX = 0;
@@ -243,34 +367,40 @@
       let dragging = false;
 
       function clamp(i){ return Math.max(0, Math.min(i, slides.length-1)); }
-      function update(){
+      function setIndex(i){
+        index = clamp(i);
         track.style.transform = `translateX(${-index*100}%)`;
-        dots.forEach((d,i)=>d.classList.toggle('active', i===index));
+        dots.forEach((d,k)=>d.classList.toggle('active', k===index));
+        thumbs.forEach((t,k)=>t.classList.toggle('active', k===index));
+        if(countEl) countEl.textContent = String(index+1);
+        // ensure active thumb is in view
+        if(thumbsWrap && thumbs[index]){
+          const t = thumbs[index];
+          const left = t.offsetLeft;
+          const right = left + t.offsetWidth;
+          if (left < thumbsWrap.scrollLeft) thumbsWrap.scrollLeft = left - 8;
+          else if (right > thumbsWrap.scrollLeft + thumbsWrap.clientWidth)
+            thumbsWrap.scrollLeft = right - thumbsWrap.clientWidth + 8;
+        }
       }
-      function next(){ index = clamp(index+1); update(); }
-      function prev(){ index = clamp(index-1); update(); }
+      function next(){ setIndex(index+1); }
+      function prev(){ setIndex(index-1); }
 
-      // dots
-      dots.forEach(d=>{
-        d.addEventListener('click', ()=>{ index = Number(d.dataset.idx)||0; update(); });
-      });
+      dots.forEach(d=> d.addEventListener('click', ()=> setIndex(Number(d.dataset.idx)||0)));
+      thumbs.forEach(t=> t.addEventListener('click', ()=> setIndex(Number(t.dataset.idx)||0)));
+      if(thumbs[0]) thumbs[0].classList.add('active');
 
-      // arrows
       prevBtn.addEventListener('click', prev);
       nextBtn.addEventListener('click', next);
 
-      // keyboard
       root.addEventListener('keydown', (e)=>{
         if(e.key==='ArrowRight'){ e.preventDefault(); next(); }
         if(e.key==='ArrowLeft'){ e.preventDefault(); prev(); }
       });
 
-      // pointer (drag/swipe)
       const onDown = (e)=>{
-        dragging = true;
-        root.classList.add('grabbing');
-        startX = (e.touches ? e.touches[0].clientX : e.clientX);
-        currentX = startX;
+        dragging = true; root.classList.add('grabbing');
+        startX = (e.touches ? e.touches[0].clientX : e.clientX); currentX = startX;
       };
       const onMove = (e)=>{
         if(!dragging) return;
@@ -283,31 +413,22 @@
       const onUp = ()=>{
         if(!dragging) return;
         const dx = currentX - startX;
-        const threshold = Math.min(80, Math.max(40, root.clientWidth*0.12)); // px
-        if(Math.abs(dx) > threshold){
-          if(dx < 0) index = clamp(index+1);
-          else index = clamp(index-1);
-        }
-        dragging = false;
-        root.classList.remove('grabbing');
-        update();
+        const threshold = Math.min(80, Math.max(40, root.clientWidth*0.12));
+        if(Math.abs(dx) > threshold){ if(dx < 0) next(); else prev(); }
+        else setIndex(index);
+        dragging = false; root.classList.remove('grabbing');
       };
 
-      // prevent image dragging ghost
-      slides.forEach(s=>{
-        s.addEventListener('dragstart', e=>e.preventDefault());
-      });
-
+      slides.forEach(s=> s.addEventListener('dragstart', e=>e.preventDefault()));
       root.addEventListener('mousedown', onDown);
       window.addEventListener('mousemove', onMove);
       window.addEventListener('mouseup', onUp);
-
       root.addEventListener('touchstart', onDown, {passive:true});
       root.addEventListener('touchmove', onMove, {passive:true});
       root.addEventListener('touchend', onUp);
+      window.addEventListener('resize', ()=> setIndex(index));
 
-      window.addEventListener('resize', ()=>update());
-      update();
+      setIndex(0);
     }
 
     /* ====== GITHUB API HELPERS ====== */
@@ -325,33 +446,18 @@
     const contentsUrl = p => `/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(p)}?ref=${BRANCH}`;
     const putUrl      = p => `/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(p)}`;
 
-    /* Load via API, but if missing -> create empty file and return [] */
     async function ensureProjectsFile(){
       const r = await gh(contentsUrl(JSON_PATH));
       if (r.status === 404){
-        // create the file with []
         const create = await gh(putUrl(JSON_PATH), {
           method:"PUT",
-          body: JSON.stringify({
-            message: "init project.json",
-            content: utf8ToB64("[]\n"),
-            branch: BRANCH
-          })
+          body: JSON.stringify({ message: "init project.json", content: utf8ToB64("[]\n"), branch: BRANCH })
         });
-        if(!create.ok){
-          const t = await create.text();
-          throw new Error("Konnte project.json nicht anlegen: " + t);
-        }
-        const j = await create.json();
-        projectsSha = j.content.sha;
-        return [];
+        if(!create.ok){ throw new Error("Konnte project.json nicht anlegen: " + await create.text()); }
+        const j = await create.json(); projectsSha = j.content.sha; return [];
       }
-      if(!r.ok){
-        const t = await r.text();
-        throw new Error("project.json nicht gefunden (API) — " + t);
-      }
-      const j = await r.json();
-      projectsSha = j.sha;
+      if(!r.ok){ throw new Error("project.json nicht gefunden (API) — " + await r.text()); }
+      const j = await r.json(); projectsSha = j.sha;
       try { return JSON.parse(b64ToStr(j.content)); } catch { return []; }
     }
 
@@ -363,7 +469,7 @@
         method:"PUT",
         body: JSON.stringify({ message:`upload image: ${name}`, content:b64, branch:BRANCH })
       });
-      if(!r.ok){ const t=await r.text(); throw new Error("Upload fehlgeschlagen: "+t); }
+      if(!r.ok){ throw new Error("Upload fehlgeschlagen: " + await r.text()); }
       return "/"+name;
     }
 
@@ -373,7 +479,7 @@
         method:"PUT",
         body: JSON.stringify({ message: msg, content: utf8ToB64(content), branch: BRANCH, sha: projectsSha })
       });
-      if(!r.ok){ const t=await r.text(); throw new Error("Speichern fehlgeschlagen: "+t); }
+      if(!r.ok){ throw new Error("Speichern fehlgeschlagen: " + await r.text()); }
       const j = await r.json(); projectsSha = j.content.sha;
     }
 
@@ -388,17 +494,14 @@
       if(!token) return;
       TOKEN = token.trim();
       try{
-        const me = await gh("/user");
-        if(!me.ok) throw 0;
+        const me = await gh("/user"); if(!me.ok) throw 0;
         isAuthed = true;
-        loginBtn.style.display='none';
-        logoutBtn.style.display='inline-flex';
+        loginBtn.style.display='none'; logoutBtn.style.display='inline-flex';
         adminWrap.classList.add('authed');
         renderGallery(document.getElementById('filter').value, true);
-      }catch{
-        alert("Token ungültig oder keine Rechte."); TOKEN = null;
-      }
+      }catch{ alert("Token ungültig oder keine Rechte."); TOKEN = null; }
     });
+
     logoutBtn.addEventListener('click', () => {
       TOKEN = null; isAuthed = false;
       loginBtn.style.display='inline-flex'; logoutBtn.style.display='none';
@@ -423,11 +526,9 @@
 
       statusEl.textContent = "Lade hoch…";
       try{
-        // ensure file exists + get sha + current array
         const arr = await ensureProjectsFile();
         if(arr.find(x=>x.id===id)) throw new Error("ID existiert bereits");
 
-        // upload images (preserve chosen order)
         const base = UPLOAD_DIR + id + "-img-";
         const urls = [];
         for (let i=0;i<files.length;i++){
@@ -435,7 +536,6 @@
           urls.push(u);
         }
 
-        // append new project (new schema with images[])
         arr.push({
           id, category, title, location, date,
           metrics: { qm: qm?Number(qm):undefined, dauer_tage: days?Number(days):undefined },
@@ -445,27 +545,13 @@
 
         await saveProjectsArray(arr, `gallery: add ${id}`);
         statusEl.textContent = "Gespeichert.";
-        // reset
         ["f_id","f_date","f_title","f_loc","f_qm","f_days","f_high"].forEach(i=>document.getElementById(i).value="");
         document.getElementById('f_images').value="";
         renderGallery(document.getElementById('filter').value, true);
       }catch(e){ alert(e.message || e); statusEl.textContent = ""; }
     });
 
-    window.adminDelete = async (id) => {
-      if(!TOKEN){ alert("Bitte einloggen."); return; }
-      if(!confirm(`Projekt ${id} löschen?`)) return;
-      try{
-        const arr = await ensureProjectsFile();
-        const idx = arr.findIndex(x=>x.id===id);
-        if(idx<0) throw new Error("Nicht gefunden");
-        arr.splice(idx,1);
-        await saveProjectsArray(arr, `gallery: delete ${id}`);
-        renderGallery(document.getElementById('filter').value, true);
-      }catch(e){ alert(e.message || e); }
-    };
-
-    // boot
+    /* boot */
     document.getElementById('year').textContent = new Date().getFullYear();
     renderGallery('alle');
   </script>
