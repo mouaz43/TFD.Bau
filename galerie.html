@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="icon" type="image/png" href="/assets/img/favicon-64.png" sizes="64x64">
   <style>
+    /* ====== keep existing admin styles ====== */
     .admin-wrap{display:none}
     .admin-wrap.authed{display:block}
     .admin-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:20px}
@@ -15,6 +16,39 @@
     input,select{background:#0F131A;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px}
     .delete-btn{border:1px solid var(--line);background:#1a1010;color:#ffb0b0;padding:6px 8px;border-radius:10px;font-weight:800;cursor:pointer}
     .card .top-right{position:absolute;right:12px;top:12px}
+
+    /* ====== slider (new) ====== */
+    .slider{position:relative;overflow:hidden;border-radius:12px;background:#0b0f15}
+    .slider-track{display:flex;will-change:transform;transition:transform .35s ease}
+    .slider .slide{flex:0 0 100%;user-select:none}
+    .slider .slide img{width:100%;height:100%;display:block;object-fit:cover}
+    /* If you prefer a fixed ratio, uncomment: */
+    /* .slider{aspect-ratio:16/9} .slider .slide img{height:100%} */
+
+    .slider-nav{position:absolute;inset:0;pointer-events:none}
+    .slider-btn{
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:rgba(0,0,0,.35);backdrop-filter:blur(4px);
+      border:1px solid rgba(255,255,255,.12);color:#fff;
+      width:40px;height:40px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:20px;pointer-events:auto;cursor:pointer
+    }
+    .slider-btn:hover{background:rgba(0,0,0,.55)}
+    .slider-prev{left:10px}
+    .slider-next{right:10px}
+
+    .slider-dots{
+      position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;
+      align-items:center;justify-content:center;pointer-events:auto
+    }
+    .slider-dot{
+      width:8px;height:8px;border-radius:999px;border:1px solid rgba(255,255,255,.5);
+      background:rgba(255,255,255,.15);cursor:pointer
+    }
+    .slider-dot.active{background:#fff;border-color:#fff;width:20px;transition:width .2s}
+    /* subtle grab cursor while dragging */
+    .slider.grabbing .slider-track{transition:none;cursor:grabbing}
   </style>
 </head>
 <body class="logo-bg">
@@ -46,7 +80,7 @@
   <main class="container">
     <section class="section">
       <div class="row">
-        <h1>Vorher/Nachher Galerie</h1>
+        <h1>Galerie</h1>
         <select id="filter" class="btn" onchange="renderGallery(this.value, isAuthed)">
           <option value="alle">Alle Kategorien</option>
           <option value="innenausbau">Innenausbau</option>
@@ -91,10 +125,14 @@
             <div><label>Fläche (m²)</label><input id="f_qm" type="number" min="0" step="1" placeholder="48"></div>
             <div><label>Dauer (Tage)</label><input id="f_days" type="number" min="0" step="1" placeholder="7"></div>
           </div>
-          <div class="grid-2" style="margin-top:12px">
-            <div><label>Vorher Bild</label><input id="f_before" type="file" accept="image/*"></div>
-            <div><label>Nachher Bild</label><input id="f_after" type="file" accept="image/*"></div>
+
+          <!-- NEW: multiple images input (replaces Vorher/Nachher) -->
+          <div style="margin-top:12px">
+            <label>Galerie Bilder (mehrere erlaubt)</label>
+            <input id="f_images" type="file" accept="image/*" multiple>
+            <div class="muted" style="margin-top:6px">Tipp: Wähle 3–12 Bilder. Die Reihenfolge wird so gespeichert, wie du sie auswählst.</div>
           </div>
+
           <div style="margin-top:12px"><label>Highlights (Komma-getrennt)</label><input id="f_high" placeholder="Feinspachtel Q3, Neue Decke, Saubere Kanten"></div>
           <div class="row" style="margin-top:12px">
             <button class="btn primary" id="addBtn">Projekt speichern</button>
@@ -108,7 +146,8 @@
   <footer class="footer"><div class="container">© <span id="year"></span> TFD · <a href="/legal/impressum.html">Impressum</a> · <a href="/legal/datenschutz.html">Datenschutz</a></div></footer>
 
   <script src="/assets/js/main.js"></script>
-  <script src="/assets/js/ba-slider.js"></script>
+  <!-- removed: /assets/js/ba-slider.js -->
+
   <script>
     /* ====== CONFIG (your repo) ====== */
     const OWNER = "mouaz43";
@@ -135,29 +174,140 @@
       return '<div class="badges" style="margin-top:8px">' +
         list.map(t => `<span class="badge">${t}</span>`).join('') + '</div>';
     }
+
+    /* build slider markup; supports p.images[] OR legacy before/after */
+    function sliderHTML(p, uid){
+      const imgs = Array.isArray(p.images) && p.images.length
+        ? p.images
+        : [p.before, p.after].filter(Boolean); // backward compat
+
+      if (!imgs.length) return '';
+
+      const slides = imgs.map((src, i) =>
+        `<div class="slide"><img src="${src}" alt="${p.title || 'Projekt'} – Bild ${i+1}" loading="lazy" decoding="async"></div>`
+      ).join('');
+
+      const dots = imgs.map((_, i) =>
+        `<button class="slider-dot" data-idx="${i}" aria-label="Bild ${i+1}"></button>`
+      ).join('');
+
+      return `
+      <div class="slider" id="slider_${uid}" tabindex="0" aria-roledescription="Karussell">
+        <div class="slider-track">${slides}</div>
+        <div class="slider-nav" aria-hidden="true">
+          <button class="slider-btn slider-prev" type="button" aria-label="Vorheriges Bild">‹</button>
+          <button class="slider-btn slider-next" type="button" aria-label="Nächstes Bild">›</button>
+          <div class="slider-dots">${dots}</div>
+        </div>
+      </div>`;
+    }
+
     function card(p, idx, authed){
       const qm = p.metrics && p.metrics.qm ? p.metrics.qm+' m²' : '';
       const tage = p.metrics && p.metrics.dauer_tage ? p.metrics.dauer_tage+' Tage' : '';
       const meta = [p.date||'', qm, tage].filter(Boolean).join(' · ');
+
       return `<div class="card" style="position:relative">
         ${authed? `<div class="top-right"><button class="delete-btn" onclick="adminDelete('${p.id}')">Löschen</button></div>`:''}
-        <div class="row"><strong>${p.title}</strong><span class="muted">${p.location||''}</span></div>
-        <div class="ba" id="ba_${idx}">
-          <img src="${p.before}" alt="Vorher">
-          <div class="top"><img src="${p.after}" alt="Nachher"></div>
-          <div class="handle"></div>
-          <div class="labels"><span>Vorher</span><span>Nachher</span></div>
-        </div>
+        <div class="row"><strong>${p.title||'Projekt'}</strong><span class="muted">${p.location||''}</span></div>
+        ${sliderHTML(p, idx)}
         ${meta? `<div class="muted" style="margin-top:8px">${meta}</div>`: '' }
         ${tags(p.highlights)}
       </div>`;
     }
+
     async function renderGallery(filter='alle', authed=false){
       const mount = document.getElementById('gallery');
       const data = await loadPublicProjects();
       const list = data.filter(p => filter==='alle' ? true : (p.category||'').toLowerCase()===filter);
       mount.innerHTML = list.map((p,i)=>card(p,i,authed)).join('') || '<div class="muted">Noch keine Projekte.</div>';
-      list.forEach((_p,i)=> initBASlider('ba_'+i, 50));
+      initAllSliders(); // activate sliders after render
+    }
+
+    /* ====== SLIDER LOGIC ====== */
+    function initAllSliders(){
+      document.querySelectorAll('.slider').forEach(initSlider);
+    }
+
+    function initSlider(root){
+      const track = root.querySelector('.slider-track');
+      const slides = Array.from(root.querySelectorAll('.slide'));
+      const prevBtn = root.querySelector('.slider-prev');
+      const nextBtn = root.querySelector('.slider-next');
+      const dotWrap = root.querySelector('.slider-dots');
+      const dots = Array.from(root.querySelectorAll('.slider-dot'));
+
+      let index = 0;
+      let startX = 0;
+      let currentX = 0;
+      let dragging = false;
+
+      function clamp(i){ return Math.max(0, Math.min(i, slides.length-1)); }
+      function update(){
+        track.style.transform = `translateX(${-index*100}%)`;
+        dots.forEach((d,i)=>d.classList.toggle('active', i===index));
+      }
+      function next(){ index = clamp(index+1); update(); }
+      function prev(){ index = clamp(index-1); update(); }
+
+      // dots
+      dots.forEach(d=>{
+        d.addEventListener('click', ()=>{ index = Number(d.dataset.idx)||0; update(); });
+      });
+
+      // arrows
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      // keyboard
+      root.addEventListener('keydown', (e)=>{
+        if(e.key==='ArrowRight'){ e.preventDefault(); next(); }
+        if(e.key==='ArrowLeft'){ e.preventDefault(); prev(); }
+      });
+
+      // pointer (drag/swipe)
+      const onDown = (e)=>{
+        dragging = true;
+        root.classList.add('grabbing');
+        startX = (e.touches ? e.touches[0].clientX : e.clientX);
+        currentX = startX;
+      };
+      const onMove = (e)=>{
+        if(!dragging) return;
+        const x = (e.touches ? e.touches[0].clientX : e.clientX);
+        currentX = x;
+        const dx = currentX - startX;
+        const pct = dx / root.clientWidth * 100;
+        track.style.transform = `translateX(${-(index*100) + pct}%)`;
+      };
+      const onUp = ()=>{
+        if(!dragging) return;
+        const dx = currentX - startX;
+        const threshold = Math.min(80, Math.max(40, root.clientWidth*0.12)); // px
+        if(Math.abs(dx) > threshold){
+          if(dx < 0) index = clamp(index+1);
+          else index = clamp(index-1);
+        }
+        dragging = false;
+        root.classList.remove('grabbing');
+        update();
+      };
+
+      // prevent image dragging ghost
+      slides.forEach(s=>{
+        s.addEventListener('dragstart', e=>e.preventDefault());
+      });
+
+      root.addEventListener('mousedown', onDown);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+
+      root.addEventListener('touchstart', onDown, {passive:true});
+      root.addEventListener('touchmove', onMove, {passive:true});
+      root.addEventListener('touchend', onUp);
+
+      window.addEventListener('resize', ()=>update());
+      update();
     }
 
     /* ====== GITHUB API HELPERS ====== */
@@ -268,9 +418,8 @@
       const qm = document.getElementById('f_qm').value;
       const days = document.getElementById('f_days').value;
       const highlights = document.getElementById('f_high').value.split(',').map(s=>s.trim()).filter(Boolean);
-      const bf = document.getElementById('f_before').files[0];
-      const af = document.getElementById('f_after').files[0];
-      if(!bf || !af){ alert("Bitte Vorher & Nachher Bilder auswählen"); return; }
+      const files = Array.from(document.getElementById('f_images').files||[]);
+      if(files.length === 0){ alert("Bitte mindestens ein Bild auswählen."); return; }
 
       statusEl.textContent = "Lade hoch…";
       try{
@@ -278,22 +427,27 @@
         const arr = await ensureProjectsFile();
         if(arr.find(x=>x.id===id)) throw new Error("ID existiert bereits");
 
-        // upload images
-        const base = UPLOAD_DIR + id + "-";
-        const beforeUrl = await uploadFile(base + "before-", bf);
-        const afterUrl  = await uploadFile(base + "after-",  af);
+        // upload images (preserve chosen order)
+        const base = UPLOAD_DIR + id + "-img-";
+        const urls = [];
+        for (let i=0;i<files.length;i++){
+          const u = await uploadFile(base + (i+1) + "-", files[i]);
+          urls.push(u);
+        }
 
-        // append new project
+        // append new project (new schema with images[])
         arr.push({
           id, category, title, location, date,
           metrics: { qm: qm?Number(qm):undefined, dauer_tage: days?Number(days):undefined },
-          before: beforeUrl, after: afterUrl, highlights
+          images: urls,
+          highlights
         });
+
         await saveProjectsArray(arr, `gallery: add ${id}`);
         statusEl.textContent = "Gespeichert.";
         // reset
         ["f_id","f_date","f_title","f_loc","f_qm","f_days","f_high"].forEach(i=>document.getElementById(i).value="");
-        document.getElementById('f_before').value=""; document.getElementById('f_after').value="";
+        document.getElementById('f_images').value="";
         renderGallery(document.getElementById('filter').value, true);
       }catch(e){ alert(e.message || e); statusEl.textContent = ""; }
     });
@@ -311,7 +465,9 @@
       }catch(e){ alert(e.message || e); }
     };
 
-    renderGallery('alle'); // boot
+    // boot
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderGallery('alle');
   </script>
 </body>
 </html>
